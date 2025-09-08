@@ -1,15 +1,13 @@
-<script setup lang="ts">
-import { Button } from '~/components/ui/button';
-
+<script lang="ts" setup>
+import CardsSection from "@/components/home/CardsSection.vue";
+import HomeHero from "@/components/home/HomeHero.vue";
+import StatsSection from "@/components/home/StatsSection.vue";
 </script>
 
 <template>
-    <div>
-        kkkk
-
-
-        <Button>
-            Click me
-        </Button>
-    </div>
-    </template>
+  <div>
+    <HomeHero />
+    <StatsSection />
+    <CardsSection />
+  </div>
+</template>
