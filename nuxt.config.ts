@@ -2,19 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt', '@vueuse/nuxt'],
-  shadcn: {
-    prefix: '',
-    componentDir: './app/components/ui'
-  },
-  typescript: {
-    tsConfig: {
-      compilerOptions: {
-        paths: {
-          '@/*': ['./app/*']
-        }
-      }
-    }
-  }
 
+  modules: [
+    '@nuxt/icon',
+    '@nuxt/eslint',
+    '@nuxt/fonts',
+    '@nuxt/image'
+  ]
 })
