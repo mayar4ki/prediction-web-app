@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,40 +8,54 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { useAccount, useChainId, useConnect, useDisconnect, useEnsName } from '@wagmi/vue'
+} from "@/components/ui/dropdown-menu";
+import {
+  useAccount,
+  useChainId,
+  useConnect,
+  useDisconnect,
+  useEnsName,
+} from "@wagmi/vue";
 
-const chainId = useChainId()
-const { disconnect } = useDisconnect()
+const chainId = useChainId();
+const { disconnect } = useDisconnect();
 
-const { connectors, connect } = useConnect()
-const { address, connector, chain, isConnected, isDisconnected, isConnecting, isReconnecting } =
-  useAccount()
+const { connectors, connect } = useConnect();
+const {
+  address,
+  connector,
+  chain,
+  isConnected,
+  isDisconnected,
+  isConnecting,
+  isReconnecting,
+} = useAccount();
 
-const { data } = useEnsName({ address })
+const { data } = useEnsName({ address });
 
-const isLoading = isConnecting || isReconnecting
+const isLoading = isConnecting || isReconnecting;
 
 const getName = () => {
   if (isLoading.value) {
-    return 'Connecting...'
+    return "Connecting...";
   }
 
   if (isConnected.value) {
-    return `${chain?.value?.name} ${address.value}`
+    return `${chain?.value?.name} ${address.value}`;
   } else {
-    return 'Connect Wallet'
+    return "Connect Wallet";
   }
-}
+};
 </script>
 
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child :disabled="isLoading">
       <Button>
-        <span class="max-w-36 text-ellipsis overflow-hidden whitespace-nowrap">{{
-          getName()
-        }}</span>
+        <span
+          class="max-w-36 text-ellipsis overflow-hidden whitespace-nowrap"
+          >{{ getName() }}</span
+        >
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">
@@ -50,18 +64,20 @@ const getName = () => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
-            v-for="connector in connectors"
-            :key="connector.id"
-            @click="connect({ connector, chainId })"
+            v-for="_connector in connectors"
+            :key="_connector.id"
+            @click="connect({ connector: _connector, chainId })"
           >
-            <span>{{ connector.name }}</span>
+            <span>{{ _connector.name }}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
       </template>
 
       <template v-if="isConnected">
-        <DropdownMenuLabel>Connection: {{ connector?.name }} </DropdownMenuLabel>
+        <DropdownMenuLabel
+          >Connection: {{ connector?.name }}
+        </DropdownMenuLabel>
         <DropdownMenuLabel v-if="data">ESN Name: {{ data }} </DropdownMenuLabel>
         <DropdownMenuSeparator v-if="data" />
         <DropdownMenuLabel>
@@ -70,10 +86,14 @@ const getName = () => {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem> Profile </DropdownMenuItem>
-        <DropdownMenuItem> Dashboard </DropdownMenuItem>
+        <DropdownMenuItem @click="navigateTo('profile')">
+          Profile
+        </DropdownMenuItem>
+        <DropdownMenuItem @click="navigateTo('dashboard')">
+          Dashboard
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem @click="disconnect()" variant="destructive">
+        <DropdownMenuItem variant="destructive" @click="disconnect()">
           Disconnect
         </DropdownMenuItem>
       </template>

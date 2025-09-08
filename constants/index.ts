@@ -43,7 +43,7 @@ export const footerMenuItems: FooterMenuItem[] = [
   {
     title: 'Resources',
     links: [
-      { text: 'Documentation', to: '/static/documentation' },
+      { text: 'Documentation', to: '/info/documentation' },
       { text: 'GitHub', url: 'https://github.com/' },
       // { text: 'Advertise', url: '#' },
     ],
