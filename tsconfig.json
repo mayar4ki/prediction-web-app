@@ -14,5 +14,11 @@
     {
       "path": "./.nuxt/tsconfig.node.json"
     }
-  ]
+  ],
+  	// NOTE: This only makes shadcn work
+	"compilerOptions": {
+    "paths": {
+			 "@/*": ["./app/*"]
+		}
+	}
 }
