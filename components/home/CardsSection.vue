@@ -54,7 +54,7 @@ import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern
         '[mask-image:radial-gradient(420px_circle_at_center,white,transparent)]',
         'inset-0 h-[200%] skew-y-12 top-25 ',
       ]"
-      squaresClassName="stroke-brand"
+      squares-class-name="stroke-brand"
       :width="50"
     />
   </section>

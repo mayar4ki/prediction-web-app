@@ -6,10 +6,6 @@ const props = defineProps({
   // eslint-disable-next-line vue/require-default-prop
   error: Object as () => NuxtError,
 });
-
-definePageMeta({
-  layout: "default",
-});
 </script>
 
 <template>

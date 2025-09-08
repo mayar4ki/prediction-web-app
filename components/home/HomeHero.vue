@@ -1,16 +1,12 @@
 <script lang="ts" setup>
 import { Button } from "@/components/ui/button";
-
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { GlowBorder } from "@/components/ui/glow-border";
-import { useAccount } from "@wagmi/vue";
-
-const { isDisconnected } = useAccount();
 </script>
 
 <template>
   <section class="relative py-32 px-6 container-wrapper">
-    <div class="container">
+    <div class="container relative z-10">
       <div class="grid items-center gap-8 lg:grid-cols-2">
         <div
           class="flex flex-col items-center text-center lg:items-start lg:text-left"
@@ -31,13 +27,21 @@ const { isDisconnected } = useAccount();
           <div
             class="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start"
           >
-            <Button v-if="isDisconnected" class="w-full sm:w-auto">
-              Connect Wallet
-            </Button>
-            <Button v-else class="w-full sm:w-auto"> Go to Dashboard </Button>
-
-            <Button variant="outline" class="w-full sm:w-auto">
+            <Button
+              class="w-full sm:w-auto"
+              @click="
+                () => navigateTo({ path: '/bet', query: { category: 'all' } })
+              "
+            >
               Bet Now
+            </Button>
+
+            <Button
+              variant="outline"
+              class="w-full sm:w-auto"
+              @click="() => navigateTo('/info/documentation')"
+            >
+              Learn more
             </Button>
           </div>
         </div>
@@ -49,7 +53,7 @@ const { isDisconnected } = useAccount();
               'var(--color-ring)',
             ]"
           />
-          <img
+          <NuxtImg
             src="/img/hero.png"
             class="max-h-96 w-full rounded-(--radius) object-contain"
           />
@@ -58,9 +62,10 @@ const { isDisconnected } = useAccount();
     </div>
     <InteractiveGridPattern
       :class="[
-        '[mask-image:radial-gradient(350px_circle_at_center,white,transparent)]',
-        'inset-0 h-[200%] skew-y-12',
+        '[mask-image:radial-gradient(350px_circle_at_center,white,transparent)] ',
+        'inset-0 h-[200%] skew-y-12  ',
       ]"
+      class-name=" z-0 "
     />
   </section>
 </template>
