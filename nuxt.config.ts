@@ -40,7 +40,6 @@ export default defineNuxtConfig({
     // Admin dashboard renders only on client-side
     // '/admin/**': { ssr: false },
 
-
     // Add cors headers on API routes
     // '/api/**': { cors: true },
 
