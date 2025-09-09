@@ -2,7 +2,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Icon } from "@iconify/vue";
 
 export interface ReactionBtnGroupProps {
   commentsCount?: number;
@@ -18,7 +17,7 @@ const { commentsCount, likesCount } = defineProps<ReactionBtnGroupProps>();
       variant="ghost"
       class="text-primary text-sm font-normal flex items-center gap-1"
     >
-      <Icon icon="radix-icons:chat-bubble" class="scale-105" />
+      <Icon name="radix-icons:chat-bubble" class="scale-105" />
       {{ commentsCount && formatCompactNumber(commentsCount) }}
     </Button>
     <Separator orientation="vertical" />
@@ -26,7 +25,7 @@ const { commentsCount, likesCount } = defineProps<ReactionBtnGroupProps>();
       variant="ghost"
       class="text-primary text-sm font-normal flex items-center gap-1"
     >
-      <Icon icon="radix-icons:heart" class="scale-105" />
+      <Icon name="radix-icons:heart" class="scale-105" />
       {{ likesCount && formatCompactNumber(likesCount) }}
     </Button>
     <Separator orientation="vertical" />
@@ -34,7 +33,7 @@ const { commentsCount, likesCount } = defineProps<ReactionBtnGroupProps>();
       variant="ghost"
       class="text-primary text-sm font-normal flex items-center gap-1"
     >
-      <Icon icon="radix-icons:link-2" class="scale-105" />
+      <Icon name="radix-icons:link-2" class="scale-105" />
     </Button>
   </div>
 </template>

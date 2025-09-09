@@ -36,7 +36,6 @@ const tmp: Bet[] = [
   <section class="py-32 px-6 container-wrapper">
     <div class="container mx-auto">
       <div class="flex flex-col gap-6 text-center">
-        <p class="font-medium">566+ Satisfied Customers</p>
         <h2 class="text-4xl font-medium md:text-5xl">Todays Trending Bets</h2>
       </div>
       <div class="mt-20">
@@ -44,10 +43,6 @@ const tmp: Bet[] = [
           <BetCard :item="item" />
           <Separator v-if="index < tmp.length - 1" class="my-12" />
         </template>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque quam
-        aliquam minima molestias consectetur! Necessitatibus, maiores cupiditate
-        iusto natus quidem ad. Maxime possimus facilis nisi delectus eaque quam
-        inventore laudantium!
       </div>
     </div>
   </section>

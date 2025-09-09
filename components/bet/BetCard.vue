@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { BetResult } from "@/enums/common";
 import { cn } from "@/lib/utils";
 import type { Bet } from "@/types/common";
-import { Icon } from "@iconify/vue";
 import ReactionBtnGroup from "./ReactionBtnGroup.vue";
 
 const { item } = defineProps<{
@@ -27,7 +26,7 @@ const { item } = defineProps<{
       <div class="flex h-full w-full flex-col justify-between gap-4 py-1">
         <div class="flex flex-col gap-1">
           <p class="text-primary text-sm font-normal flex items-center gap-1">
-            <Icon icon="radix-icons:clock" class="h-[1rem] w-[1rem]" />
+            <Icon name="radix-icons:clock" class="h-[1rem] w-[1rem]" />
             Will be resolved at:
             {{ formatDate(item.endTimestamp) }}
           </p>
@@ -99,7 +98,7 @@ const { item } = defineProps<{
       <p
         class="text-muted-foreground text-sm font-medium flex items-center gap-1"
       >
-        <Icon icon="radix-icons:clock" class="h-[1rem] w-[1rem]" /> Betting
+        <Icon name="radix-icons:clock" class="h-[1rem] w-[1rem]" /> Betting
         Close at:
         {{ formatDate(item.lockTimestamp) }}
       </p>
