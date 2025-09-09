@@ -54,7 +54,8 @@ import { GlowBorder } from "@/components/ui/glow-border";
             ]"
           />
           <NuxtImg
-            src="/img/hero.png"
+            src="img/hero.png"
+            alt="Hero Image"
             class="max-h-96 w-full rounded-(--radius) object-contain"
           />
         </div>
