@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { colorNameAt, siteName } from "@/constants";
 import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/vue";
+
 import DropdownMenu from "@/components/ui/dropdown-menu/DropdownMenu.vue";
 import DropdownMenuTrigger from "@/components/ui/dropdown-menu/DropdownMenuTrigger.vue";
 import DropdownMenuContent from "@/components/ui/dropdown-menu/DropdownMenuContent.vue";
 import DropdownMenuLabel from "@/components/ui/dropdown-menu/DropdownMenuLabel.vue";
-import ModeMenu from "./ModeToggle.vue";
 import NavigationMenu from "@/components/ui/navigation-menu/NavigationMenu.vue";
 import NavigationMenuList from "@/components/ui/navigation-menu/NavigationMenuList.vue";
 import NavigationMenuItem from "@/components/ui/navigation-menu/NavigationMenuItem.vue";
 import NavigationMenuLink from "@/components/ui/navigation-menu/NavigationMenuLink.vue";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { ref } from "vue";
-import UserMenu from "./UserMenu.vue";
 import type { RouteLocationRaw } from "vue-router";
+import AppLogo from "~/components/common/AppLogo.vue";
+import ModeToggle from "../common/ModeToggle.vue";
+import UserMenu from "../common/UserMenu.vue";
+import ModeSwitch from "../common/ModeSwitch.vue";
 
 const paths: Array<{ name: string; to: RouteLocationRaw }> = [
   { name: "Home", to: "/" },
@@ -27,6 +28,12 @@ const paths: Array<{ name: string; to: RouteLocationRaw }> = [
 ];
 
 const isMobileMenuOpen = ref(false);
+
+const modeSwitchRef = ref();
+
+const toggleMode = () => {
+  modeSwitchRef.value.toggleMode();
+};
 </script>
 
 <template>
@@ -34,10 +41,7 @@ const isMobileMenuOpen = ref(false);
     class="border-dashed sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
   >
     <div class="container-wrapper flex h-16 items-center gap-4 px-6">
-      <NuxtLink to="/" class="text-xl font-bold whitespace-nowrap">
-        <span class="text-brand">{{ siteName.slice(0, colorNameAt) }}</span
-        >{{ siteName.slice(colorNameAt) }}
-      </NuxtLink>
+      <AppLogo />
 
       <div class="gap-4 flex-1 hidden md:flex">
         <NavigationMenu>
@@ -52,15 +56,16 @@ const isMobileMenuOpen = ref(false);
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div class="flex items-center gap-2 ml-auto">
+      <div class="flex items-center gap-3 md:gap-2 ml-auto">
         <ClientOnly>
           <UserMenu />
         </ClientOnly>
+
         <DropdownMenu v-model:open="isMobileMenuOpen">
           <DropdownMenuTrigger as-child>
-            <Button variant="outline" class="md:hidden">
+            <Button variant="outline" size="icon" class="md:hidden">
               <Icon
-                icon="radix-icons:hamburger-menu"
+                name="radix-icons:hamburger-menu"
                 class="h-[1.2rem] w-[1.2rem]"
               />
             </Button>
@@ -78,9 +83,25 @@ const isMobileMenuOpen = ref(false);
             >
               {{ item.name }}
             </DropdownMenuLabel>
+
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel
+              class="items-center flex gap-4"
+              @click="
+                () => {
+                  toggleMode();
+                  isMobileMenuOpen = false;
+                }
+              "
+            >
+              Toggle Mode: <ModeSwitch ref="modeSwitchRef" />
+            </DropdownMenuLabel>
           </DropdownMenuContent>
         </DropdownMenu>
-        <ModeMenu />
+
+        <div class="hidden md:block">
+          <ModeToggle />
+        </div>
       </div>
     </div>
   </header>

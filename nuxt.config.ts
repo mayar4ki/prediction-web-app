@@ -25,24 +25,13 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // Homepage pre-rendered at build time
+    // pages pre-rendered at build time
     '/': { prerender: true },
     '/info/**': { prerender: true },
 
-    '/bet/show/**': { swr: 60 },
-    '/bet/show2/**': { isr: 60 },
 
-
-    // Blog post page generated on demand once until next deployment, cached on CDN
-    // '/blog/**': { isr: true },
-
-
-    // Admin dashboard renders only on client-side
-    // '/admin/**': { ssr: false },
-
-    // Add cors headers on API routes
-    // '/api/**': { cors: true },
-
-
+    //  Client-side rendering only (no SSR)
+    '/dashboard/**': { ssr: false },
+    '/profile/**': { ssr: false }
   }
 })

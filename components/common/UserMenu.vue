@@ -51,11 +51,12 @@ const getName = () => {
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child :disabled="isLoading">
-      <Button>
+      <Button variant="default" class="px-3">
         <span
-          class="max-w-36 text-ellipsis overflow-hidden whitespace-nowrap"
+          class="hidden md:block max-w-28 md:max-w-36 text-ellipsis overflow-hidden whitespace-nowrap"
           >{{ getName() }}</span
         >
+        <Icon name="mdi:wallet-bifold-outline" class="scale-140" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">
@@ -86,11 +87,11 @@ const getName = () => {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem @click="navigateTo('profile')">
+        <DropdownMenuItem @click="navigateTo('/profile')">
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem @click="navigateTo('dashboard')">
-          Dashboard
+        <DropdownMenuItem @click="navigateTo('/bet/create')">
+          Create Bet
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" @click="disconnect()">

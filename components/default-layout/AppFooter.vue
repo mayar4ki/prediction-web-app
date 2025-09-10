@@ -9,7 +9,10 @@ import { RouterLink } from "vue-router";
 </script>
 
 <template>
-  <footer class="border-dashed z-50 w-full border-y">
+  <footer
+    v-if="!$route.path.startsWith('/dashboard')"
+    class="border-dashed z-50 w-full border-y"
+  >
     <section class="py-24 container-wrapper px-6">
       <div class="container">
         <div class="grid grid-cols-2 gap-8 lg:grid-cols-6">

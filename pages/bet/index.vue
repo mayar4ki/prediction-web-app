@@ -30,8 +30,6 @@ const tmp: Bet[] = [
     likeCount: 34,
   },
 ];
-
-const ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 </script>
 
 <template>
@@ -39,28 +37,6 @@ const ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     <div class="container mx-auto">
       <div class="flex flex-col gap-6 text-center">
         <h2 class="text-4xl font-medium md:text-5xl">Todays Trending Bets</h2>
-      </div>
-
-      <div class="flex flex-col justify-center gap-4 mt-10">
-        <NuxtLink
-          v-for="id in ids"
-          :key="id"
-          class="btn-primary btn mt-10"
-          :to="`/bet/show/${id}`"
-        >
-          Navigate to SWR {{ id }}
-        </NuxtLink>
-      </div>
-
-      <div class="flex flex-col justify-center gap-4 mt-10">
-        <NuxtLink
-          v-for="id in ids"
-          :key="id"
-          class="btn-primary btn mt-10"
-          :to="`/bet/show2/${id}`"
-        >
-          Navigate to ISR {{ id }}
-        </NuxtLink>
       </div>
 
       <div class="mt-20">
