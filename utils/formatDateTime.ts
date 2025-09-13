@@ -1,4 +1,4 @@
-export const formatDate = (date: Date): string => {
+export const formatDateTime = (date: Date): string => {
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',
@@ -7,6 +7,5 @@ export const formatDate = (date: Date): string => {
     minute: '2-digit',
     second: '2-digit',
     hour12: true,
-    timeZone: 'UTC'
   }).format(date);
 }

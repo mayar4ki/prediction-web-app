@@ -9,8 +9,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
-    '@vueuse/nuxt',
-    '@wagmi/vue/nuxt'
+    '@vueuse/nuxt'
   ],
   shadcn: {
     /**

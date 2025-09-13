@@ -37,6 +37,7 @@ import {
   type DateValue,
 } from "@internationalized/date";
 import * as yup from "yup";
+import CurrentCost from "~/components/bet/CurrentCost.vue";
 
 const df = new DateFormatter("en-GB", {
   year: "numeric",
@@ -86,6 +87,10 @@ const onSubmit = handleSubmit((values) => {
     <Card class="max-w-3xl mx-auto my-10">
       <CardHeader>
         <CardTitle>Create Bet</CardTitle>
+
+        <ClientOnly>
+          <CurrentCost />
+        </ClientOnly>
         <CardDescription>Deploy your new bet in one-click.</CardDescription>
       </CardHeader>
 

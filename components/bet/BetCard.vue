@@ -28,7 +28,7 @@ const { item } = defineProps<{
           <p class="text-primary text-sm font-normal flex items-center gap-1">
             <Icon name="radix-icons:clock" class="h-[1rem] w-[1rem]" />
             Will be resolved at:
-            {{ formatDate(item.endTimestamp) }}
+            {{ formatDateTime(item.endTimestamp) }}
           </p>
           <p class="text-2xl font-semibold">
             {{ item.prompt }}
@@ -100,7 +100,7 @@ const { item } = defineProps<{
       >
         <Icon name="radix-icons:clock" class="h-[1rem] w-[1rem]" /> Betting
         Close at:
-        {{ formatDate(item.lockTimestamp) }}
+        {{ formatDateTime(item.lockTimestamp) }}
       </p>
 
       <div class="flex flex-col gap-2">

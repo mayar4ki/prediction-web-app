@@ -26,6 +26,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "eslint": "^9.35.0",
+    "eventemitter3": "^5.0.1",
     "lucide-vue-next": "^0.542.0",
     "nuxt": "^3.19.1",
     "reka-ui": "^2.5.0",
@@ -45,6 +46,7 @@
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/radix-icons": "^1.2.4",
+    "@types/node": "^24.3.3",
     "@typescript-eslint/eslint-plugin": "^8.42.0",
     "@typescript-eslint/parser": "^8.42.0",
     "typescript": "^5.9.2"
