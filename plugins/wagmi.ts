@@ -16,9 +16,20 @@ export const wagmiConfig = createConfig({
         metaMask(),
         safe(),
     ],
-    ssr: false
+    ssr: true
 })
 
 export default defineNuxtPlugin(nuxtApp => {
-    nuxtApp.vueApp.use(WagmiPlugin, { config: wagmiConfig })
+
+
+
+
+
+    nuxtApp.vueApp.use(WagmiPlugin, { config: wagmiConfig });
+
+
+
+
+
+
 })

@@ -22,7 +22,10 @@ export default defineNuxtPlugin((nuxt) => {
                 staleTime: 5000,
                 throwOnError(error, query) {
                     console.error({ ...error }, { ...query })
-                    toast.error(`${error.cause}`)
+                    toast.error(`${error.cause ?? (error).name}`, {
+                        description: (error as unknown as Record<string, string>).shortMessage ?? '',
+                        position: "top-right",
+                    })
                     return false
                 },
 

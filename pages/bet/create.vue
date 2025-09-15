@@ -9,57 +9,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "vue-sonner";
 import { useForm } from "vee-validate";
-
 import { toTypedSchema } from "@vee-validate/yup";
-
 import { DatePicker } from "~/components/ui/date-picker";
 import { Input } from "~/components/ui/input";
 import { Alert } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-vue-next";
+import { fromDate, getLocalTimeZone } from "@internationalized/date";
+import { abi, address } from "~/config/ai-prediction-v1";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  createBetAdapter,
+  formSchema,
+  type FormSchema,
+} from "~/validation/createBetForm";
+import FeesFormItem from "~/components/bet/create/FeesFormItem.vue";
+import { BackdropLoader } from "~/components/ui/backdrop-loader";
+import { parseEther } from "viem";
 
-import {
-  DateFormatter,
-  fromDate,
-  getLocalTimeZone,
-  type DateValue,
-} from "@internationalized/date";
-import * as yup from "yup";
-import CurrentCost from "~/components/bet/CurrentCost.vue";
-
-const df = new DateFormatter("en-GB", {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-});
-
-const formSchema = yup.object({
-  prompt: yup.string().max(240).min(10).required(),
-  lockDate: yup
-    .mixed<DateValue>()
-    .required()
-    .transform((item) => (Object.keys(item ?? {}).length === 0 ? null : item)),
-  lockTime: yup.string().required(),
-  closeDate: yup
-    .mixed<DateValue>()
-    .required()
-    .transform((item) => (Object.keys(item ?? {}).length === 0 ? null : item)),
-  closeTime: yup.string().required(),
-});
-
-const { handleSubmit, resetForm, controlledValues } = useForm({
+const { handleSubmit, resetForm, controlledValues } = useForm<FormSchema>({
   validationSchema: toTypedSchema(formSchema),
   initialValues: {
     prompt: "Will Nasa land humans on Mars by 2030?",
@@ -70,12 +37,25 @@ const { handleSubmit, resetForm, controlledValues } = useForm({
   },
 });
 
-console.log(controlledValues.value);
+const tmp = ref();
+const { writeContract, isPending } = useCreateBet({
+  onSuccess() {
+    tmp.value = controlledValues.value.fees;
+    resetForm({
+      values: {
+        fees: tmp.value,
+      },
+    });
+  },
+});
 
 const onSubmit = handleSubmit((values) => {
-  toast("Event has been created", {
-    description: "Sunday, December 03, 2023 at 9:00 AM",
-    position: "top-right",
+  writeContract({
+    address: address,
+    abi: abi,
+    functionName: "createRound",
+    args: createBetAdapter(values),
+    value: parseEther(values.fees),
   });
 
   console.log(values);
@@ -84,16 +64,14 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <div class="contain-wrapper px-6 min-h-[68vh]">
+    <ClientOnly v-if="isPending">
+      <BackdropLoader />
+    </ClientOnly>
     <Card class="max-w-3xl mx-auto my-10">
       <CardHeader>
         <CardTitle>Create Bet</CardTitle>
-
-        <ClientOnly>
-          <CurrentCost />
-        </ClientOnly>
         <CardDescription>Deploy your new bet in one-click.</CardDescription>
       </CardHeader>
-
       <CardContent>
         <form class="space-y-8" @submit="onSubmit">
           <FormField v-slot="{ componentField }" name="prompt">
@@ -115,7 +93,6 @@ const onSubmit = handleSubmit((values) => {
               <FormMessage />
             </FormItem>
           </FormField>
-
           <div>
             <div class="flex flex-col md:flex-row gap-2">
               <FormField v-slot="{ componentField }" name="lockDate">
@@ -200,6 +177,13 @@ const onSubmit = handleSubmit((values) => {
               </ul>
             </div>
           </div>
+
+          <FormField v-slot="{ componentField }" name="fees">
+            <FeesFormItem
+              placeholder="Loading Fees..."
+              v-bind="componentField"
+            />
+          </FormField>
         </form>
 
         <Alert class="mt-4" variant="destructive">
@@ -215,76 +199,12 @@ const onSubmit = handleSubmit((values) => {
       <CardFooter class="flex justify-between px-6">
         <Button variant="outline" @click="resetForm"> Reset </Button>
 
-        <AlertDialog>
-          <AlertDialogTrigger as-child>
-            <Button>Create</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. Read the summary below carefully
-                before proceeding.
-
-                <div class="mt-4">
-                  <div class="px-2 space-y-1">
-                    <h4
-                      class="text-sm font-medium leading-none text-foreground"
-                    >
-                      Prompt:
-                    </h4>
-                    <p class="text-sm text-muted-foreground">
-                      {{ controlledValues.prompt }}
-                    </p>
-                  </div>
-                  <Separator class="my-4" />
-                  <div class="px-2 space-y-1">
-                    <h4
-                      class="text-sm font-medium leading-none text-foreground"
-                    >
-                      Locked At:
-                    </h4>
-                    <p class="text-sm text-muted-foreground">
-                      {{
-                        controlledValues.lockDate?.toDate &&
-                        df.format(
-                          controlledValues?.lockDate?.toDate?.(
-                            getLocalTimeZone()
-                          )
-                        )
-                      }}
-                      - {{ controlledValues.lockTime }} {{ getLocalTimeZone() }}
-                    </p>
-                  </div>
-                  <Separator class="my-4" />
-                  <div class="px-2 space-y-1">
-                    <h4
-                      class="text-sm font-medium leading-none text-foreground"
-                    >
-                      Closes At:
-                    </h4>
-                    <p class="text-sm text-muted-foreground">
-                      {{
-                        controlledValues.closeDate?.toDate &&
-                        df.format(
-                          controlledValues?.closeDate?.toDate?.(
-                            getLocalTimeZone()
-                          )
-                        )
-                      }}
-                      - {{ controlledValues.closeTime }}
-                      {{ getLocalTimeZone() }}
-                    </p>
-                  </div>
-                </div>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel class="self-left">Cancel</AlertDialogCancel>
-              <AlertDialogAction @click="onSubmit">Deploy</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <BetCreateConfirmationDialog
+          :controlled-values="controlledValues"
+          @submit="onSubmit"
+        >
+          <Button>Create</Button>
+        </BetCreateConfirmationDialog>
       </CardFooter>
     </Card>
   </div>
