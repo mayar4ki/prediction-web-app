@@ -12,7 +12,7 @@ const { address } = useAccount();
 
 const { data, error, isLoading } = useWaitForTransactionReceipt({
   hash: tx.value as Hash,
-  pollingInterval: 5000,
+  pollingInterval: 10000,
   query: {
     enabled: !!tx.value,
   },

@@ -2,7 +2,7 @@
 import { useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 import * as ethUsdPriceFeed from "~/config/eth-usd-price-feed";
-import { chain } from "~/config/chain";
+import { chain, nativeSymbol } from "~/config/chain";
 import { formatUnits } from "viem";
 import { callBackGas } from "~/config/ai-prediction-v1/constants";
 
@@ -83,7 +83,7 @@ onMounted(() => {
 
 <template>
   <FormItem>
-    <FormLabel>Fees (ETH)</FormLabel>
+    <FormLabel>Fees ({{ nativeSymbol }})</FormLabel>
     <FormControl>
       <Input v-bind="props" disabled />
     </FormControl>

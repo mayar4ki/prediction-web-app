@@ -20,11 +20,7 @@ import ModeSwitch from "../common/ModeSwitch.vue";
 const paths: Array<{ name: string; to: RouteLocationRaw }> = [
   { name: "Home", to: "/" },
 
-  { name: "Trending", to: { path: "/bet", query: { category: "all" } } },
-
-  { name: "Sport", to: { path: "/bet", query: { category: "sport" } } },
-
-  { name: "Politic", to: { path: "/bet", query: { category: "politic" } } },
+  { name: "Latest", to: { path: "/bet", query: { category: "all" } } },
 ];
 
 const isMobileMenuOpen = ref(false);

@@ -81,15 +81,19 @@ const getName = () => {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem @click="navigateTo('/profile')">
-          Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem @click="navigateTo('/bet/create')">
-          Create New Bet
-        </DropdownMenuItem>
-        <DropdownMenuItem @click="navigateTo(`/bet/created-bets/${address}`)">
-          Owned Bets History
-        </DropdownMenuItem>
+
+        <NuxtLink as-child href="/profile">
+          <DropdownMenuItem> Profile </DropdownMenuItem>
+        </NuxtLink>
+
+        <NuxtLink as-child href="/bet/create">
+          <DropdownMenuItem> Create New Bet </DropdownMenuItem>
+        </NuxtLink>
+
+        <NuxtLink as-child :href="`/bet/created-bets/${address}`">
+          <DropdownMenuItem> Owned Bets History </DropdownMenuItem>
+        </NuxtLink>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" @click="disconnect()">
           Disconnect

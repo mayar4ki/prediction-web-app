@@ -1,34 +1,48 @@
 export const abi = [{
     "inputs": [{ "internalType": "address", "name": "_ownerAddress", "type": "address" },
-
     { "internalType": "address", "name": "_adminAddress", "type": "address" },
-
     { "internalType": "uint256", "name": "_minBetAmount", "type": "uint256" },
-
     { "internalType": "uint256", "name": "_houseFee", "type": "uint256" },
-
     { "internalType": "uint256", "name": "_roundMasterFee", "type": "uint256" },
-
     { "internalType": "address", "name": "_oracleRouter", "type": "address" },
-
     { "internalType": "bytes32", "name": "_oracleDonID", "type": "bytes32" },
-
     { "internalType": "uint32", "name": "_oracleCallBackGasLimit", "type": "uint32" },
-
     { "internalType": "uint64", "name": "_oracleSubscriptionId", "type": "uint64" },
-
-    { "internalType": "address", "name": "_oracleAggregatorV3PriceFeed", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor"
+    { "internalType": "address", "name": "_oracleAggregatorV3PriceFeed", "type": "address" }],
+    "stateMutability": "nonpayable", "type": "constructor"
 },
-
-{ "inputs": [], "name": "EmptyArgs", "type": "error" },
-
-{ "inputs": [], "name": "EmptySource", "type": "error" },
-{ "inputs": [], "name": "EnforcedPause", "type": "error" },
-{ "inputs": [], "name": "ExpectedPause", "type": "error" },
-{ "inputs": [], "name": "NoInlineSecrets", "type": "error" },
-{ "inputs": [], "name": "OnlyRouterCanFulfill", "type": "error" },
-{ "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }], "name": "OwnableInvalidOwner", "type": "error" },
-{ "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "OwnableUnauthorizedAccount", "type": "error" },
+{
+    "inputs": [],
+    "name": "EmptyArgs", "type": "error"
+},
+{
+    "inputs": [],
+    "name": "EmptySource", "type": "error"
+},
+{
+    "inputs": [],
+    "name": "EnforcedPause", "type": "error"
+},
+{
+    "inputs": [],
+    "name": "ExpectedPause", "type": "error"
+},
+{
+    "inputs": [],
+    "name": "NoInlineSecrets", "type": "error"
+},
+{
+    "inputs": [],
+    "name": "OnlyRouterCanFulfill", "type": "error"
+},
+{
+    "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }],
+    "name": "OwnableInvalidOwner", "type": "error"
+},
+{
+    "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+    "name": "OwnableUnauthorizedAccount", "type": "error"
+},
 { "inputs": [], "name": "ReentrancyGuardReentrantCall", "type": "error" },
 { "inputs": [{ "internalType": "address", "name": "token", "type": "address" }], "name": "SafeERC20FailedOperation", "type": "error" },
 {
@@ -105,12 +119,31 @@ export const abi = [{
 { "inputs": [], "name": "coordinator", "outputs": [{ "internalType": "contract IFunctionsCoordinator", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
 {
     "inputs": [{ "internalType": "string", "name": "_prompt", "type": "string" },
-    { "internalType": "uint256", "name": "_lockTimestampByMinutes", "type": "uint256" },
-    { "internalType": "uint256", "name": "_closeTimestampByMinutes", "type": "uint256" }], "name": "createRound", "outputs": [], "stateMutability": "payable", "type": "function"
+    { "internalType": "uint256", "name": "_lockTimestamp", "type": "uint256" },
+    { "internalType": "uint256", "name": "_closeTimestamp", "type": "uint256" }], "name": "createRound", "outputs": [], "stateMutability": "payable", "type": "function"
 },
 { "inputs": [], "name": "dataFeed", "outputs": [{ "internalType": "contract AggregatorV3Interface", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
 { "inputs": [{ "internalType": "uint256", "name": "roundId", "type": "uint256" }], "name": "endRound", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
 { "inputs": [{ "internalType": "uint256", "name": "callbackGasLimit", "type": "uint256" }], "name": "estimateFee", "outputs": [{ "internalType": "uint256", "name": "fee", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+{
+    "inputs": [{ "internalType": "uint256", "name": "cursor", "type": "uint256" },
+    { "internalType": "uint256", "name": "size", "type": "uint256" }], "name": "getAllRounds", "outputs": [{
+        "components": [{ "internalType": "uint256", "name": "id", "type": "uint256" },
+        { "internalType": "address", "name": "master", "type": "address" },
+        { "internalType": "uint256", "name": "masterBalance", "type": "uint256" },
+        { "internalType": "string", "name": "prompt", "type": "string" },
+        { "internalType": "uint256", "name": "lockTimestamp", "type": "uint256" },
+        { "internalType": "uint256", "name": "closeTimestamp", "type": "uint256" },
+        { "internalType": "uint256", "name": "yesBetsVolume", "type": "uint256" },
+        { "internalType": "uint256", "name": "noBetsVolume", "type": "uint256" },
+        { "internalType": "uint256", "name": "totalVolume", "type": "uint256" },
+        { "internalType": "uint256", "name": "rewardBaseCall", "type": "uint256" },
+        { "internalType": "bytes32", "name": "result", "type": "bytes32" },
+        { "internalType": "bytes32", "name": "oracleRequestId", "type": "bytes32" },
+        { "internalType": "bytes", "name": "err", "type": "bytes" }], "internalType": "struct AiPredictionV1.Round[]", "name": "", "type": "tuple[]"
+    },
+    { "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function"
+},
 {
     "inputs": [{ "internalType": "address", "name": "master", "type": "address" },
     { "internalType": "uint256", "name": "cursor", "type": "uint256" },
@@ -141,47 +174,87 @@ export const abi = [{
 { "inputs": [], "name": "houseFee", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
 {
     "inputs": [{ "internalType": "address", "name": "", "type": "address" },
-    { "internalType": "uint256", "name": "", "type": "uint256" }], "name": "masterRoundIDs", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function"
-},
-{ "inputs": [], "name": "minBetAmount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
-{ "inputs": [], "name": "oracleCallBackGasLimit", "outputs": [{ "internalType": "uint32", "name": "", "type": "uint32" }], "stateMutability": "view", "type": "function" },
-{ "inputs": [], "name": "oracleDonID", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "stateMutability": "view", "type": "function" },
-{ "inputs": [], "name": "oracleSubscriptionId", "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }], "stateMutability": "view", "type": "function" },
-{ "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
-{ "inputs": [], "name": "pause", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-{ "inputs": [], "name": "paused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" },
-{
-    "inputs": [{ "internalType": "address", "name": "_token", "type": "address" },
-    { "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "recoverToken", "outputs": [], "stateMutability": "nonpayable", "type": "function"
-},
-{
-    "inputs": [{ "internalType": "uint256", "name": "roundId", "type": "uint256" },
-    { "internalType": "address", "name": "user", "type": "address" }], "name": "refundable", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function"
-}, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-{ "inputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "name": "requestsLedger", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
-{ "inputs": [], "name": "roundIdCounter", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
-{ "inputs": [], "name": "roundMasterFee", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
-{
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "roundsLedger", "outputs": [{ "internalType": "uint256", "name": "id", "type": "uint256" },
-    { "internalType": "address", "name": "master", "type": "address" },
-    { "internalType": "uint256", "name": "masterBalance", "type": "uint256" },
-    { "internalType": "string", "name": "prompt", "type": "string" },
-    { "internalType": "uint256", "name": "lockTimestamp", "type": "uint256" },
-    { "internalType": "uint256", "name": "closeTimestamp", "type": "uint256" },
-    { "internalType": "uint256", "name": "yesBetsVolume", "type": "uint256" },
-    { "internalType": "uint256", "name": "noBetsVolume", "type": "uint256" },
-    { "internalType": "uint256", "name": "totalVolume", "type": "uint256" },
-    { "internalType": "uint256", "name": "rewardBaseCall", "type": "uint256" },
-    { "internalType": "bytes32", "name": "result", "type": "bytes32" },
-    { "internalType": "bytes32", "name": "oracleRequestId", "type": "bytes32" },
-    { "internalType": "bytes", "name": "err", "type": "bytes" }], "stateMutability": "view", "type": "function"
-},
-{ "inputs": [{ "internalType": "address", "name": "_adminAddress", "type": "address" }], "name": "setAdmin", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-{ "inputs": [{ "internalType": "uint256", "name": "_minBetAmount", "type": "uint256" }], "name": "setMinBetAmount", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-{
-    "inputs": [{ "internalType": "uint256", "name": "_houseFee", "type": "uint256" },
-    { "internalType": "uint256", "name": "_roundMasterFee", "type": "uint256" }], "name": "setOperatingFees", "outputs": [], "stateMutability": "nonpayable", "type": "function"
-},
-{ "inputs": [{ "internalType": "uint64", "name": "_oracleSubscriptionId", "type": "uint64" }], "name": "setOracleSubscriptionId", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-{ "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-{ "inputs": [], "name": "unpause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }] as const;
+    { "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "masterRoundIDs", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "minBetAmount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "oracleCallBackGasLimit", "outputs": [{ "internalType": "uint32", "name": "", "type": "uint32" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "oracleDonID", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "oracleSubscriptionId", "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "pause", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}, {
+    "inputs": [],
+    "name": "paused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [{ "internalType": "address", "name": "_token", "type": "address" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }],
+    "name": "recoverToken", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}, {
+    "inputs": [{ "internalType": "uint256", "name": "roundId", "type": "uint256" }, { "internalType": "address", "name": "user", "type": "address" }],
+    "name": "refundable", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "renounceOwnership", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}, {
+    "inputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "name": "requestsLedger", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "roundIdCounter", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [],
+    "name": "roundMasterFee", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "roundsLedger", "outputs": [{ "internalType": "uint256", "name": "id", "type": "uint256" }, { "internalType": "address", "name": "master", "type": "address" }, { "internalType": "uint256", "name": "masterBalance", "type": "uint256" }, { "internalType": "string", "name": "prompt", "type": "string" }, { "internalType": "uint256", "name": "lockTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "closeTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "yesBetsVolume", "type": "uint256" }, { "internalType": "uint256", "name": "noBetsVolume", "type": "uint256" }, { "internalType": "uint256", "name": "totalVolume", "type": "uint256" }, { "internalType": "uint256", "name": "rewardBaseCall", "type": "uint256" }, { "internalType": "bytes32", "name": "result", "type": "bytes32" }, { "internalType": "bytes32", "name": "oracleRequestId", "type": "bytes32" }, { "internalType": "bytes", "name": "err", "type": "bytes" }],
+    "stateMutability": "view", "type": "function"
+}, {
+    "inputs": [{ "internalType": "address", "name": "_adminAddress", "type": "address" }],
+    "name": "setAdmin", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}, {
+    "inputs": [{ "internalType": "uint256", "name": "_minBetAmount", "type": "uint256" }],
+    "name": "setMinBetAmount", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}, {
+    "inputs": [{ "internalType": "uint256", "name": "_houseFee", "type": "uint256" }, { "internalType": "uint256", "name": "_roundMasterFee", "type": "uint256" }],
+    "name": "setOperatingFees", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}, {
+    "inputs": [{ "internalType": "uint64", "name": "_oracleSubscriptionId", "type": "uint64" }],
+    "name": "setOracleSubscriptionId", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}, {
+    "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+    "name": "transferOwnership", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}, {
+    "inputs": [],
+    "name": "unpause", "outputs": [],
+    "stateMutability": "nonpayable", "type": "function"
+}] as const;

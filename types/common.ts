@@ -33,3 +33,9 @@ export interface RoundData {
   oracleRequestId: `0x${string}`;
   err: `0x${string}`;
 }
+
+
+export enum BetOptions {
+  YES = '0xdd05c5cc54897bd053e080a16989ecccd7ba309f5fa46f826db731e684a61378',
+  NO = '0x2ded21741aab77cb4e4c6bd9ac752deddd8eebb337f3bcfe36c7963b408ebc7d'
+}
