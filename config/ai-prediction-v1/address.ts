@@ -1,3 +1,3 @@
 import type { Address } from "viem";
 
-export const address: Address = '0xFFaB2153224B337EFb4a1FE4Fc77300465307262';
+export const address: Address = '0x822214756f83323f75133817FB343a6c9a472453';

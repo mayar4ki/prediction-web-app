@@ -8,7 +8,7 @@ export const wagmiConfig = createConfig({
     chains: [mainnet, sepolia],
     transports: {
         [mainnet.id]: http(),
-        [sepolia.id]: http(),
+        [sepolia.id]: http("https://eth-sepolia.g.alchemy.com/v2/eYq2Ncl_xa2SB_1KWreti"),
     },
     connectors: [
         injected(),
@@ -21,15 +21,6 @@ export const wagmiConfig = createConfig({
 
 export default defineNuxtPlugin(nuxtApp => {
 
-
-
-
-
     nuxtApp.vueApp.use(WagmiPlugin, { config: wagmiConfig });
-
-
-
-
-
 
 })

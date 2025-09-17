@@ -37,17 +37,7 @@ const { handleSubmit, resetForm, controlledValues } = useForm<FormSchema>({
   },
 });
 
-const tmp = ref();
-const { writeContract, isPending } = useCreateBet({
-  onSuccess() {
-    tmp.value = controlledValues.value.fees;
-    resetForm({
-      values: {
-        fees: tmp.value,
-      },
-    });
-  },
-});
+const { writeContract, isPending } = useCreateBet();
 
 const onSubmit = handleSubmit((values) => {
   writeContract({

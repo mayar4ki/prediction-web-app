@@ -27,8 +27,7 @@ export default defineNuxtPlugin((nuxt) => {
                         position: "top-right",
                     })
                     return false
-                },
-
+                }
             },
         },
 

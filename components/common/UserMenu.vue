@@ -9,13 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  useAccount,
-  useChainId,
-  useConnect,
-  useDisconnect,
-  useEnsName,
-} from "@wagmi/vue";
+import { useAccount, useChainId, useConnect, useDisconnect } from "@wagmi/vue";
 
 const chainId = useChainId();
 const { disconnect } = useDisconnect();
@@ -31,7 +25,7 @@ const {
   isReconnecting,
 } = useAccount();
 
-const { data } = useEnsName({ address });
+// const { data } = useEnsName({ address });
 
 const isLoading = isConnecting || isReconnecting;
 
@@ -79,8 +73,8 @@ const getName = () => {
         <DropdownMenuLabel
           >Connection: {{ connector?.name }}
         </DropdownMenuLabel>
-        <DropdownMenuLabel v-if="data">ESN Name: {{ data }} </DropdownMenuLabel>
-        <DropdownMenuSeparator v-if="data" />
+        <!-- <DropdownMenuLabel v-if="data">ESN Name: {{ data }} </DropdownMenuLabel>
+        <DropdownMenuSeparator v-if="data" /> -->
         <DropdownMenuLabel>
           <span class="break-words whitespace-normal w-full">
             {{ address }}
@@ -91,7 +85,10 @@ const getName = () => {
           Profile
         </DropdownMenuItem>
         <DropdownMenuItem @click="navigateTo('/bet/create')">
-          Create Bet
+          Create New Bet
+        </DropdownMenuItem>
+        <DropdownMenuItem @click="navigateTo(`/bet/created-bets/${address}`)">
+          Owned Bets History
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" @click="disconnect()">
