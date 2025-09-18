@@ -1,7 +1,6 @@
 import { sepolia } from "viem/chains";
 
-export const chain = sepolia;
 
-export const blockExplorer = "https://sepolia.etherscan.io/search?q=";
+export const blockExplorer = `${sepolia.blockExplorers.default.url}/search?q=`;
 
-export const nativeSymbol = "ETH";
+export const nativeSymbol = sepolia.nativeCurrency.symbol;

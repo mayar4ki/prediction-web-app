@@ -5,12 +5,10 @@ import { AlertCircle } from "lucide-vue-next";
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
 import Loader from "~/components/ui/backdrop-loader/Loader.vue";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
-import { chain } from "~/config/chain";
 
 const { data: roundIdCounter } = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
-  chainId: chain.id,
   functionName: "roundIdCounter",
 });
 
@@ -33,7 +31,6 @@ const cursor = computed(() => {
 const result = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
-  chainId: chain.id,
   functionName: "getAllRounds",
   args: [cursor, itemPerPage],
   query: {

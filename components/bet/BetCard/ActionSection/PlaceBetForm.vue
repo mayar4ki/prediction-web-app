@@ -2,10 +2,10 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
 import { getFormSchema, type FormSchema } from "~/validation/placeBetForm";
-import { chain, nativeSymbol } from "~/config/chain";
+import { nativeSymbol } from "~/config/chain";
 import * as ethUsdPriceFeed from "~/config/eth-usd-price-feed";
 import { useAccount, useBalance, useReadContract } from "@wagmi/vue";
-import { EthToUsd } from "./helpers";
+import { EthToUsd } from "../helpers";
 import { formatUnits, parseEther } from "viem";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 import Loader from "~/components/ui/backdrop-loader/Loader.vue";
@@ -14,6 +14,7 @@ const showForm = defineModel<"main" | "form-no" | "form-yes">();
 const props = defineProps<{
   modelValue: "main" | "form-no" | "form-yes";
   id: bigint;
+  disabled: boolean;
 }>();
 
 const { address } = useAccount();
@@ -21,14 +22,12 @@ const { data } = useBalance({ address: address });
 const priceFeed = useReadContract({
   abi: ethUsdPriceFeed.abi,
   address: ethUsdPriceFeed.address,
-  chainId: chain.id,
   functionName: "latestRoundData",
 });
 
 const { data: _minBetAmount } = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
-  chainId: chain.id,
   functionName: "minBetAmount",
 });
 
@@ -95,6 +94,12 @@ const onSubmit = handleSubmit((values) => {
 <template>
   <Card class="relative border-0 py-[3.5px] px-2 gap-3">
     <div
+      v-if="disabled"
+      class="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center font-semibold"
+    >
+      You have Bet already!
+    </div>
+    <div
       v-if="isPending"
       class="absolute top-0 right-0 left-0 bottom-0 z-50 bg-background/75 pointer-events-none"
     >
@@ -112,7 +117,7 @@ const onSubmit = handleSubmit((values) => {
         </Badge>
       </CardTitle>
     </CardHeader>
-    <CardContent class="border-0 px-0">
+    <CardContent class="border-0 px-0 opacity-20">
       <form @submit="onSubmit">
         <FormField v-slot="{ componentField }" name="amount">
           <FormItem>
@@ -168,7 +173,12 @@ const onSubmit = handleSubmit((values) => {
     </CardContent>
 
     <CardFooter class="flex justify-between px-0">
-      <Button class="w-full" variant="default" @click="onSubmit">
+      <Button
+        :disabled="disabled"
+        class="w-full"
+        variant="default"
+        @click="onSubmit"
+      >
         Place Bet
       </Button>
     </CardFooter>

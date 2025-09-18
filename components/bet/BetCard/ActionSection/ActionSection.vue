@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { chain, nativeSymbol } from "~/config/chain";
+import { nativeSymbol } from "~/config/chain";
 import { cn } from "~/lib/utils";
 import { BetOptions, type RoundData } from "~/types/common";
-import { calculatePayout, calculatePrizePool } from "./helpers";
-import { useReadContract } from "@wagmi/vue";
+import { calculatePayout, calculatePrizePool } from "../helpers";
+import { useAccount, useReadContract } from "@wagmi/vue";
 import * as ethUsdPriceFeed from "~/config/eth-usd-price-feed";
 import { Button } from "~/components/ui/button";
-
 import PlaceBetForm from "./PlaceBetForm.vue";
+import * as aiPredictionV1 from "~/config/ai-prediction-v1";
+import Loader from "~/components/ui/backdrop-loader/Loader.vue";
+import { formatUnits } from "viem";
 
 const { item } = defineProps<{ item: RoundData }>();
+const showForm = ref<"main" | "form-no" | "form-yes">("main");
+
+const account = useAccount();
 
 const lockedAtCounter = useDateCountDown({
   targetDate: new Date(Number(item.lockTimestamp) * 1000),
@@ -18,23 +23,42 @@ const lockedAtCounter = useDateCountDown({
 const priceFeed = useReadContract({
   abi: ethUsdPriceFeed.abi,
   address: ethUsdPriceFeed.address,
-  chainId: chain.id,
   functionName: "latestRoundData",
 });
+
+const { data, isLoading } = useReadContract({
+  abi: aiPredictionV1.abi,
+  address: aiPredictionV1.address,
+  functionName: "betsLedger",
+  args: [item.id, account.address.value!],
+  query: {
+    enabled: computed(
+      () => !!account.address.value && showForm.value !== "main"
+    ),
+  },
+});
+
+const withinLockTime = computed(
+  () => Number(item.lockTimestamp) * 1000 < new Date().getTime()
+);
 
 const totalVolume = computed(() =>
   calculatePrizePool(item, priceFeed.data.value?.[1] ?? BigInt("0"))
 );
 const payout = computed(() => calculatePayout(item));
 
-const withinLockTime = computed(
-  () => item.lockTimestamp < new Date().getTime() / 1000
+const isBettable = computed(() =>
+  Boolean(!data.value || data.value?.[1] === BigInt(0))
 );
-
-const showForm = ref<"main" | "form-no" | "form-yes">("main");
 </script>
 <template>
   <div>
+    <div
+      v-if="isLoading"
+      class="absolute top-0 right-0 left-0 bottom-0 z-50 bg-background/75 pointer-events-none"
+    >
+      <Loader />
+    </div>
     <div v-if="showForm === 'main'" class="flex flex-col gap-3 lg:flex-col">
       <Badge
         :variant="item.result === BetOptions.NO ? 'outline' : 'success'"
@@ -50,19 +74,27 @@ const showForm = ref<"main" | "form-no" | "form-yes">("main");
       <Button
         :variant="item.result === BetOptions.NO ? 'outline' : 'success'"
         size="lg"
-        :disabled="withinLockTime"
+        :disabled="withinLockTime || !isBettable"
         @click="showForm = 'form-yes'"
       >
         Bet Yes
+        <span v-if="BetOptions.YES == data?.[0]"
+          >{{ Number(formatUnits(data?.[1] ?? BigInt(0), 18)).toFixed(2) }}
+          {{ nativeSymbol }}</span
+        >
       </Button>
 
       <Button
         :variant="item.result === BetOptions.YES ? 'outline' : 'destructive'"
         size="lg"
-        :disabled="withinLockTime"
+        :disabled="withinLockTime || !isBettable"
         @click="showForm = 'form-no'"
       >
         Bet No
+        <span v-if="BetOptions.NO == data?.[0]"
+          >{{ Number(formatUnits(data?.[1] ?? BigInt(0), 18)).toFixed(2) }}
+          {{ nativeSymbol }}</span
+        >
       </Button>
 
       <Badge
@@ -99,10 +131,12 @@ const showForm = ref<"main" | "form-no" | "form-yes">("main");
         <p class="font-semibold text-primary">Pool Total Volume</p>
       </div>
     </div>
+
     <PlaceBetForm
       v-show="showForm !== 'main'"
       :id="item.id"
       v-model="showForm"
+      :disabled="!isBettable"
     />
   </div>
 </template>

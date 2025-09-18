@@ -25,7 +25,7 @@ import {
 
 import { useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
-import { blockExplorer, chain, nativeSymbol } from "~/config/chain";
+import { blockExplorer, nativeSymbol } from "~/config/chain";
 import { isAddress, type Hash } from "viem";
 import type { RoundData } from "~/types/common";
 
@@ -35,7 +35,6 @@ const _address = computed(() => route.params.address);
 const { data: totalCount } = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
-  chainId: chain.id,
   functionName: "getMasterRoundsLength",
   args: [_address.value as Hash],
   query: {
@@ -49,7 +48,6 @@ const currentPage = ref(BigInt(0));
 const result = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
-  chainId: chain.id,
   functionName: "getMasterRounds",
   args: [
     _address.value as Hash,

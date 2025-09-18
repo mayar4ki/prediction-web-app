@@ -2,7 +2,7 @@
 import { useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 import * as ethUsdPriceFeed from "~/config/eth-usd-price-feed";
-import { chain, nativeSymbol } from "~/config/chain";
+import { nativeSymbol } from "~/config/chain";
 import { formatUnits } from "viem";
 import { callBackGas } from "~/config/ai-prediction-v1/constants";
 
@@ -18,7 +18,6 @@ import type { HTMLAttributes } from "vue";
 const result = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
-  chainId: chain.id,
   functionName: "estimateFee",
   args: [callBackGas],
 });
@@ -26,7 +25,6 @@ const result = useReadContract({
 const result2 = useReadContract({
   abi: ethUsdPriceFeed.abi,
   address: ethUsdPriceFeed.address,
-  chainId: chain.id,
   functionName: "latestRoundData",
 });
 

@@ -36,6 +36,8 @@ export interface RoundData {
 
 
 export enum BetOptions {
-  YES = '0xdd05c5cc54897bd053e080a16989ecccd7ba309f5fa46f826db731e684a61378',
-  NO = '0x2ded21741aab77cb4e4c6bd9ac752deddd8eebb337f3bcfe36c7963b408ebc7d'
+  YES = '0x8078791547705d0627af388be89cb38bd2ac6c318022e1e78a1919acdab95446',
+  NO = '0xb8888ec2e2e66921621be7dbd69657d2a35b6f44ecb80ad47d93145b44c98226'
 }
+
+

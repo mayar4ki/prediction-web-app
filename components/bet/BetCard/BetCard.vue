@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { blockExplorer } from "~/config/chain";
 import type { RoundData } from "~/types/common";
+import ActionSection from "./ActionSection/ActionSection.vue";
 const { item } = defineProps<{ item: RoundData }>();
 </script>
 
 <template>
   <div
-    class="grid gap-4 lg:grid-cols-3 xl:gap-8 opacity-100 hover:opacity-100 transition-opacity duration-300"
+    class="relative grid gap-4 lg:grid-cols-3 xl:gap-8 opacity-100 hover:opacity-100 transition-opacity duration-300"
   >
     <div
       class="flex flex-col gap-8 border-border sm:flex-row lg:col-span-2 lg:border-r lg:pr-8 lg:h-[330px]"
@@ -62,7 +63,7 @@ const { item } = defineProps<{ item: RoundData }>();
       </div>
     </div>
 
-    <BetBetCardActionSection :item="item" />
+    <ActionSection :item="item" />
     <!-- <ReactionBtnGroup
       class="lg:hidden -ml-3"
       :comments-count="item.commentCount"
