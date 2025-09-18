@@ -9,7 +9,7 @@ export interface UseDateCountDownOptions {
 export const useDateCountDown = (props: UseDateCountDownOptions) => {
 
     const { targetDate } = props
-    const timeLeft = ref({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+    const timeLeft = ref({ days: 0, hours: 0, minutes: 0, seconds: 0, finished: true })
 
     const intervalId = ref<NodeJS.Timeout | null>(null);
 
@@ -24,7 +24,7 @@ export const useDateCountDown = (props: UseDateCountDownOptions) => {
                 clearInterval(intervalId.value)
             }
 
-            timeLeft.value = { days: 0, hours: 0, minutes: 0, seconds: 0 }
+            timeLeft.value = { days: 0, hours: 0, minutes: 0, seconds: 0, finished: true }
             return
         }
 
@@ -33,7 +33,7 @@ export const useDateCountDown = (props: UseDateCountDownOptions) => {
         const hours = Math.floor((diff / 1000 / 60 / 60) % 24)
         const days = Math.floor(diff / 1000 / 60 / 60 / 24)
 
-        timeLeft.value = { days, hours, minutes, seconds }
+        timeLeft.value = { days, hours, minutes, seconds, finished: diff <= 1 }
     }
 
     onMounted(() => {

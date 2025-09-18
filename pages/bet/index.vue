@@ -2,6 +2,7 @@
 import { Separator } from "@/components/ui/separator";
 import { useReadContract } from "@wagmi/vue";
 import { AlertCircle } from "lucide-vue-next";
+import { BetCard } from "~/components/bet/BetCard";
 import Loader from "~/components/ui/backdrop-loader/Loader.vue";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 import { chain } from "~/config/chain";
