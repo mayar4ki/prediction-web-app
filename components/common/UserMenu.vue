@@ -34,8 +34,9 @@ const getName = () => {
     return "Connecting...";
   }
 
+  console.log(chain.value);
   if (isConnected.value) {
-    return `${chain?.value?.name} ${address.value}`;
+    return `${chain?.value?.name} ${address?.value}`;
   } else {
     return "Connect Wallet";
   }

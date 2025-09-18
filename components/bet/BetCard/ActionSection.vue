@@ -44,7 +44,7 @@ const showForm = ref<"main" | "form-no" | "form-yes">("main");
           })
         "
       >
-        {{ payout.yes.toFixed(2) }}x Payout
+        {{ payout.yes }}x Payout
       </Badge>
 
       <Button
@@ -73,7 +73,7 @@ const showForm = ref<"main" | "form-no" | "form-yes">("main");
           })
         "
       >
-        {{ payout.no.toFixed(2) }}x Payout
+        {{ payout.no }}x Payout
       </Badge>
 
       <p
@@ -101,8 +101,8 @@ const showForm = ref<"main" | "form-no" | "form-yes">("main");
     </div>
     <PlaceBetForm
       v-show="showForm !== 'main'"
-      v-model="showForm"
       :id="item.id"
+      v-model="showForm"
     />
   </div>
 </template>

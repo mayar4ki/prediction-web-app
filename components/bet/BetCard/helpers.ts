@@ -11,8 +11,8 @@ export const calculatePayout = (item: RoundData) => {
     const n = totalVolume / (noBetsVolume || 1);
 
     return {
-        yes: y,
-        no: n,
+        yes: (yesBetsVolume === 0 ? 0 : y).toFixed(2),
+        no: (noBetsVolume === 0 ? 0 : n).toFixed(2),
     };
 }
 

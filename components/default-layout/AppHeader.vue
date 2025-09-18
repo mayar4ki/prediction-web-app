@@ -16,6 +16,7 @@ import AppLogo from "~/components/common/AppLogo.vue";
 import ModeToggle from "../common/ModeToggle.vue";
 import UserMenu from "../common/UserMenu.vue";
 import ModeSwitch from "../common/ModeSwitch.vue";
+import ChainsMenu from "../common/ChainsMenu.vue";
 
 const paths: Array<{ name: string; to: RouteLocationRaw }> = [
   { name: "Home", to: "/" },
@@ -56,6 +57,7 @@ const toggleMode = () => {
       </div>
       <div class="flex items-center gap-3 md:gap-2 ml-auto">
         <ClientOnly>
+          <ChainsMenu />
           <UserMenu />
         </ClientOnly>
 
