@@ -35,3 +35,12 @@ export const calculatePrizePool = (item: RoundData, priceFeed: bigint) => {
 
 
 }
+
+
+export const EthToUsd = (value: number, priceFeed: bigint) => {
+
+    const tmp = value * Number(formatUnits(priceFeed, 8))
+
+    return Number.isNaN(tmp) ? 0 : tmp;
+
+}

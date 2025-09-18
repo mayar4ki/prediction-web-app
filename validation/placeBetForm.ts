@@ -1,10 +1,17 @@
 import * as yup from "yup";
 
-export const formSchema = yup.object({
-    amount: yup.string().required()
+
+
+interface GetFormSchemaProps {
+    balance: ComputedRef<number>
+    minBetAmount: ComputedRef<number>
+}
+
+export const getFormSchema = ({ balance, minBetAmount }: GetFormSchemaProps) => yup.object({
+    amount: yup.number().typeError('${path} is Invalid').min(minBetAmount.value).max(balance.value).required().label("Amount")
 });
 
 
-export type FormSchema = yup.InferType<typeof formSchema>;
+export type FormSchema = yup.InferType<ReturnType<typeof getFormSchema>>;
 
 

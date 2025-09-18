@@ -2,11 +2,10 @@
 import { Separator } from "@/components/ui/separator";
 import { useReadContract } from "@wagmi/vue";
 import { AlertCircle } from "lucide-vue-next";
-import { BetCard } from "~/components/bet/BetCard";
+import BetCard from "~/components/bet/BetCard/BetCard.vue";
 import Loader from "~/components/ui/backdrop-loader/Loader.vue";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 import { chain } from "~/config/chain";
-import * as ethUsdPriceFeed from "~/config/eth-usd-price-feed";
 
 const { data: roundIdCounter } = useReadContract({
   abi: aiPredictionV1.abi,
@@ -15,22 +14,31 @@ const { data: roundIdCounter } = useReadContract({
   functionName: "roundIdCounter",
 });
 
-const result2 = useReadContract({
-  abi: ethUsdPriceFeed.abi,
-  address: ethUsdPriceFeed.address,
-  chainId: chain.id,
-  functionName: "latestRoundData",
-});
+const itemPerPage = ref(BigInt(2));
+const currentPage = ref(BigInt(1));
 
-const itemPerPage = ref(BigInt(10));
-const currentPage = ref(BigInt(0));
+const cursor = computed(() => {
+  if (roundIdCounter.value) {
+    const pagesCount = (roundIdCounter.value + BigInt(1)) / itemPerPage.value;
+
+    const flip = (pagesCount - currentPage.value) * itemPerPage.value;
+    return flip;
+  }
+
+  const skip = (currentPage.value - BigInt(1)) * itemPerPage.value;
+
+  return skip;
+});
 
 const result = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
   chainId: chain.id,
   functionName: "getAllRounds",
-  args: [computed(() => currentPage.value * itemPerPage.value), itemPerPage],
+  args: [cursor, itemPerPage],
+  query: {
+    enabled: computed(() => !!roundIdCounter.value),
+  },
 });
 
 const data = computed(() => result.data.value?.[0] ?? []);
@@ -44,7 +52,7 @@ const data = computed(() => result.data.value?.[0] ?? []);
       </div>
       <div class="mt-20">
         <template v-for="(item, index) in data" :key="item.id">
-          <BetCard :item="item" :eth-price-in-u-s-d="result2.data.value?.[1]" />
+          <BetCard :item="item" />
           <Separator v-if="index < data.length - 1" class="my-12" />
         </template>
 
@@ -81,12 +89,12 @@ const data = computed(() => result.data.value?.[0] ?? []);
       class="my-6"
       :items-per-page="Number(itemPerPage)"
       :total="Number(roundIdCounter)"
-      :page="Number(currentPage) + 1"
+      :page="Number(currentPage)"
       :show-edges="true"
       :sibling-count="0"
       @update:page="
         (value) => {
-          currentPage = BigInt(value - 1);
+          currentPage = BigInt(value);
         }
       "
     >

@@ -43,10 +43,12 @@ const toggleMode = () => {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem v-for="item in paths" :key="item.name">
-              <NuxtLink :to="item.to">
-                <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                  {{ item.name }}
-                </NavigationMenuLink>
+              <NuxtLink
+                :as="NavigationMenuLink"
+                :class="navigationMenuTriggerStyle()"
+                :to="item.to"
+              >
+                {{ item.name }}
               </NuxtLink>
             </NavigationMenuItem>
           </NavigationMenuList>

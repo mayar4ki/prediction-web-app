@@ -16,7 +16,6 @@ import { Input } from "~/components/ui/input";
 import { Alert } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-vue-next";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
-import { abi, address } from "~/config/ai-prediction-v1";
 import {
   createBetAdapter,
   formSchema,
@@ -41,14 +40,9 @@ const { writeContract, isPending } = useCreateBet();
 
 const onSubmit = handleSubmit((values) => {
   writeContract({
-    address: address,
-    abi: abi,
-    functionName: "createRound",
     args: createBetAdapter(values),
     value: parseEther(values.fees),
   });
-
-  console.log(values);
 });
 </script>
 
