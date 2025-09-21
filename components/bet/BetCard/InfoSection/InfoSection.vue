@@ -16,17 +16,16 @@ const { item } = useBetCard()!;
     />
     <div class="flex h-full w-full flex-col justify-between gap-4 py-1">
       <div class="flex flex-col gap-1">
-        <a
+        <NuxtLink
           class="text-muted-foreground text-sm font-mono hover:underline"
-          :href="`${blockExplorer}${item.master}#readContract`"
-          target="_blank"
+          :to="`/bet/show/${item.id}`"
         >
           #ID:
 
           <span class="text-sm text-muted-foreground"
             >{{ item.id.toString() }}
           </span>
-        </a>
+        </NuxtLink>
 
         <p class="text-primary text-sm font-normal flex items-center gap-1">
           <Icon name="radix-icons:clock" class="h-[1rem] w-[1rem]" />

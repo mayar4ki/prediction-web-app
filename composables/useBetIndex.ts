@@ -4,9 +4,9 @@ import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 
 
 
-export type UseBetIndexOptions = Omit<UseReadContractParameters<typeof aiPredictionV1.abi, 'getAllRounds'>, 'abi' | 'address' | 'functionName'>;
+export type UseBetIndexOptions = UseReadContractParameters<typeof aiPredictionV1.abi, 'getAllRounds'>;
 
-export const useBetIndex = (options?: UseBetIndexOptions) => {
+export const useBetIndex = (options?: Omit<UseBetIndexOptions, ''>) => {
 
     const result = useReadContract({
         abi: aiPredictionV1.abi,
@@ -15,5 +15,15 @@ export const useBetIndex = (options?: UseBetIndexOptions) => {
         ...options
     });
 
-    return result;
+    const mappedData = computed(() => {
+        const rounds = result.data.value?.[0] ?? [];
+        const userBets = result.data.value?.[1] ?? [];
+
+        return rounds.map((el, index) => ({
+            ...el,
+            userBetInfo: userBets[index],
+        }));
+    });
+
+    return { ...result, mappedData };
 }

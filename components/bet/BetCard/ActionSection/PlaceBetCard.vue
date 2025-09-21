@@ -164,17 +164,17 @@ const onSubmit = handleSubmit((values) => {
 
       <div class="flex overflow-hidden gap-1 mt-2">
         <Button
-          v-for="item in [10, 25, 50, 75, 100]"
-          :key="item"
+          v-for="rate in [10, 25, 50, 75, 100]"
+          :key="rate"
           :variant="
-            (balance * item) / 100 === controlledValues.amount
+            (balance * rate) / 100 === controlledValues.amount
               ? 'success'
               : 'secondary'
           "
           class="p-0 py-0.5 h-auto flex-1"
-          @click="setFieldValue('amount', (balance * item) / 100)"
+          @click="setFieldValue('amount', (balance * rate) / 100)"
         >
-          {{ item === 100 ? `Max` : `${item}%` }}
+          {{ rate === 100 ? `Max` : `${rate}%` }}
         </Button>
       </div>
 

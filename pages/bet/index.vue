@@ -30,21 +30,11 @@ const cursor = computed(() => {
 
 const { address } = useAccount();
 
-const result = useBetIndex({
+const { mappedData, isFetching } = useBetIndex({
   args: [address, cursor, itemPerPage],
   query: {
     enabled: computed(() => !!roundIdCounter.value && !!address.value),
   },
-});
-
-const data = computed(() => {
-  const rounds = result.data.value?.[0] ?? [];
-  const userBets = result.data.value?.[1] ?? [];
-
-  return rounds.map((el, index) => ({
-    ...el,
-    userBetInfo: userBets[index],
-  }));
 });
 </script>
 
@@ -55,13 +45,13 @@ const data = computed(() => {
         <h2 class="text-4xl font-medium md:text-5xl">Latest Bets</h2>
       </div>
       <div class="mt-20">
-        <template v-for="(item, index) in data" :key="item.id">
+        <template v-for="(item, index) in mappedData" :key="item.id">
           <BetCard :item="item" />
-          <Separator v-if="index < data.length - 1" class="my-12" />
+          <Separator v-if="index < mappedData.length - 1" class="my-12" />
         </template>
 
         <div
-          v-if="result.isFetching.value"
+          v-if="isFetching"
           class="flex flex-col justify-center items-center gap-6 mb-28"
         >
           <div class="h-[30vh]">
@@ -70,7 +60,7 @@ const data = computed(() => {
         </div>
 
         <div
-          v-else-if="data.length === 0"
+          v-else-if="mappedData.length === 0"
           class="flex flex-col justify-center items-center gap-6 mb-28"
         >
           <NuxtImg

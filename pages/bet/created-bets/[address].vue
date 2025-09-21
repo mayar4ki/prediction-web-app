@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import type { ColumnDef } from "@tanstack/vue-table";
-import {
-  FlexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useVueTable,
-} from "@tanstack/vue-table";
-import { h } from "vue";
+import { FlexRender } from "@tanstack/vue-table";
 import {
   Table,
   TableBody,
@@ -25,18 +18,19 @@ import {
 
 import { useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
-import { blockExplorer, nativeSymbol } from "~/config/chain";
+import { blockExplorer } from "~/config/chain";
 import { isAddress, type Hash } from "viem";
+import { useBetsTable } from "~/components/bet/created-bets/useBetsTable";
 import type { RoundData } from "~/types/common";
 
 const route = useRoute();
-const _address = computed(() => route.params.address);
+const _address = computed(() => route.params.address as Hash);
 
 const { data: totalCount } = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
   functionName: "getMasterRoundsLength",
-  args: [_address.value as Hash],
+  args: [_address],
   query: {
     enabled: isAddress(String(_address.value)),
   },
@@ -45,12 +39,9 @@ const { data: totalCount } = useReadContract({
 const itemPerPage = ref(BigInt(10));
 const currentPage = ref(BigInt(0));
 
-const result = useReadContract({
-  abi: aiPredictionV1.abi,
-  address: aiPredictionV1.address,
-  functionName: "getMasterRounds",
+const result = useOwnedBetsIndex({
   args: [
-    _address.value as Hash,
+    _address,
     computed(() => currentPage.value * itemPerPage.value),
     itemPerPage,
   ],
@@ -59,69 +50,8 @@ const result = useReadContract({
   },
 });
 
-const columns: ColumnDef<RoundData>[] = [
-  {
-    header: "ID",
-    accessorKey: "id",
-    cell: ({ row }) =>
-      h("div", { class: "capitalize" }, row.getValue("id")?.toString()),
-  },
-  {
-    header: "Prompt",
-    accessorKey: "prompt",
-    cell: ({ row }) => {
-      return h(
-        "div",
-        { class: "capitalize max-w-[310px] min-w-[220px] text-wrap" },
-        row.getValue("prompt")
-      );
-    },
-  },
-  {
-    header: "Lock Time",
-    accessorKey: "lockTimestamp",
-    cell: ({ row }) => {
-      let txt = "Err";
-      try {
-        const unixDate = Number(
-          row.getValue<number>("lockTimestamp").toString()
-        );
-        txt = formatDateTime(new Date(unixDate * 1000));
-      } catch {
-        //
-      }
-
-      return h("div", { class: "capitalize" }, txt);
-    },
-  },
-  {
-    header: "Close Time",
-    accessorKey: "closeTimestamp",
-    cell: ({ row }) => {
-      let txt = "Err";
-      try {
-        const unixDate = Number(
-          row.getValue<number>("closeTimestamp").toString()
-        );
-        txt = formatDateTime(new Date(unixDate * 1000));
-      } catch {
-        //
-      }
-
-      return h("div", { class: "capitalize" }, txt);
-    },
-  },
-  {
-    header: `Total volume (${nativeSymbol})`,
-    accessorKey: "totalVolume",
-  },
-];
-
-const table = useVueTable({
+const { table, columns } = useBetsTable({
   data: computed(() => result.data.value?.[0] ?? []) as MaybeRef<RoundData[]>,
-  columns,
-  getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
 });
 </script>
 
@@ -179,7 +109,6 @@ const table = useVueTable({
         </TableBody>
       </Table>
     </div>
-
     <Pagination
       v-slot="{ page }"
       class="my-6"
