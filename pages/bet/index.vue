@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Separator } from "@/components/ui/separator";
-import { useReadContract } from "@wagmi/vue";
+import { useAccount, useReadContract } from "@wagmi/vue";
 import { AlertCircle } from "lucide-vue-next";
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
 import Loader from "~/components/ui/backdrop-loader/Loader.vue";
@@ -12,7 +12,7 @@ const { data: roundIdCounter } = useReadContract({
   functionName: "roundIdCounter",
 });
 
-const itemPerPage = ref(BigInt(2));
+const itemPerPage = ref(BigInt(4));
 const currentPage = ref(BigInt(1));
 
 const cursor = computed(() => {
@@ -28,17 +28,24 @@ const cursor = computed(() => {
   return skip;
 });
 
-const result = useReadContract({
-  abi: aiPredictionV1.abi,
-  address: aiPredictionV1.address,
-  functionName: "getAllRounds",
-  args: [cursor, itemPerPage],
+const { address } = useAccount();
+
+const result = useBetIndex({
+  args: [address, cursor, itemPerPage],
   query: {
-    enabled: computed(() => !!roundIdCounter.value),
+    enabled: computed(() => !!roundIdCounter.value && !!address.value),
   },
 });
 
-const data = computed(() => result.data.value?.[0] ?? []);
+const data = computed(() => {
+  const rounds = result.data.value?.[0] ?? [];
+  const userBets = result.data.value?.[1] ?? [];
+
+  return rounds.map((el, index) => ({
+    ...el,
+    userBetInfo: userBets[index],
+  }));
+});
 </script>
 
 <template>
@@ -54,7 +61,7 @@ const data = computed(() => result.data.value?.[0] ?? []);
         </template>
 
         <div
-          v-if="result.isLoading.value"
+          v-if="result.isFetching.value"
           class="flex flex-col justify-center items-center gap-6 mb-28"
         >
           <div class="h-[30vh]">

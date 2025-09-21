@@ -9,16 +9,22 @@ import { EthToUsd } from "../helpers";
 import { formatUnits, parseEther } from "viem";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 import Loader from "~/components/ui/backdrop-loader/Loader.vue";
+import { useBetCard } from "../store";
+import { useQueryClient } from "@tanstack/vue-query";
 
-const showForm = defineModel<"main" | "form-no" | "form-yes">();
-const props = defineProps<{
-  modelValue: "main" | "form-no" | "form-yes";
-  id: bigint;
+defineProps<{
   disabled: boolean;
 }>();
 
+const { item, activeActionCard } = useBetCard()!;
+
 const { address } = useAccount();
-const { data } = useBalance({ address: address });
+const { data } = useBalance({
+  address: address,
+  scopeKey: "myself",
+  query: { gcTime: 10000 },
+});
+
 const priceFeed = useReadContract({
   abi: ethUsdPriceFeed.abi,
   address: ethUsdPriceFeed.address,
@@ -29,17 +35,30 @@ const { data: _minBetAmount } = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
   functionName: "minBetAmount",
+  query: {
+    gcTime: 1000 * 30 * 60,
+  },
 });
+
+const result = useBetIndex({
+  query: {
+    enabled: false,
+  },
+});
+const queryClient = useQueryClient();
 
 const { isPending, writeContractBetNo, writeContractBetYes } = usePlaceBet({
   onSuccess() {
-    showForm.value = "main";
+    activeActionCard.value = "main";
     resetForm();
+    queryClient.invalidateQueries({
+      queryKey: result.queryKey,
+    });
   },
 });
 
 const formBadge = computed(() => {
-  switch (props.modelValue) {
+  switch (activeActionCard.value) {
     case "form-yes":
       return { text: "Betting on Yes", variant: "success" } as const;
     case "form-no":
@@ -50,7 +69,9 @@ const formBadge = computed(() => {
 });
 
 const balance = computed(() =>
-  Number(formatUnits(data.value?.value ?? BigInt(0), 18))
+  Number(
+    formatUnits(data.value?.value ?? BigInt(10000000000000000000000000), 18)
+  )
 );
 
 const minBetAmount = computed(() =>
@@ -73,17 +94,17 @@ const { handleSubmit, controlledValues, setFieldValue, resetForm } =
 const onSubmit = handleSubmit((values) => {
   const weiAmount = parseEther(values.amount.toString());
 
-  if (props.modelValue === "form-no") {
+  if (activeActionCard.value === "form-no") {
     writeContractBetNo({
-      args: [props.id],
+      args: [item.value.id],
       value: weiAmount,
     });
     return;
   }
 
-  if (props.modelValue === "form-yes") {
+  if (activeActionCard.value === "form-yes") {
     writeContractBetYes({
-      args: [props.id],
+      args: [item.value.id],
       value: weiAmount,
     });
     return;
@@ -94,12 +115,6 @@ const onSubmit = handleSubmit((values) => {
 <template>
   <Card class="relative border-0 py-[3.5px] px-2 gap-3">
     <div
-      v-if="disabled"
-      class="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center font-semibold"
-    >
-      You have Bet already!
-    </div>
-    <div
       v-if="isPending"
       class="absolute top-0 right-0 left-0 bottom-0 z-50 bg-background/75 pointer-events-none"
     >
@@ -108,7 +123,11 @@ const onSubmit = handleSubmit((values) => {
     <CardHeader class="px-0 border-0">
       <CardTitle class="flex justify-between items-center">
         <div class="flex justify-center items-center gap-1">
-          <Button variant="ghost" size="icon" @click="showForm = 'main'">
+          <Button
+            variant="ghost"
+            size="icon"
+            @click="activeActionCard = 'main'"
+          >
             <Icon name="radix-icons:arrow-left" size="22" />
           </Button>
         </div>
@@ -117,7 +136,13 @@ const onSubmit = handleSubmit((values) => {
         </Badge>
       </CardTitle>
     </CardHeader>
-    <CardContent class="border-0 px-0 opacity-20">
+    <CardContent class="relative border-0 px-0">
+      <div
+        v-if="disabled"
+        class="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center font-semibold z-50 bg-background/60"
+      >
+        You have Bet already!
+      </div>
       <form @submit="onSubmit">
         <FormField v-slot="{ componentField }" name="amount">
           <FormItem>

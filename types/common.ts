@@ -1,21 +1,8 @@
+import type { Hash } from "viem";
 import type { InputHTMLAttributes } from "vue";
 
 export type InputProps = /* @vue-ignore */ InputHTMLAttributes
 
-
-export interface Bet {
-  id: number
-  img: string
-  prompt: string
-  noBetsVolume: number
-  yesBetsVolume: number
-  result: string
-  lockTimestamp: Date
-  endTimestamp: Date
-  master: string
-  commentCount: number
-  likeCount: number
-}
 
 
 export interface RoundData {
@@ -32,6 +19,12 @@ export interface RoundData {
   result: `0x${string}`;
   oracleRequestId: `0x${string}`;
   err: `0x${string}`;
+}
+
+export interface UserBet {
+  betOption: Hash,
+  amount: bigint
+  claimed: boolean
 }
 
 

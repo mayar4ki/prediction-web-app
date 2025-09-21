@@ -1,4 +1,4 @@
-import { useWriteContract } from "@wagmi/vue";
+import { useWaitForTransactionReceipt, useWriteContract } from "@wagmi/vue";
 import type { Hash, WriteContractParameters } from "viem";
 import { toast } from "vue-sonner";
 import { blockExplorer } from "~/config/chain";
@@ -13,7 +13,7 @@ export const usePlaceBet = (options: UsePlaceBetOptions) => {
 
     const txHash = ref<Hash | undefined>();
 
-    const { writeContract, isPending } = useWriteContract({
+    const { writeContract, isPending, data } = useWriteContract({
         mutation: {
             onSuccess(data) {
                 toast.success("Transaction has been sent", {
@@ -27,9 +27,8 @@ export const usePlaceBet = (options: UsePlaceBetOptions) => {
                     }, data)
                 });
 
-                options.onSuccess?.(data);
                 txHash.value = data;
-            },
+            }
         },
     });
 
@@ -53,9 +52,26 @@ export const usePlaceBet = (options: UsePlaceBetOptions) => {
         functionName: "betNo",
     })
 
+    const { isLoading, data: t } = useWaitForTransactionReceipt({
+        hash: computed(() => data.value),
+        pollingInterval: 10000,
+
+        query: {
+            enabled: !!computed(() => data.value),
+
+        },
+    });
+
+
+    watchEffect(() => {
+        if (t.value?.status === 'success') {
+            options.onSuccess?.(txHash.value)
+        }
+    })
+
     return {
         writeContractBetYes: _writeContractBetYes,
         writeContractBetNo: _writeContractBetNo,
-        isPending: computed(() => isPending.value)
+        isPending: computed(() => isPending.value || isLoading.value)
     }
 }

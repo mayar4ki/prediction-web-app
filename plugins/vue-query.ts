@@ -29,6 +29,22 @@ export default defineNuxtPlugin((nuxt) => {
                     return false
                 }
             },
+            mutations: {
+                onError(error) {
+                    toast.error(`${error.cause ?? (error).name}`, {
+                        description: (error as unknown as Record<string, string>).shortMessage ?? '',
+                        position: "top-right",
+                    })
+                    return false
+                },
+                throwOnError(error) {
+                    toast.error(`${error.cause ?? (error).name}`, {
+                        description: (error as unknown as Record<string, string>).shortMessage ?? '',
+                        position: "top-right",
+                    })
+                    return false
+                },
+            }
         },
 
     })
