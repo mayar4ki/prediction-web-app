@@ -20,10 +20,9 @@ export default defineNuxtPlugin((nuxt) => {
         defaultOptions: {
             queries: {
                 staleTime: 5000,
-                throwOnError(error, query) {
-                    console.error({ ...error }, { ...query })
-                    toast.error(`${error.cause ?? (error).name}`, {
-                        description: (error as unknown as Record<string, string>).shortMessage ?? '',
+                throwOnError(error) {
+                    toast.error(`${(error as unknown as Record<string, string>).shortMessage ?? (error).name}`, {
+                        description: `${error.cause ?? (error).name}`,
                         position: "top-right",
                     })
                     return false
@@ -31,15 +30,15 @@ export default defineNuxtPlugin((nuxt) => {
             },
             mutations: {
                 onError(error) {
-                    toast.error(`${error.cause ?? (error).name}`, {
-                        description: (error as unknown as Record<string, string>).shortMessage ?? '',
+                    toast.error(`${(error as unknown as Record<string, string>).shortMessage ?? (error).name}`, {
+                        description: `${error.cause ?? (error).name}`,
                         position: "top-right",
                     })
                     return false
                 },
                 throwOnError(error) {
-                    toast.error(`${error.cause ?? (error).name}`, {
-                        description: (error as unknown as Record<string, string>).shortMessage ?? '',
+                    toast.error(`${(error as unknown as Record<string, string>).shortMessage ?? (error).name}`, {
+                        description: `${error.cause ?? (error).name}`,
                         position: "top-right",
                     })
                     return false

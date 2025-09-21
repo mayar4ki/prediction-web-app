@@ -28,10 +28,10 @@ export const useCreateBet = () => {
         },
     });
 
-    type _writeContractProps = WriteContractParameters<typeof abi, 'createRound'>;
+    type TriggerProps = WriteContractParameters<typeof abi, 'createRound'>;
 
-    const _writeContract = (args: Omit<_writeContractProps, 'address' | 'abi' | 'functionName' | 'chain' | 'account'>) => writeContract({
-        ...args as _writeContractProps,
+    const trigger = (args: Omit<TriggerProps, 'address' | 'abi' | 'functionName' | 'chain' | 'account'>) => writeContract({
+        ...args as TriggerProps,
         address: address,
         abi: abi,
         functionName: "createRound",
@@ -39,8 +39,8 @@ export const useCreateBet = () => {
 
 
     return {
-        writeContract: _writeContract,
-        isPending: computed(() => isPending.value),
+        trigger,
+        isPending: isPending,
         txHash
     }
 }

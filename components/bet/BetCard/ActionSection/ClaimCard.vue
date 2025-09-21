@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { BetOptions, type UserBet } from "~/types/common";
+import { BetOptions, EmptyBytes, type UserBet } from "~/types/common";
 import { useBetCard } from "../store";
 import { cn } from "~/lib/utils";
 import { calculatePayout, calculatePrizePool } from "../helpers";
@@ -7,7 +7,10 @@ import { nativeSymbol } from "~/config/chain";
 import { Button } from "~/components/ui/button";
 import { useReadContract } from "@wagmi/vue";
 import * as ethUsdPriceFeed from "~/config/eth-usd-price-feed";
-import { formatUnits } from "viem";
+import { formatUnits, pad } from "viem";
+
+import { useQueryClient } from "@tanstack/vue-query";
+import Loader from "~/components/ui/backdrop-loader/Loader.vue";
 
 const { userBetInfo } = defineProps<{
   // eslint-disable-next-line vue/require-default-prop
@@ -34,29 +37,92 @@ const totalVolume = computed(() =>
   calculatePrizePool(item.value, priceFeed.data.value?.[1] ?? BigInt("0"))
 );
 
-const betResultLabel = computed(() => {
-  if (item.value.result === BetOptions.YES) {
+const queryClient = useQueryClient();
+
+const betIndex = useBetIndex({
+  query: {
+    enabled: false,
+  },
+});
+
+const {
+  trigger: resolveBet,
+  isPending,
+  isConfirming,
+} = useBetResolver({
+  onSuccess() {
+    queryClient.invalidateQueries({
+      queryKey: betIndex.queryKey,
+    });
+  },
+});
+
+const {
+  trigger: claimBet,
+  isPending: isPending2,
+  isConfirming: isConfirming2,
+} = useClaimBet({
+  onSuccess() {
+    queryClient.invalidateQueries({
+      queryKey: betIndex.queryKey,
+    });
+  },
+});
+
+const oracleFinished = computed(() => {
+  if (pad(item.value.err, { size: 32 }) !== EmptyBytes.bytes32) {
+    return true;
+  }
+
+  if (pad(item.value.result, { size: 32 }) !== EmptyBytes.bytes32) {
+    return true;
+  }
+
+  return false;
+});
+
+const resultError = computed(
+  () => pad(item.value.err, { size: 32 }) !== EmptyBytes.bytes32
+);
+
+const userHasBetRecord = computed(
+  () => item.value.userBetInfo.amount ?? BigInt(0) !== BigInt(0)
+);
+
+const userHasWinBetRecord = computed(
+  () => item.value.result === userBetInfo?.betOption && userHasBetRecord.value
+);
+
+const oracleIsCalled = computed(
+  () => pad(item.value.oracleRequestId, { size: 32 }) !== EmptyBytes.bytes32
+);
+
+const betOptionLabel = (op: `0x${string}` | undefined) => {
+  if (op === BetOptions.YES) {
     return "Yes";
   }
-  if (item.value.result === BetOptions.NO) {
+
+  if (op === BetOptions.NO) {
     return "No";
   }
 
-  return "unknown";
-});
-const betUserLabel = computed(() => {
-  if (userBetInfo?.betOption === BetOptions.YES) {
-    return "Yes";
-  }
-  if (userBetInfo?.betOption === BetOptions.NO) {
-    return "No";
+  if (!oracleFinished.value) {
+    return "Not resolved yet";
   }
 
-  return "unknown";
-});
+  return "Error";
+};
 </script>
 
 <template>
+  <div
+    v-if="isPending || isConfirming || isPending2 || isConfirming2"
+    class="absolute top-0 right-0 left-0 bottom-0 z-50 bg-background/55 pointer-events-none"
+  >
+    <Loader
+      :text="isConfirming || isConfirming2 ? 'Confirming...' : undefined"
+    />
+  </div>
   <div class="flex flex-col gap-3 lg:flex-col">
     <Badge
       :variant="item.result === BetOptions.NO ? 'outline' : 'success'"
@@ -84,7 +150,7 @@ const betUserLabel = computed(() => {
           :variant="
             userBetInfo?.betOption === BetOptions.NO ? 'destructive' : 'success'
           "
-          >{{ betUserLabel }}</Badge
+          >{{ betOptionLabel(item.userBetInfo.betOption) }}</Badge
         >
         {{
           Number(formatUnits(userBetInfo?.amount ?? BigInt(0), 18)).toFixed(3)
@@ -95,21 +161,44 @@ const betUserLabel = computed(() => {
 
     <template v-if="closedAtCounter.finished">
       <div class="py-4 text-center text-sm font-medium">
-        Result: {{ betResultLabel }}
+        Result: {{ betOptionLabel(item.result) }}
       </div>
 
       <Button
-        v-if="
-          userBetInfo &&
-          BigInt(item.rewardBaseCall) > BigInt(0) &&
-          item.result === userBetInfo.betOption
+        v-if="userHasWinBetRecord"
+        :disabled="userBetInfo?.claimed"
+        @click="
+          claimBet({
+            args: [[item.id]],
+          })
         "
-        :disabled="userBetInfo.claimed"
       >
-        {{ userBetInfo.claimed ? "Claimed" : "Claim rewards" }}
+        {{ userBetInfo?.claimed ? "Claimed" : "Claim rewards" }}
       </Button>
 
-      <Button v-if="!item.rewardBaseCall"> Resolve </Button>
+      <Button
+        v-if="resultError && userHasBetRecord"
+        :disabled="userBetInfo?.claimed"
+        @click="
+          claimBet({
+            args: [[item.id]],
+          })
+        "
+      >
+        {{ userBetInfo?.claimed ? "Refunded" : "Refund" }}
+      </Button>
+
+      <Button
+        v-if="!oracleFinished"
+        :disabled="oracleIsCalled"
+        @click="
+          resolveBet({
+            args: [item.id],
+          })
+        "
+      >
+        {{ oracleIsCalled ? "Waiting for result" : "Resolve" }}
+      </Button>
     </template>
 
     <Badge

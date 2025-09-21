@@ -5,11 +5,11 @@ import { blockExplorer } from "~/config/chain";
 import { abi, address } from "~/config/ai-prediction-v1";
 
 
-export interface UsePlaceBetOptions {
+export interface UseClaimMasterFeesOptions {
     onSuccess?: (data?: Hash) => void
 }
 
-export const useClaimMasterFees = (options: UsePlaceBetOptions) => {
+export const useClaimMasterFees = (options: UseClaimMasterFeesOptions) => {
 
     const txHash = ref<Hash | undefined>();
 
@@ -32,10 +32,10 @@ export const useClaimMasterFees = (options: UsePlaceBetOptions) => {
     });
 
 
-    type claimMasterFeesProps = WriteContractParameters<typeof abi, 'claimMasterBalance'>;
+    type TriggerProps = WriteContractParameters<typeof abi, 'claimMasterBalance'>;
 
-    const _claimMasterFees = (args: Omit<claimMasterFeesProps, 'address' | 'abi' | 'functionName' | 'chain' | 'account'>) => writeContract({
-        ...args as claimMasterFeesProps,
+    const trigger = (args: Omit<TriggerProps, 'address' | 'abi' | 'functionName' | 'chain' | 'account'>) => writeContract({
+        ...args as TriggerProps,
         address: address,
         abi: abi,
         functionName: "claimMasterBalance",
@@ -60,7 +60,8 @@ export const useClaimMasterFees = (options: UsePlaceBetOptions) => {
     })
 
     return {
-        claimMasterFees: _claimMasterFees,
-        isPending: computed(() => isPending.value || isLoading.value)
+        trigger,
+        isPending: isPending,
+        isConfirming: isLoading
     }
 }

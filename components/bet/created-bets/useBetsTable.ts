@@ -21,10 +21,10 @@ export const useBetsTable = ({ data }: UseBetsTableProps) => {
 
     const columns: ColumnDef<RoundData>[] = [
         {
-            header: "ID",
+            header: "#ID",
             accessorKey: "id",
             cell: ({ row }) =>
-                h("div", { class: "capitalize" }, row.getValue("id")?.toString()),
+                h("div", { class: "text-center " }, row.getValue("id")?.toString()),
         },
         {
             header: "Prompt",
@@ -38,7 +38,7 @@ export const useBetsTable = ({ data }: UseBetsTableProps) => {
             },
         },
         {
-            header: "Lock Time",
+            header: "Lock Time (Bets stopped)",
             accessorKey: "lockTimestamp",
             cell: ({ row }) => {
                 let txt = "Err";
@@ -55,7 +55,7 @@ export const useBetsTable = ({ data }: UseBetsTableProps) => {
             },
         },
         {
-            header: "Close Time",
+            header: "Close Time (Resolve)",
             accessorKey: "closeTimestamp",
             cell: ({ row }) => {
                 let txt = "Err";
@@ -72,12 +72,12 @@ export const useBetsTable = ({ data }: UseBetsTableProps) => {
             },
         },
         {
-            header: `Resolved / Calculated`,
+            header: `Resolved (Calculated)`,
             accessorKey: "rewardBaseCall",
 
             cell: ({ row }) => {
                 const tmp = row.getValue<bigint>("rewardBaseCall") === BigInt(0);
-                return h("div", { class: "capitalize text-center" }, tmp ? "N" : "Y");
+                return h("div", { class: "capitalize text-center" }, tmp ? "NO" : "YES");
             },
         },
         {

@@ -35,7 +35,7 @@ const kk = computed(() => [
         v-if="isLoading"
         class="absolute w-full h-full border backdrop-blur-[3px] backdrop-brightness-95"
       >
-        <Loader text="Loading..., it might take a while." />
+        <Loader text="Confirming..." />
 
         <Alert class="absolute top-4 left-4 w-10/12" variant="default">
           <AlertCircle class="w-4 h-4" />

@@ -30,13 +30,13 @@ const { handleSubmit, resetForm, controlledValues } = useForm<FormSchema>({
   initialValues: {
     prompt: "Will Nasa land humans on Mars by 2030?",
     lockDate: fromDate(new Date(), getLocalTimeZone()),
-    lockTime: "09:00",
+    lockTime: "22:56",
     closeDate: fromDate(new Date(), getLocalTimeZone()),
-    closeTime: "17:00",
+    closeTime: "22:57",
   },
 });
 
-const { writeContract, isPending } = useCreateBet();
+const { trigger: writeContract, isPending } = useCreateBet();
 
 const onSubmit = handleSubmit((values) => {
   writeContract({

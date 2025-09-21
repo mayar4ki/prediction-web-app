@@ -5,11 +5,11 @@ import { blockExplorer } from "~/config/chain";
 import { abi, address } from "~/config/ai-prediction-v1";
 
 
-export interface UsePlaceBetOptions {
+export interface UseBetResolverOption {
     onSuccess?: (data?: Hash) => void
 }
 
-export const usePlaceBet = (options: UsePlaceBetOptions) => {
+export const useBetResolver = (options: UseBetResolverOption) => {
 
     const txHash = ref<Hash | undefined>();
 
@@ -26,39 +26,27 @@ export const usePlaceBet = (options: UsePlaceBetOptions) => {
                         }
                     }, data)
                 });
-
                 txHash.value = data;
             }
         },
     });
 
 
-    type _writeContractPropsBetYes = WriteContractParameters<typeof abi, 'betYes'>;
+    type TriggerProps = WriteContractParameters<typeof abi, 'endRound'>;
 
-    const _writeContractBetYes = (args: Omit<_writeContractPropsBetYes, 'address' | 'abi' | 'functionName' | 'chain' | 'account'>) => writeContract({
-        ...args as _writeContractPropsBetYes,
+    const trigger = (args: Omit<TriggerProps, 'address' | 'abi' | 'functionName' | 'chain' | 'account'>) => writeContract({
+        ...args as TriggerProps,
         address: address,
         abi: abi,
-        functionName: "betYes",
+        functionName: "endRound",
     })
 
-
-    type _writeContractPropsBetNo = WriteContractParameters<typeof abi, 'betNo'>;
-
-    const _writeContractBetNo = (args: Omit<_writeContractPropsBetNo, 'address' | 'abi' | 'functionName' | 'chain' | 'account'>) => writeContract({
-        ...args as _writeContractPropsBetNo,
-        address: address,
-        abi: abi,
-        functionName: "betNo",
-    })
 
     const { isLoading, data: t } = useWaitForTransactionReceipt({
         hash: computed(() => data.value),
         pollingInterval: 10000,
-
         query: {
-            enabled: !!computed(() => data.value),
-
+            enabled: !!computed(() => data.value)
         },
     });
 
@@ -70,8 +58,7 @@ export const usePlaceBet = (options: UsePlaceBetOptions) => {
     })
 
     return {
-        writeContractBetYes: _writeContractBetYes,
-        writeContractBetNo: _writeContractBetNo,
+        trigger,
         isPending: isPending,
         isConfirming: isLoading
     }

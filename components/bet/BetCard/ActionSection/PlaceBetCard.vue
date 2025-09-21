@@ -47,15 +47,16 @@ const result = useBetIndex({
 });
 const queryClient = useQueryClient();
 
-const { isPending, writeContractBetNo, writeContractBetYes } = usePlaceBet({
-  onSuccess() {
-    activeActionCard.value = "main";
-    resetForm();
-    queryClient.invalidateQueries({
-      queryKey: result.queryKey,
-    });
-  },
-});
+const { isPending, writeContractBetNo, writeContractBetYes, isConfirming } =
+  usePlaceBet({
+    onSuccess() {
+      activeActionCard.value = "main";
+      resetForm();
+      queryClient.invalidateQueries({
+        queryKey: result.queryKey,
+      });
+    },
+  });
 
 const formBadge = computed(() => {
   switch (activeActionCard.value) {
@@ -115,10 +116,10 @@ const onSubmit = handleSubmit((values) => {
 <template>
   <Card class="relative border-0 py-[3.5px] px-2 gap-3">
     <div
-      v-if="isPending"
+      v-if="isPending || isConfirming"
       class="absolute top-0 right-0 left-0 bottom-0 z-50 bg-background/75 pointer-events-none"
     >
-      <Loader />
+      <Loader :text="isConfirming ? 'Confirming...' : undefined" />
     </div>
     <CardHeader class="px-0 border-0">
       <CardTitle class="flex justify-between items-center">

@@ -17,7 +17,9 @@ const currentPage = ref(BigInt(1));
 
 const cursor = computed(() => {
   if (roundIdCounter.value) {
-    const pagesCount = (roundIdCounter.value + BigInt(1)) / itemPerPage.value;
+    const pagesCount = BigInt(
+      Math.ceil((Number(roundIdCounter.value) + 1) / Number(itemPerPage.value))
+    );
 
     const flip = (pagesCount - currentPage.value) * itemPerPage.value;
     return flip;
