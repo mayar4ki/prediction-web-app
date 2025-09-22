@@ -32,8 +32,8 @@ const cursor = computed(() => {
 
 const { address } = useAccount();
 
-const { mappedData, isFetching } = useBetIndex({
-  args: [address, cursor, itemPerPage],
+const { mappedData, isLoading } = useBetIndex({
+  args: [address.value!, cursor, itemPerPage],
   query: {
     enabled: computed(() => !!roundIdCounter.value && !!address.value),
   },
@@ -53,7 +53,7 @@ const { mappedData, isFetching } = useBetIndex({
         </template>
 
         <div
-          v-if="isFetching"
+          v-if="isLoading"
           class="flex flex-col justify-center items-center gap-6 mb-28"
         >
           <div class="h-[30vh]">

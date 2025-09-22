@@ -30,9 +30,9 @@ const { handleSubmit, resetForm, controlledValues } = useForm<FormSchema>({
   initialValues: {
     prompt: "Will Nasa land humans on Mars by 2030?",
     lockDate: fromDate(new Date(), getLocalTimeZone()),
-    lockTime: "22:56",
+    lockTime: "03:14",
     closeDate: fromDate(new Date(), getLocalTimeZone()),
-    closeTime: "22:57",
+    closeTime: "03:15",
   },
 });
 

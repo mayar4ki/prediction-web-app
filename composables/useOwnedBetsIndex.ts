@@ -1,18 +1,28 @@
 import { useReadContract, type UseReadContractParameters } from "@wagmi/vue";
+import type { UnwrapRef } from "vue";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 
 
 
+export type _UseOwnedBetsIndexOptions = UseReadContractParameters<typeof aiPredictionV1.abi, 'getMasterRounds'>;
 
-export type UseOwnedBetsIndexOptions = UseReadContractParameters<typeof aiPredictionV1.abi, 'getMasterRounds'>;
+type NoRefUseOwnedBetsIndexOptions = UnwrapRef<_UseOwnedBetsIndexOptions>
 
-export const useOwnedBetsIndex = (options?: Omit<UseOwnedBetsIndexOptions, ''>) => {
+export type UseOwnedBetsIndexOptions = Omit<NoRefUseOwnedBetsIndexOptions, 'address' | 'abi' | 'functionName'>;
+
+
+
+export const useOwnedBetsIndex = (options?: UseOwnedBetsIndexOptions) => {
 
     const result = useReadContract({
         abi: aiPredictionV1.abi,
         address: aiPredictionV1.address,
         functionName: "getMasterRounds",
-        ...options
+        ...options,
+        query: {
+            refetchInterval: 15000,
+            ...options?.query
+        },
     });
 
 

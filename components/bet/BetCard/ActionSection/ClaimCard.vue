@@ -135,12 +135,11 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
       {{ payout.yes }}x Payout
     </Badge>
 
-    <div
-      v-if="!closedAtCounter.finished"
-      class="py-12 text-center text-sm font-medium"
-    >
-      Resolved in : {{ closedAtCounter.days }}D, {{ closedAtCounter.hours }}H,
-      {{ closedAtCounter.minutes }}m, {{ closedAtCounter.seconds }}s
+    <div class="py-12 text-center text-sm font-medium">
+      <span v-if="!closedAtCounter.finished">
+        Resolved in : {{ closedAtCounter.days }}D, {{ closedAtCounter.hours }}H,
+        {{ closedAtCounter.minutes }}m, {{ closedAtCounter.seconds }}s
+      </span>
 
       <br />
 
@@ -155,7 +154,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
         {{
           Number(formatUnits(userBetInfo?.amount ?? BigInt(0), 18)).toFixed(3)
         }}
-        ETH
+        {{ nativeSymbol }}
       </span>
     </div>
 
