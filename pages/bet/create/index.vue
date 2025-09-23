@@ -25,14 +25,24 @@ import FeesFormItem from "~/components/bet/create/FeesFormItem.vue";
 import { BackdropLoader } from "~/components/ui/backdrop-loader";
 import { parseEther } from "viem";
 
+const pp = (added: number) => {
+  const now = new Date(new Date().getTime() + added);
+
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const hhmm = `${hours}:${minutes}`;
+  console.log(hhmm); // e.g., "03:29"
+
+  return hhmm;
+};
 const { handleSubmit, resetForm, controlledValues } = useForm<FormSchema>({
   validationSchema: toTypedSchema(formSchema),
   initialValues: {
     prompt: "Will Nasa land humans on Mars by 2030?",
     lockDate: fromDate(new Date(), getLocalTimeZone()),
-    lockTime: "03:14",
+    lockTime: pp(1000 * 60 * 2),
     closeDate: fromDate(new Date(), getLocalTimeZone()),
-    closeTime: "03:15",
+    closeTime: pp(1000 * 60 * 3),
   },
 });
 

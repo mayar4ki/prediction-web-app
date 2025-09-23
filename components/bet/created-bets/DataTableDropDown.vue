@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { RoundData } from "~/types/common";
+import { EmptyBytes, type RoundData } from "~/types/common";
 import type { CellContext } from "@tanstack/vue-table";
 import { blockExplorer } from "~/config/chain";
 import * as aiPredictionV1 from "~/config/ai-prediction-v1";
@@ -72,7 +72,10 @@ const {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          :disabled="Number(item.closeTimestamp) * 1000 > new Date().getTime()"
+          :disabled="
+            Number(item.closeTimestamp) * 1000 > new Date().getTime() ||
+            item.oracleRequestId !== EmptyBytes.bytes32
+          "
           @click="
             resolveBet({
               args: [item.id],

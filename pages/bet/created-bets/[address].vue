@@ -67,6 +67,12 @@ const { table, columns } = useBetsTable({
           >{{ _address }}
         </a>
       </div>
+
+      <NuxtLink to="/bet/create">
+        <Button>
+          Create New Bet <Icon name="radix-icons:plus" :size="18" />
+        </Button>
+      </NuxtLink>
     </div>
 
     <div class="rounded-md border">

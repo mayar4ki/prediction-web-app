@@ -29,6 +29,8 @@ const priceFeed = useReadContract({
   functionName: "latestRoundData",
 });
 
+const { convert } = useEthToUsd();
+
 const closedAtCounter = useDateCountDown({
   targetDate: new Date(Number(item.value.closeTimestamp) * 1000),
 });
@@ -152,9 +154,10 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
           >{{ betOptionLabel(item.userBetInfo.betOption) }}</Badge
         >
         {{
-          Number(formatUnits(userBetInfo?.amount ?? BigInt(0), 18)).toFixed(3)
+          formatCurrency(
+            convert(Number(formatUnits(userBetInfo?.amount ?? BigInt(0), 18)))
+          )
         }}
-        {{ nativeSymbol }}
       </span>
     </div>
 

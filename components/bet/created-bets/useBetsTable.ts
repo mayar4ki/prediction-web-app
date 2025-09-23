@@ -95,7 +95,7 @@ export const useBetsTable = ({ data }: UseBetsTableProps) => {
         },
 
         {
-            header: `Creator Balance (Wei / USD)`,
+            header: `Creator Unclaimed Fees (Wei / USD)`,
             accessorKey: "masterBalance",
             cell: ({ row }) => {
 
