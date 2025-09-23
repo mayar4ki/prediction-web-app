@@ -142,7 +142,7 @@ const onSubmit = handleSubmit((values) => {
         v-if="disabled"
         class="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center font-semibold z-50 bg-background/60"
       >
-        You have Bet already!
+        You have Bet!
       </div>
       <form @submit="onSubmit">
         <FormField v-slot="{ componentField }" name="amount">

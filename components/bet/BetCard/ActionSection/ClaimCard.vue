@@ -84,7 +84,9 @@ const oracleFinished = computed(() => {
 });
 
 const resultError = computed(
-  () => pad(item.value.err, { size: 32 }) !== EmptyBytes.bytes32
+  () =>
+    pad(item.value.err, { size: 32 }) !== EmptyBytes.bytes32 ||
+    item.value.result === BetOptions.UNKNOWN
 );
 
 const userHasBetRecord = computed(
@@ -108,6 +110,10 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
     return "No";
   }
 
+  if (op === BetOptions.UNKNOWN) {
+    return "AI Couldn't Decide";
+  }
+
   if (!oracleFinished.value) {
     return "Not resolved yet";
   }
@@ -126,14 +132,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
     />
   </div>
   <div class="flex flex-col gap-3 lg:flex-col">
-    <Badge
-      :variant="item.result === BetOptions.NO ? 'outline' : 'success'"
-      :class="
-        cn('text-sm font-semibold', {
-          'opacity-50': withinLockTime,
-        })
-      "
-    >
+    <Badge variant="success" class="text-sm font-semibold">
       {{ payout.yes }}x Payout
     </Badge>
 
@@ -203,14 +202,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
       </Button>
     </template>
 
-    <Badge
-      :variant="item.result === BetOptions.YES ? 'outline' : 'destructive'"
-      :class="
-        cn('text-sm font-semibold', {
-          'opacity-50': withinLockTime,
-        })
-      "
-    >
+    <Badge variant="destructive" class="text-sm font-semibold">
       {{ payout.no }}x Payout
     </Badge>
 
