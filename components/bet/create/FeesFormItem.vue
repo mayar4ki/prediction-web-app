@@ -4,7 +4,6 @@ import * as aiPredictionV1 from "~/config/ai-prediction-v1";
 import * as ethUsdPriceFeed from "~/config/eth-usd-price-feed";
 import { nativeSymbol } from "~/config/chain";
 import { formatUnits } from "viem";
-import { callBackGas } from "~/config/ai-prediction-v1/constants";
 
 import { Input } from "~/components/ui/input";
 import {
@@ -19,7 +18,6 @@ const result = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
   functionName: "estimateFee",
-  args: [callBackGas],
 });
 
 const result2 = useReadContract({
