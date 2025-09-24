@@ -11,6 +11,7 @@ import {
 } from "~/components/ui/pagination";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Separator } from "~/components/ui/separator";
+import BetCard from "~/components/bet/BetCard/BetCard.vue";
 
 const { data: roundIdCounter } = useReadContract({
   abi: aiPredictionV1.abi,
@@ -54,7 +55,7 @@ const { mappedData, isLoading } = useBetIndex({
       </div>
       <div class="mt-20">
         <template v-for="(item, index) in mappedData" :key="item.id">
-          <BetBetCard :item="item" />
+          <BetCard :item="item" />
           <Separator v-if="index < mappedData.length - 1" class="my-12" />
         </template>
 
