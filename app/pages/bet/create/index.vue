@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
+import { Button } from "~/components/ui/button";
 import {
   FormControl,
   FormDescription,
@@ -7,13 +7,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+} from "~/components/ui/form";
+import { Textarea } from "~/components/ui/textarea";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
-import { DatePicker } from "~/components/ui/date-picker";
-import { Input } from "~/components/ui/input";
-import { Alert } from "~/components/ui/alert";
+import { DatePicker } from "@/components/ui/date-picker";
+import { Input } from "@/components/ui/input";
+import { Alert } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-vue-next";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
@@ -21,9 +21,20 @@ import {
   formSchema,
   type FormSchema,
 } from "~/_validation/createBetForm";
-import FeesFormItem from "~/components/bet/create/FeesFormItem.vue";
-import { BackdropLoader } from "~/components/ui/backdrop-loader";
+import FeesFormItem from "@/components/bet/create/FeesFormItem.vue";
+import { BackdropLoader } from "@/components/ui/backdrop-loader";
 import { parseEther } from "viem";
+
+import Card from "~/components/ui/card/Card.vue";
+import {
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+import AlertTitle from "@/components/ui/alert/AlertTitle.vue";
+import AlertDescription from "@/components/ui/alert/AlertDescription.vue";
 
 const pp = (added: number) => {
   const now = new Date(new Date().getTime() + added);
