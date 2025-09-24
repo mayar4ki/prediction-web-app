@@ -3,6 +3,10 @@ import { useScrollLock } from "@vueuse/core";
 import Loader from "./Loader.vue";
 
 useScrollLock(document, true);
+
+const props = defineProps<{
+  text?: string;
+}>();
 </script>
 
 <template>
@@ -10,7 +14,7 @@ useScrollLock(document, true);
     <div
       class="fixed pointer-events-none z-[9999] top-0 bottom-0 right-0 left-0 backdrop-blur-[3px] backdrop-brightness-40 overflow-hidden border flex-1"
     >
-      <Loader />
+      <Loader v-bind="props" />
     </div>
   </Teleport>
 </template>

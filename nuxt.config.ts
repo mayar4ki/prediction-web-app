@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    'nuxt-file-storage'
   ],
   shadcn: {
     /**
@@ -20,7 +21,7 @@ export default defineNuxtConfig({
      * Directory that the component lives in.
      * @default "./components/ui"
      */
-    componentDir: '~/components/ui'
+    componentDir: '@/components/ui'
   },
   routeRules: {
     // pages pre-rendered at build time
@@ -31,5 +32,8 @@ export default defineNuxtConfig({
     //  Client-side rendering only (no SSR)
     '/dashboard/**': { ssr: false },
     '/profile/**': { ssr: false }
+  },
+  fileStorage: {
+    mount: process.env.FILE_STORAGE_MOUNT
   }
 })

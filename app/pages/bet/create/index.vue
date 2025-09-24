@@ -35,6 +35,8 @@ import {
 } from "~/components/ui/card";
 import AlertTitle from "@/components/ui/alert/AlertTitle.vue";
 import AlertDescription from "@/components/ui/alert/AlertDescription.vue";
+import { useAccount, useSignMessage } from "@wagmi/vue";
+import { useMutation } from "@tanstack/vue-query";
 
 const pp = (added: number) => {
   const now = new Date(new Date().getTime() + added);
@@ -57,7 +59,15 @@ const { handleSubmit, resetForm, controlledValues } = useForm<FormSchema>({
   },
 });
 
-const { trigger: writeContract, isPending } = useCreateBet();
+const {
+  trigger: writeContract,
+  isPending,
+  isConfirming,
+  isWaitingEvent,
+  isPendingPhoto,
+  isPendingSignature,
+  filesStorage: { clearFiles, files, handleFileInput },
+} = useCreateBet();
 
 const onSubmit = handleSubmit((values) => {
   writeContract({
@@ -65,13 +75,46 @@ const onSubmit = handleSubmit((values) => {
     value: parseEther(values.fees),
   });
 });
+
+const loadingText = computed(() => {
+  if (isPending.value) {
+    return undefined;
+  }
+
+  if (isConfirming.value) {
+    return "Confirming...";
+  }
+
+  if (isPendingSignature.value) {
+    return "Waiting Photo Signature...";
+  }
+
+  if (isPendingPhoto.value) {
+    return "Uploading Photo...";
+  }
+
+  if (isWaitingEvent.value) {
+    return "Waiting event...";
+  }
+
+  return undefined;
+});
 </script>
 
 <template>
-  <div class="contain-wrapper px-6 min-h-[68vh]">
-    <ClientOnly v-if="isPending">
-      <BackdropLoader />
+  <div class="contain-wrapper px-6 min-h-[68vh] relative">
+    <ClientOnly
+      v-if="
+        isPending ||
+        isConfirming ||
+        isWaitingEvent ||
+        isPendingPhoto ||
+        isPendingSignature
+      "
+    >
+      <BackdropLoader :text="loadingText" />
     </ClientOnly>
+
     <Card class="max-w-3xl mx-auto my-10">
       <CardHeader>
         <CardTitle>Create Bet</CardTitle>
@@ -189,6 +232,32 @@ const onSubmit = handleSubmit((values) => {
               v-bind="componentField"
             />
           </FormField>
+
+          <div class="flex flex-col gap-2">
+            <Label for="picture"> Photo </Label>
+            <NuxtImg
+              :src="files?.[0]?.content?.toString() ?? '/img/blockchain.png'"
+              alt="no photo"
+              class="aspect-29/35 h-full w-60 border rounded-2xl object-cover self-center sm:self-auto"
+            />
+
+            <div class="flex gap-2">
+              <Input
+                id="picture"
+                type="file"
+                @input="handleFileInput"
+                accept=".jpg,.jpeg,.png,.webp"
+              />
+              <Button
+                variant="destructive"
+                v-if="files?.[0]"
+                type="button"
+                @click="clearFiles"
+              >
+                Remove Photo
+              </Button>
+            </div>
+          </div>
         </form>
 
         <Alert class="mt-4" variant="destructive">

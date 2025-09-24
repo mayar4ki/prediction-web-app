@@ -30,8 +30,6 @@ const { item, activeActionCard } = useBetCard()!;
 const { address } = useAccount();
 const { data } = useBalance({
   address: address,
-  scopeKey: "myself",
-  query: { gcTime: 10000 },
 });
 
 const priceFeed = useReadContract({

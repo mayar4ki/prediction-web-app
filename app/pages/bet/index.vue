@@ -17,6 +17,9 @@ const { data: roundIdCounter } = useReadContract({
   abi: aiPredictionV1.abi,
   address: aiPredictionV1.address,
   functionName: "roundIdCounter",
+  query: {
+    refetchInterval: 15000,
+  },
 });
 
 const itemPerPage = ref(BigInt(4));

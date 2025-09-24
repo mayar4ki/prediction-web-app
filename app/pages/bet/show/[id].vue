@@ -10,8 +10,8 @@ const router = useRoute();
 
 const { address } = useAccount();
 
-const { isFetching, mappedData } = useBetIndex({
-  args: [address, BigInt(router.params.id as string), BigInt(1)],
+const { mappedData, isLoading } = useBetIndex({
+  args: [address.value!, BigInt(router.params.id as string), BigInt(1)],
   query: {
     enabled: computed(() => !!router.params.id),
   },
@@ -38,7 +38,7 @@ const { isFetching, mappedData } = useBetIndex({
         </template>
 
         <div
-          v-if="isFetching"
+          v-if="isLoading"
           class="flex flex-col justify-center items-center gap-6 mb-28"
         >
           <div class="h-[30vh]">
