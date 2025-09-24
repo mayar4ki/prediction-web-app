@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { BetOptions, EmptyBytes, type UserBet } from "~/types/common";
 import { useBetCard } from "../store";
-import { cn } from "~/lib/utils";
 import { calculatePayout, calculatePrizePool } from "../helpers";
 import { nativeSymbol } from "~/config/chain";
 import { Button } from "~/components/ui/button";
@@ -19,9 +18,6 @@ const { userBetInfo } = defineProps<{
 
 const { item } = useBetCard()!;
 const payout = computed(() => calculatePayout(item.value));
-const withinLockTime = computed(
-  () => Number(item.value.lockTimestamp) * 1000 < new Date().getTime()
-);
 
 const priceFeed = useReadContract({
   abi: ethUsdPriceFeed.abi,
