@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { getLocalTimeZone, type DateValue } from "@internationalized/date";
+import type { _Tag } from "~/_types/common";
 
 export const formSchema = yup.object({
     prompt: yup.string().max(240).min(10).required(),
@@ -13,7 +14,8 @@ export const formSchema = yup.object({
         .required()
         .transform((item) => (Object.keys(item ?? {}).length === 0 ? null : item)),
     closeTime: yup.string().required(),
-    fees: yup.string().required()
+    fees: yup.string().required(),
+    tags: yup.array(yup.mixed<_Tag>().required())
 });
 
 

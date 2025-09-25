@@ -5,10 +5,50 @@ import { createPublicClient, http } from 'viem'
 import { sepolia } from 'viem/chains'
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 import sharp from 'sharp'
-
-
+import prisma from "~~/server/lib/prisma";
 
 const getPrefix = (closeAt: number) => '/userFiles/' + closeAt.toString();
+
+
+
+const storePhoto = async (body: FormSchema, closeAt: number) => {
+
+
+    if (!body?.files?.[0]) {
+        return '';
+    }
+
+    const file = body.files[0];
+
+
+
+    const matches = file.content.match(/^data:(image\/\w+);base64,(.+)$/);
+
+    const mimeType = matches![1]!;
+    const base64Data = matches![2]!;
+
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    const webpBuffer = await sharp(buffer).png().toBuffer();
+
+    const fileLocation = getPrefix(closeAt);
+
+    const _name = await storeFileLocally(
+        {
+            type: 'image/png',
+            content: `data:image/png;base64,${webpBuffer.toString('base64')}`,
+            name: `${body.itemId}.png`,
+            lastModified: file.lastModified,
+            size: ''
+        },         // the file object
+        body.itemId,            // you can add a name for the file or length of Unique ID that will be automatically generated!
+        fileLocation  // the folder the file will be stored in
+    )
+
+
+    return `${fileLocation}/${_name}`;
+
+}
 
 export default defineEventHandler(async (event) => {
 
@@ -29,7 +69,7 @@ export default defineEventHandler(async (event) => {
     // ************  check message ************
     const signerAddress = await recoverMessageAddress({
         signature: body.signature,
-        message: body.itemId
+        message: body.itemId + body.tags?.join(', ')
     });
 
     const publicClient = createPublicClient({
@@ -52,30 +92,18 @@ export default defineEventHandler(async (event) => {
 
     // ^^^^^^^^^^^^^^  check message END ^^^^^^^^^^^^^^
 
-    const file = body.files[0];
+    const photoUrl = await storePhoto(body, Number(result[5]))
 
-    const matches = file.content.match(/^data:(image\/\w+);base64,(.+)$/);
+    const round = await prisma.round.create({
+        data: {
+            roundId: BigInt(body.itemId),
+            hasPhoto: !!photoUrl,
+            tags: {
+                connect: (body.tags ?? [])?.map(el => ({ id: el })),
+            }
+        }
+    })
 
-    const mimeType = matches![1]!;
-    const base64Data = matches![2]!;
 
-    const buffer = Buffer.from(base64Data, 'base64');
-
-    const webpBuffer = await sharp(buffer).png().toBuffer();
-
-    const fileLocation = getPrefix(Number(result[5]));
-
-    const _name = await storeFileLocally(
-        {
-            type: 'image/png',
-            content: `data:image/png;base64,${webpBuffer.toString('base64')}`,
-            name: `${body.itemId}.png`,
-            lastModified: file.lastModified,
-            size: ''
-        },         // the file object
-        body.itemId,            // you can add a name for the file or length of Unique ID that will be automatically generated!
-        fileLocation  // the folder the file will be stored in
-    )
-
-    return { link: `${fileLocation}/${_name}`, id: body.itemId };
+    return { link: photoUrl, round };
 })

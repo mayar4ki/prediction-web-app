@@ -22,4 +22,12 @@ logs
 .env
 .env.*
 !.env.example
+
+# user files
 public/userFiles
+
+
+# db files
+server/prisma/db
+server/prisma/migrations
+/app/generated/prisma

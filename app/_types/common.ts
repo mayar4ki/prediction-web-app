@@ -39,3 +39,8 @@ export enum EmptyBytes {
   'bytes32' = '0x0000000000000000000000000000000000000000000000000000000000000000'
 }
 
+
+export interface _Tag {
+  id:number;
+  name:string;
+}

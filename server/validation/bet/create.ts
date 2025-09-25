@@ -7,6 +7,7 @@ export const formSchema = yup.object({
     files: yup.array().of(yup.mixed<ServerFile>().required()).required().length(1),
     signature: yup.mixed<Hex | ByteArray | Signature>().required(),
     itemId: yup.string().required(),
+    tags: yup.array().of(yup.number().required())
 });
 
 

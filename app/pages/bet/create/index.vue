@@ -35,7 +35,10 @@ import {
 } from "~/components/ui/card";
 import AlertTitle from "@/components/ui/alert/AlertTitle.vue";
 import AlertDescription from "@/components/ui/alert/AlertDescription.vue";
-import { useAccount, useSignMessage } from "@wagmi/vue";
+import BetTagsInput from "~/components/bet/create/BetTagsInput.vue";
+import { useAccount, useSignMessage, useWatchContractEvent } from "@wagmi/vue";
+import { abi, address } from "~/_config/ai-prediction-v1";
+import { toast } from "vue-sonner";
 import { useMutation } from "@tanstack/vue-query";
 
 const pp = (added: number) => {
@@ -56,6 +59,57 @@ const { handleSubmit, resetForm, controlledValues } = useForm<FormSchema>({
     lockTime: pp(1000 * 60 * 2),
     closeDate: fromDate(new Date(), getLocalTimeZone()),
     closeTime: pp(1000 * 60 * 3),
+    tags: [],
+  },
+});
+
+const { handleFileInput, files, clearFiles } = useFileStorage();
+
+const tags = (controlledValues.value.tags ?? [])?.map((el) => el.id);
+
+const { address: myAddress } = useAccount();
+const { isPending: isPendingSignature, signMessageAsync } = useSignMessage();
+
+const enableUseWatchContractEvent = ref<boolean>(false);
+
+const { mutateAsync, isPending: isPendingMeta } = useMutation({
+  mutationFn: (body: {
+    signature: `0x${string}`;
+    files: any;
+    itemId: string;
+    tags: number[];
+  }) => $fetch<unknown>("/api/bet/create", { method: "POST", body }),
+});
+
+useWatchContractEvent({
+  address: address,
+  abi: abi,
+  eventName: "CreateNewRound",
+  args: {
+    master: myAddress,
+  },
+  enabled: enableUseWatchContractEvent,
+  onLogs: async (logs) => {
+    enableUseWatchContractEvent.value = false;
+    toast.success("Event has been received.");
+    const roundId = logs[0]?.args.roundId;
+
+    if (roundId) {
+      const signature = await signMessageAsync({
+        message: roundId.toString(),
+      });
+
+      await mutateAsync({
+        files: files.value,
+        signature: signature,
+        itemId: roundId.toString(),
+        tags: tags,
+      });
+
+      navigateTo(`/bet/show/${roundId.toString()}`);
+    } else {
+      navigateTo(`/bet/created-bets/${address}`);
+    }
   },
 });
 
@@ -63,11 +117,11 @@ const {
   trigger: writeContract,
   isPending,
   isConfirming,
-  isWaitingEvent,
-  isPendingPhoto,
-  isPendingSignature,
-  filesStorage: { clearFiles, files, handleFileInput },
-} = useCreateBet();
+} = useCreateBet({
+  onSuccess() {
+    enableUseWatchContractEvent.value = true;
+  },
+});
 
 const onSubmit = handleSubmit((values) => {
   writeContract({
@@ -86,14 +140,14 @@ const loadingText = computed(() => {
   }
 
   if (isPendingSignature.value) {
-    return "Waiting Photo Signature...";
+    return "Waiting Meta Signature...";
   }
 
-  if (isPendingPhoto.value) {
-    return "Uploading Photo...";
+  if (isPendingMeta.value) {
+    return "Uploading Meta...";
   }
 
-  if (isWaitingEvent.value) {
+  if (enableUseWatchContractEvent.value) {
     return "Waiting event...";
   }
 
@@ -107,8 +161,8 @@ const loadingText = computed(() => {
       v-if="
         isPending ||
         isConfirming ||
-        isWaitingEvent ||
-        isPendingPhoto ||
+        enableUseWatchContractEvent ||
+        isPendingMeta ||
         isPendingSignature
       "
     >
@@ -226,6 +280,10 @@ const loadingText = computed(() => {
             </div>
           </div>
 
+          <FormField v-slot="{ componentField }" name="tags">
+            <BetTagsInput v-bind="componentField" />
+          </FormField>
+
           <FormField v-slot="{ componentField }" name="fees">
             <FeesFormItem
               placeholder="Loading Fees..."
@@ -270,14 +328,12 @@ const loadingText = computed(() => {
         </Alert>
       </CardContent>
 
-      <CardFooter class="flex justify-between px-6">
-        <Button variant="outline" @click="resetForm"> Reset </Button>
-
+      <CardFooter class="flex justify-end px-6">
         <BetCreateConfirmationDialog
           :controlled-values="controlledValues"
           @submit="onSubmit"
         >
-          <Button>Create</Button>
+          <Button class="w-full">Create New Bet</Button>
         </BetCreateConfirmationDialog>
       </CardFooter>
     </Card>
