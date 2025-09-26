@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery<Params>(event);
 
   if (query?.take && query.take > 10) {
-    return createError({ statusCode: 400, statusMessage: "нет" });
+    throw createError({ statusCode: 400, statusMessage: "нет" });
   }
 
   const count = await prisma.round.count({
@@ -49,5 +49,5 @@ export default defineEventHandler(async (event) => {
       : undefined,
   });
 
-  return { rounds, totalCount: count };
+  return { rounds: rounds.map((el) => el), totalCount: count };
 });
