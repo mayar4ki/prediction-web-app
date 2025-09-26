@@ -37,7 +37,7 @@ const getName = () => {
     <DropdownMenuTrigger as-child :disabled="isLoading">
       <Button variant="default" class="px-3">
         <span
-          class="hidden md:block max-w-28 md:max-w-36 text-ellipsis overflow-hidden whitespace-nowrap"
+          class="hidden md:block max-w-28 md:max-w-30 text-ellipsis overflow-hidden whitespace-nowrap"
           >{{ getName() }}</span
         >
         <Icon name="mdi:wallet-bifold-outline" class="scale-140" />

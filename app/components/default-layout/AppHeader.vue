@@ -12,9 +12,7 @@ import ModeSwitch from "../common/ModeSwitch.vue";
 import ChainsMenu from "../common/ChainsMenu.vue";
 
 const paths: Array<{ name: string; to: RouteLocationRaw }> = [
-  { name: "Home", to: "/" },
-
-  { name: "Latest", to: { path: "/bet" } },
+  { name: "Latest", to: { path: "/bet/search-meta" } },
 
   {
     name: "Politic",
@@ -65,7 +63,7 @@ const needMore = computed(() => paths.length > 4);
         <NavigationMenu>
           <NavigationMenuList class="gap-0">
             <NavigationMenuItem
-              v-for="item in paths.slice(0, needMore ? 3 : 4)"
+              v-for="item in paths.slice(0, 3)"
               :key="item.name"
             >
               <NuxtLink
@@ -77,7 +75,21 @@ const needMore = computed(() => paths.length > 4);
               </NuxtLink>
             </NavigationMenuItem>
 
-            <NavigationMenuItem v-if="needMore">
+            <NavigationMenuItem
+              v-for="item in paths.slice(3)"
+              :key="item.name"
+              class="hidden lg:block"
+            >
+              <NuxtLink
+                :as="NavigationMenuLink"
+                :class="navigationMenuTriggerStyle()"
+                :to="item.to"
+              >
+                {{ item.name }}
+              </NuxtLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem v-if="needMore" class="lg:hidden">
               <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                   <div

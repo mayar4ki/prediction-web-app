@@ -5,7 +5,10 @@ export default defineEventHandler(async (event) => {
 
   const round = await prisma.round.findFirst({
     where: {
-      id: Number(id),
+      roundId: id,
+    },
+    include: {
+      tags: true,
     },
   });
 

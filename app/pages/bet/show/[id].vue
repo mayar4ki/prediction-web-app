@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useAccount } from "@wagmi/vue";
 import { AlertCircle } from "lucide-vue-next";
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
 import { blockExplorer } from "~/_config/chain";
@@ -7,13 +6,8 @@ import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 
 const router = useRoute();
 
-const { address } = useAccount();
-
-const { mappedData, isLoading } = useBetIndex({
-  args: [address.value!, BigInt(router.params.id as string), BigInt(1)],
-  query: {
-    enabled: computed(() => !!router.params.id),
-  },
+const { mappedData, isLoading } = useBetShowApi({
+  id: router.params.id as string,
 });
 </script>
 

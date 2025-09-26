@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/vue-query";
 import type { DeepMaybeRef } from "@vueuse/core";
 import { useAccount, useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
+import type { _Tag, RoundMeta } from "~/_types/common";
 
 export interface UseBetIndexApiOptions {
   params?: DeepMaybeRef<{
@@ -11,14 +12,19 @@ export interface UseBetIndexApiOptions {
   }>;
 }
 
+export interface BetIndexFetch {
+  rounds: Array<RoundMeta & { tags: _Tag[] }>;
+  totalCount: number;
+}
+
 export const useBetIndexApi = (options?: UseBetIndexApiOptions) => {
   const apiResponse = useQuery({
     queryKey: ["bet/index", options?.params],
     queryFn: ({ signal, queryKey }) => {
       const [, params] = queryKey;
-      return $fetch("/api/bet/list", {
+      return $fetch<BetIndexFetch>("/api/bet/list", {
         signal,
-        params,
+        params: params as Record<string, string>,
       });
     },
   });

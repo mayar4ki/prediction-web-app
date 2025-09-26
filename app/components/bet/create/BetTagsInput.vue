@@ -44,12 +44,7 @@ const val = computed(() => (props.modelValue as _Tag[]) ?? []);
           <ComboboxEmpty> No tags found. </ComboboxEmpty>
 
           <ComboboxGroup>
-            <ComboboxItem
-              v-for="tag in tags"
-              :key="tag.id"
-              :value="tag"
-              @select.prevent="(modelValue as _Tag[])?.push(tag)"
-            >
+            <ComboboxItem v-for="tag in tags" :key="tag.id" :value="tag">
               {{ tag.name }}
 
               <ComboboxItemIndicator>
