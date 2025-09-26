@@ -1,9 +1,7 @@
 import type { Hash } from "viem";
 import type { InputHTMLAttributes } from "vue";
 
-export type InputProps = /* @vue-ignore */ InputHTMLAttributes
-
-
+export type InputProps = /* @vue-ignore */ InputHTMLAttributes;
 
 export interface RoundData {
   id: bigint;
@@ -22,25 +20,28 @@ export interface RoundData {
 }
 
 export interface UserBet {
-  betOption: Hash,
-  amount: bigint
-  claimed: boolean
+  betOption: Hash;
+  amount: bigint;
+  claimed: boolean;
 }
-
 
 export enum BetOptions {
-  YES = '0x5945530000000000000000000000000000000000000000000000000000000000',
-  NO = '0x4e4f000000000000000000000000000000000000000000000000000000000000',
-  UNKNOWN = '0x554e4b4e4f574e00000000000000000000000000000000000000000000000000'
+  YES = "0x5945530000000000000000000000000000000000000000000000000000000000",
+  NO = "0x4e4f000000000000000000000000000000000000000000000000000000000000",
+  UNKNOWN = "0x554e4b4e4f574e00000000000000000000000000000000000000000000000000",
 }
-
 
 export enum EmptyBytes {
-  'bytes32' = '0x0000000000000000000000000000000000000000000000000000000000000000'
+  "bytes32" = "0x0000000000000000000000000000000000000000000000000000000000000000",
 }
-
 
 export interface _Tag {
-  id:number;
-  name:string;
+  id: number;
+  name: string;
 }
+
+export type RoundMeta = {
+  id: number;
+  roundId: string;
+  hasPhoto: boolean;
+};

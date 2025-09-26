@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { useQuery } from "@tanstack/vue-query";
 import { Check, ChevronsUpDown } from "lucide-vue-next";
 import { cn } from "~/lib/utils";
 import type { _Tag } from "~/_types/common";
+import type { ComboboxRootEmits, ComboboxRootProps } from "reka-ui";
+import { useForwardPropsEmits } from "reka-ui";
 
-const modelValue = defineModel<_Tag[]>();
+const props = defineProps<ComboboxRootProps<_Tag>>();
+const emits = defineEmits<ComboboxRootEmits>();
 
-const response = useQuery({
-  queryKey: ["tagsIndex"],
-  queryFn: () => $fetch("/api/tags"),
-});
+const forwarded = useForwardPropsEmits(props, emits);
 
+const response = useTagsIndex();
 const tags = computed(() => response.data.value?.tags ?? []);
+
+const val = computed(() => (props.modelValue as _Tag[]) ?? []);
 </script>
 
 <template>
   <FormItem>
     <FormLabel>Tags</FormLabel>
     <FormControl>
-      <Combobox multiple v-model="modelValue" by="id">
+      <Combobox v-bind="forwarded" by="id" multiple>
         <ComboboxAnchor as-child>
           <ComboboxTrigger as-child>
             <Button
@@ -27,8 +29,8 @@ const tags = computed(() => response.data.value?.tags ?? []);
             >
               <div class="flex-1 text-ellipsis overflow-hidden text-start">
                 {{
-                  (modelValue ?? []).length > 0
-                    ? modelValue?.map((el) => el.name).join(", ")
+                  val.length > 0
+                    ? val.map((el) => (el as _Tag).name).join(", ")
                     : "Select Tags..."
                 }}
               </div>
@@ -42,7 +44,12 @@ const tags = computed(() => response.data.value?.tags ?? []);
           <ComboboxEmpty> No tags found. </ComboboxEmpty>
 
           <ComboboxGroup>
-            <ComboboxItem v-for="tag in tags" :key="tag.id" :value="tag">
+            <ComboboxItem
+              v-for="tag in tags"
+              :key="tag.id"
+              :value="tag"
+              @select.prevent="(modelValue as _Tag[])?.push(tag)"
+            >
               {{ tag.name }}
 
               <ComboboxItemIndicator>

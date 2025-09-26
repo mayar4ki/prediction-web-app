@@ -1,42 +1,17 @@
 <script setup lang="ts">
-import { useAccount, useReadContract } from "@wagmi/vue";
-import { AlertCircle } from "lucide-vue-next";
-import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
 
-const { data: roundIdCounter } = useReadContract({
-  abi: aiPredictionV1.abi,
-  address: aiPredictionV1.address,
-  functionName: "roundIdCounter",
-  query: {
-    refetchInterval: 15000,
-  },
-});
+const { query } = useRoute();
 
-const itemPerPage = ref(BigInt(4));
-const currentPage = ref(BigInt(1));
+const itemPerPage = ref(4);
+const currentPage = ref(1);
+const cursor = computed(() => (currentPage.value - 1) * itemPerPage.value);
 
-const cursor = computed(() => {
-  if (roundIdCounter.value) {
-    const pagesCount = BigInt(
-      Math.ceil((Number(roundIdCounter.value) + 1) / Number(itemPerPage.value))
-    );
-
-    const flip = (pagesCount - currentPage.value) * itemPerPage.value;
-    return flip;
-  }
-
-  const skip = (currentPage.value - BigInt(1)) * itemPerPage.value;
-
-  return skip;
-});
-
-const { address } = useAccount();
-
-const { mappedData, isLoading } = useBetIndex({
-  args: [address.value!, cursor, itemPerPage],
-  query: {
-    enabled: computed(() => !!roundIdCounter.value && !!address.value),
+const { totalCount, isLoading, mappedData } = useBetIndexApi({
+  params: {
+    skip: cursor.value,
+    take: itemPerPage.value,
+    tags: typeof query.tag === "string" ? [query.tag] : [],
   },
 });
 </script>
@@ -45,8 +20,14 @@ const { mappedData, isLoading } = useBetIndex({
   <section class="py-32 px-6 container-wrapper">
     <div class="container mx-auto">
       <div class="flex flex-col gap-6 text-center">
-        <h2 class="text-4xl font-medium md:text-5xl">Latest Bets</h2>
+        <h2 class="text-4xl font-medium md:text-5xl">
+          Latest in
+          <span class="capitalize">
+            {{ query.tag }}
+          </span>
+        </h2>
       </div>
+
       <div class="mt-20">
         <template v-for="(item, index) in mappedData" :key="item.id">
           <BetCard :item="item" />
@@ -61,23 +42,6 @@ const { mappedData, isLoading } = useBetIndex({
             <Loader />
           </div>
         </div>
-
-        <div
-          v-else-if="mappedData.length === 0"
-          class="flex flex-col justify-center items-center gap-6 mb-28"
-        >
-          <NuxtImg
-            src="./img/error.png"
-            width="155"
-            height="200"
-            class="opacity-40"
-          />
-          <Alert variant="default" class="max-w-sm">
-            <AlertCircle class="w-4 h-4" />
-            <AlertTitle>Whoops !</AlertTitle>
-            <AlertDescription> No results. </AlertDescription>
-          </Alert>
-        </div>
       </div>
     </div>
 
@@ -85,13 +49,13 @@ const { mappedData, isLoading } = useBetIndex({
       v-slot="{ page }"
       class="my-6"
       :items-per-page="Number(itemPerPage)"
-      :total="Number(roundIdCounter)"
+      :total="totalCount"
       :page="Number(currentPage)"
       :show-edges="true"
       :sibling-count="0"
       @update:page="
         (value) => {
-          currentPage = BigInt(value);
+          currentPage = value;
         }
       "
     >
@@ -110,7 +74,7 @@ const { mappedData, isLoading } = useBetIndex({
 
         <PaginationNext />
         <div class="text-sm font-medium text-muted-foreground">
-          Total Count : {{ roundIdCounter }}
+          Total Count : {{ totalCount }}
         </div>
       </PaginationContent>
     </Pagination>

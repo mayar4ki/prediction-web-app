@@ -41,7 +41,9 @@ const { handleSubmit, controlledValues } = useForm<FormSchema>({
 
 const { handleFileInput, files, clearFiles } = useFileStorage();
 
-const tags = (controlledValues.value.tags ?? [])?.map((el) => el.id);
+const tags = computed(() =>
+  (controlledValues.value.tags ?? [])?.map((el) => el.id)
+);
 
 const { address: myAddress } = useAccount();
 const { isPending: isPendingSignature, signMessageAsync } = useSignMessage();
@@ -68,21 +70,21 @@ useWatchContractEvent({
   onLogs: async (logs) => {
     enableUseWatchContractEvent.value = false;
     toast.success("Event has been received.");
-    const roundId = logs[0]?.args.roundId;
+    const roundId = logs[0]?.args?.roundId;
 
     if (roundId) {
       const signature = await signMessageAsync({
-        message: roundId.toString(),
+        message: roundId.toString() + tags.value.join(", "),
       });
 
       await mutateAsync({
         files: files.value,
         signature: signature,
         itemId: roundId.toString(),
-        tags: tags,
+        tags: tags.value,
+      }).finally(() => {
+        navigateTo(`/bet/show/${roundId.toString()}`);
       });
-
-      navigateTo(`/bet/show/${roundId.toString()}`);
     } else {
       navigateTo(`/bet/created-bets/${address}`);
     }
@@ -279,12 +281,12 @@ const loadingText = computed(() => {
               <Input
                 id="picture"
                 type="file"
-                @input="handleFileInput"
                 accept=".jpg,.jpeg,.png,.webp"
+                @input="handleFileInput"
               />
               <Button
-                variant="destructive"
                 v-if="files?.[0]"
+                variant="destructive"
                 type="button"
                 @click="clearFiles"
               >

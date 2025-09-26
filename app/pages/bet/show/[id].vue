@@ -2,7 +2,6 @@
 import { useAccount } from "@wagmi/vue";
 import { AlertCircle } from "lucide-vue-next";
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
-import Loader from "~/components/ui/backdrop-loader/_Loader.vue";
 import { blockExplorer } from "~/_config/chain";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 

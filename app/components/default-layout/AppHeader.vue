@@ -14,32 +14,32 @@ import ChainsMenu from "../common/ChainsMenu.vue";
 const paths: Array<{ name: string; to: RouteLocationRaw }> = [
   { name: "Home", to: "/" },
 
-  { name: "Latest", to: { path: "/bet", query: { category: "all" } } },
+  { name: "Latest", to: { path: "/bet" } },
 
   {
     name: "Politic",
-    to: { path: "/bet/search-meta", query: { tags: ["politic"] } },
+    to: { path: "/bet/search-meta", query: { tag: "politic" } },
   },
   {
     name: "Sport",
-    to: { path: "/bet/search-meta", query: { tags: ["sport"] } },
+    to: { path: "/bet/search-meta", query: { tag: "sport" } },
   },
   {
     name: "Finance",
-    to: { path: "/bet/search-meta", query: { tags: ["finance"] } },
+    to: { path: "/bet/search-meta", query: { tag: "finance" } },
   },
   {
     name: "Crypto",
-    to: { path: "/bet/search-meta", query: { tags: ["crypto"] } },
+    to: { path: "/bet/search-meta", query: { tag: "crypto" } },
   },
   {
     name: "Business",
-    to: { path: "/bet/search-meta", query: { tags: ["business"] } },
+    to: { path: "/bet/search-meta", query: { tag: "business" } },
   },
-  { name: "Pop", to: { path: "/bet/search-meta", query: { tags: ["pop"] } } },
+  { name: "Pop", to: { path: "/bet/search-meta", query: { tag: "pop" } } },
   {
     name: "Science",
-    to: { path: "/bet/search-meta", query: { tags: ["science"] } },
+    to: { path: "/bet/search-meta", query: { tag: "science" } },
   },
 ];
 
@@ -78,7 +78,7 @@ const needMore = computed(() => paths.length > 4);
             </NavigationMenuItem>
 
             <NavigationMenuItem v-if="needMore">
-              <DropdownMenu v-model:open="isMobileMenuOpen">
+              <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                   <div
                     :class="
@@ -93,6 +93,7 @@ const needMore = computed(() => paths.length > 4);
                   <DropdownMenuItem
                     v-for="item in paths.slice(3)"
                     :key="item.name"
+                    @click="navigateTo(item.to)"
                   >
                     {{ item.name }}
                   </DropdownMenuItem>

@@ -3,7 +3,7 @@ import prisma from "~~/server/lib/prisma";
 export interface Params {
   skip?: number;
   take?: number;
-  tags?: string[];
+  tags?: string | string[];
 }
 
 export default defineEventHandler(async (event) => {
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
           tags: {
             some: {
               name: {
-                in: query.tags,
+                in: typeof query.tags === "string" ? [query.tags] : query.tags,
               },
             },
           },
@@ -28,8 +28,8 @@ export default defineEventHandler(async (event) => {
   });
 
   const rounds = await prisma.round.findMany({
-    skip: query?.skip ?? 0,
-    take: query?.take ?? 4,
+    skip: Number(query?.skip ?? 0),
+    take: Number(query?.take ?? 4),
     orderBy: {
       roundId: "desc",
     },
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
           tags: {
             some: {
               name: {
-                in: query.tags,
+                in: typeof query.tags === "string" ? [query.tags] : query.tags,
               },
             },
           },

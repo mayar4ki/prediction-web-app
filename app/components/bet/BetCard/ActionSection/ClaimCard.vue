@@ -130,7 +130,10 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
       {{ payout.yes }}x Payout
     </Badge>
 
-    <div class="py-12 text-center text-sm font-medium">
+    <div
+      v-if="!closedAtCounter.finished || Number(userBetInfo?.amount ?? 0) > 0"
+      class="py-12 text-center text-sm font-medium"
+    >
       <span v-if="!closedAtCounter.finished">
         Resolved in : {{ closedAtCounter.days }}D, {{ closedAtCounter.hours }}H,
         {{ closedAtCounter.minutes }}m, {{ closedAtCounter.seconds }}s

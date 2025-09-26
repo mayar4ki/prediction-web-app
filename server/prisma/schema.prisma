@@ -12,7 +12,7 @@ datasource db {
 
 model Round {
   id       Int     @id @default(autoincrement())
-  roundId  BigInt
+  roundId  String
   hasPhoto Boolean
   tags     Tag[]
 }
