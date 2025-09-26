@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
 
-const { query } = useRoute();
+const router = useRoute();
 
 const itemPerPage = ref(4);
 const currentPage = ref(1);
 const cursor = computed(() => (currentPage.value - 1) * itemPerPage.value);
 
+const filter = computed(() => router.query.tag as string);
+
 const { totalCount, isLoading, mappedData } = useBetIndexApi({
   params: {
-    skip: cursor.value,
-    take: itemPerPage.value,
-    tags: typeof query.tag === "string" ? [query.tag] : [],
+    skip: cursor,
+    take: itemPerPage,
+    tags: filter,
   },
 });
 </script>
@@ -23,7 +25,7 @@ const { totalCount, isLoading, mappedData } = useBetIndexApi({
         <h2 class="text-4xl font-medium md:text-5xl">
           Latest in
           <span class="capitalize">
-            {{ query.tag }}
+            {{ filter }}
           </span>
         </h2>
       </div>

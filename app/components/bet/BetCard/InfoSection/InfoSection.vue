@@ -51,6 +51,19 @@ const { item } = useBetCard()!;
           </a>
         </p>
       </div>
+
+      <div
+        v-if="item.meta?.tags"
+        class="flex flex-col xl:flex-row gap-2 xl:justify-between xl:items-center w-full"
+      >
+        <p class="text-muted-foreground text-sm font-mono">
+          Tags:
+
+          <Badge v-for="tag in item.meta.tags" :key="tag.id" variant="outline"
+            >#{{ tag.name }}</Badge
+          >
+        </p>
+      </div>
     </div>
   </div>
 </template>

@@ -10,7 +10,7 @@ export type BetCardItem = RoundData & {
 };
 
 export interface BetCardState {
-  item: Ref<RoundData & { userBetInfo?: UserBet }>;
+  item: Ref<BetCardItem>;
   activeActionCard: Ref<ActiveActionCard, ActiveActionCard>;
 }
 

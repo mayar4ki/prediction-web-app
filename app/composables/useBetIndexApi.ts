@@ -1,23 +1,26 @@
 import { useQuery } from "@tanstack/vue-query";
+import type { DeepMaybeRef } from "@vueuse/core";
 import { useAccount, useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 
 export interface UseBetIndexApiOptions {
-  params?: {
+  params?: DeepMaybeRef<{
     skip?: number;
     take?: number;
-    tags?: string[];
-  };
+    tags?: string | string[];
+  }>;
 }
 
 export const useBetIndexApi = (options?: UseBetIndexApiOptions) => {
   const apiResponse = useQuery({
     queryKey: ["bet/index", options?.params],
-    queryFn: ({ signal }) =>
-      $fetch("/api/bet/list", {
+    queryFn: ({ signal, queryKey }) => {
+      const [, params] = queryKey;
+      return $fetch("/api/bet/list", {
         signal,
-        params: options?.params,
-      }),
+        params,
+      });
+    },
   });
 
   const { address } = useAccount();
