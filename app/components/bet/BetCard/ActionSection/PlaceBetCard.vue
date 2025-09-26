@@ -10,16 +10,6 @@ import { formatUnits, parseEther } from "viem";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 import { useBetCard } from "../store";
 import { useQueryClient } from "@tanstack/vue-query";
-import { CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import Loader from "~/components/ui/backdrop-loader/Loader.vue";
-import Button from "~/components/ui/button/Button.vue";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
 
 defineProps<{
   disabled: boolean;

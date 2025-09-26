@@ -1,7 +1,3 @@
-<script lang="ts" setup>
-import { useSignMessage } from "@wagmi/vue";
-</script>
-
 <template>
   <section class="py-32 px-6 container-wrapper">
     <div class="container mx-auto">

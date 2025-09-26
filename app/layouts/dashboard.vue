@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppSidebar from "~/components/dashboard-layout/AppSidebar.vue";
 import DashboardHeader from "~/components/dashboard-layout/DashboardHeader.vue";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 </script>
 
 <script lang="ts">

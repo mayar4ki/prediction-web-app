@@ -1,8 +1,5 @@
 <!-- eslint-disable vue/require-default-prop -->
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-
 export interface ReactionBtnGroupProps {
   commentsCount?: number;
   likesCount?: number;

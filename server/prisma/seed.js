@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 async function main() {
-  const tagsSeed = ["politic", "sport", "crypto", "business", "pop", "since"];
+  const tagsSeed = ["politic", "sport","finance", "crypto", "business", "pop", "since"];
 
   const tags = await prisma.tag.createMany({
     data: tagsSeed.map((el) => ({ name: el })),

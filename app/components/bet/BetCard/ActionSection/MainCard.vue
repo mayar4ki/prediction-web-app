@@ -3,7 +3,6 @@ import { useBetCard } from "../store";
 import { cn } from "~/lib/utils";
 import { calculatePayout, calculatePrizePool } from "../helpers";
 import { nativeSymbol } from "~/_config/chain";
-import { Button } from "~/components/ui/button";
 import { useReadContract } from "@wagmi/vue";
 import * as ethUsdPriceFeed from "~/_config/eth-usd-price-feed";
 

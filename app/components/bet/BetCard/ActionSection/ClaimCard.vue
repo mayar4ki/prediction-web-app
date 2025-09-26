@@ -8,9 +8,6 @@ import * as ethUsdPriceFeed from "~/_config/eth-usd-price-feed";
 import { formatUnits, pad } from "viem";
 
 import { useQueryClient } from "@tanstack/vue-query";
-import { Loader } from "~/components/ui/backdrop-loader/index";
-import Badge from "~/components/ui/badge/Badge.vue";
-import Button from "~/components/ui/button/Button.vue";
 
 const { userBetInfo } = defineProps<{
   // eslint-disable-next-line vue/require-default-prop

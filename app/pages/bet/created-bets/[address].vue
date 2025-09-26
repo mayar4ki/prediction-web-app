@@ -1,28 +1,11 @@
 <script setup lang="ts">
 import { FlexRender } from "@tanstack/vue-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-
 import { useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 import { blockExplorer } from "~/_config/chain";
 import { isAddress, type Hash } from "viem";
 import { useBetsTable } from "~/components/bet/created-bets/useBetsTable";
 import type { RoundData } from "~/_types/common";
-import { Button } from "~/components/ui/button";
 
 const route = useRoute();
 const _address = computed(() => route.params.address as Hash);

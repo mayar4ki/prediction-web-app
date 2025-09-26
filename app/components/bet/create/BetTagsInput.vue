@@ -1,17 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Button } from "@/components/ui/button";
-import {
-  Combobox,
-  ComboboxAnchor,
-  ComboboxEmpty,
-  ComboboxGroup,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxItemIndicator,
-  ComboboxList,
-  ComboboxTrigger,
-} from "@/components/ui/combobox";
 import { useQuery } from "@tanstack/vue-query";
 import { Check, ChevronsUpDown } from "lucide-vue-next";
 import { cn } from "~/lib/utils";
@@ -24,8 +11,7 @@ const response = useQuery({
   queryFn: () => $fetch("/api/tags"),
 });
 
-const tags = computed(() =>(response.data.value?.tags ?? []));
-
+const tags = computed(() => response.data.value?.tags ?? []);
 </script>
 
 <template>
@@ -41,7 +27,7 @@ const tags = computed(() =>(response.data.value?.tags ?? []));
             >
               <div class="flex-1 text-ellipsis overflow-hidden text-start">
                 {{
-                  (modelValue??[]).length > 0
+                  (modelValue ?? []).length > 0
                     ? modelValue?.map((el) => el.name).join(", ")
                     : "Select Tags..."
                 }}
@@ -56,8 +42,8 @@ const tags = computed(() =>(response.data.value?.tags ?? []));
           <ComboboxEmpty> No tags found. </ComboboxEmpty>
 
           <ComboboxGroup>
-            <ComboboxItem v-for="tags in tags" :key="tags.id" :value="tags">
-              {{ tags.name }}
+            <ComboboxItem v-for="tag in tags" :key="tag.id" :value="tag">
+              {{ tag.name }}
 
               <ComboboxItemIndicator>
                 <Check :class="cn('ml-auto h-4 w-4')" />

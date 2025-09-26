@@ -9023,7 +9023,7 @@ sha.js@^2.4.11:
     safe-buffer "^5.2.1"
     to-buffer "^1.2.0"
 
-shadcn-nuxt@2.2.0:
+shadcn-nuxt@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/shadcn-nuxt/-/shadcn-nuxt-2.2.0.tgz#0e80aa3b779a7032e5352d19bfc559d51c82f0a6"
   integrity sha512-0GxzEoTwwsn2K+7rXljhvM7T5+FC8RcBbpvr72L2qwfI9aj/oJgYgUKtC7/onIX8vHrGGziJMfA/xyjibD4J4A==

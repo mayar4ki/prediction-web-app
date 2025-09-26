@@ -1,20 +1,11 @@
 <script setup lang="ts">
 import { MoreHorizontal } from "lucide-vue-next";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { EmptyBytes, type RoundData } from "~/_types/common";
 import type { CellContext } from "@tanstack/vue-table";
 import { blockExplorer } from "~/_config/chain";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 import { useQueryClient } from "@tanstack/vue-query";
-import Loader from "~/components/ui/backdrop-loader/Loader.vue";
 
 const { cellCtx } = defineProps<{ cellCtx: CellContext<RoundData, unknown> }>();
 

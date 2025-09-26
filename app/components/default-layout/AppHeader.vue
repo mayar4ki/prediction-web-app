@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-
-import DropdownMenu from "@/components/ui/dropdown-menu/DropdownMenu.vue";
-import DropdownMenuTrigger from "@/components/ui/dropdown-menu/DropdownMenuTrigger.vue";
-import DropdownMenuContent from "@/components/ui/dropdown-menu/DropdownMenuContent.vue";
-import DropdownMenuLabel from "@/components/ui/dropdown-menu/DropdownMenuLabel.vue";
-import NavigationMenu from "@/components/ui/navigation-menu/NavigationMenu.vue";
-import NavigationMenuList from "@/components/ui/navigation-menu/NavigationMenuList.vue";
-import NavigationMenuItem from "@/components/ui/navigation-menu/NavigationMenuItem.vue";
-import NavigationMenuLink from "@/components/ui/navigation-menu/NavigationMenuLink.vue";
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import {
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+} from "~/components/ui/ui-navigation-menu";
 import { ref } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import AppLogo from "~/components/common/AppLogo.vue";
@@ -22,6 +15,32 @@ const paths: Array<{ name: string; to: RouteLocationRaw }> = [
   { name: "Home", to: "/" },
 
   { name: "Latest", to: { path: "/bet", query: { category: "all" } } },
+
+  {
+    name: "Politic",
+    to: { path: "/bet/search-meta", query: { tags: ["politic"] } },
+  },
+  {
+    name: "Sport",
+    to: { path: "/bet/search-meta", query: { tags: ["sport"] } },
+  },
+  {
+    name: "Finance",
+    to: { path: "/bet/search-meta", query: { tags: ["finance"] } },
+  },
+  {
+    name: "Crypto",
+    to: { path: "/bet/search-meta", query: { tags: ["crypto"] } },
+  },
+  {
+    name: "Business",
+    to: { path: "/bet/search-meta", query: { tags: ["business"] } },
+  },
+  { name: "Pop", to: { path: "/bet/search-meta", query: { tags: ["pop"] } } },
+  {
+    name: "Science",
+    to: { path: "/bet/search-meta", query: { tags: ["science"] } },
+  },
 ];
 
 const isMobileMenuOpen = ref(false);
@@ -31,6 +50,8 @@ const modeSwitchRef = ref();
 const toggleMode = () => {
   modeSwitchRef.value.toggleMode();
 };
+
+const needMore = computed(() => paths.length > 4);
 </script>
 
 <template>
@@ -42,8 +63,11 @@ const toggleMode = () => {
 
       <div class="gap-4 flex-1 hidden md:flex">
         <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem v-for="item in paths" :key="item.name">
+          <NavigationMenuList class="gap-0">
+            <NavigationMenuItem
+              v-for="item in paths.slice(0, needMore ? 3 : 4)"
+              :key="item.name"
+            >
               <NuxtLink
                 :as="NavigationMenuLink"
                 :class="navigationMenuTriggerStyle()"
@@ -51,6 +75,29 @@ const toggleMode = () => {
               >
                 {{ item.name }}
               </NuxtLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem v-if="needMore">
+              <DropdownMenu v-model:open="isMobileMenuOpen">
+                <DropdownMenuTrigger as-child>
+                  <div
+                    :class="
+                      navigationMenuTriggerStyle() +
+                      ' flex flex-row items-center justify-center cursor-pointer'
+                    "
+                  >
+                    More <Icon name="radix-icons:caret-down" size="18" />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem
+                    v-for="item in paths.slice(3)"
+                    :key="item.name"
+                  >
+                    {{ item.name }}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

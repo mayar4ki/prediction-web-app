@@ -4,14 +4,6 @@ import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 import * as ethUsdPriceFeed from "~/_config/eth-usd-price-feed";
 import { nativeSymbol } from "~/_config/chain";
 import { formatUnits } from "viem";
-
-import { Input } from "~/components/ui/input";
-import {
-  FormControl,
-  FormDescription,
-  FormItem,
-  FormLabel,
-} from "~/components/ui/form";
 import type { HTMLAttributes } from "vue";
 
 const result = useReadContract({

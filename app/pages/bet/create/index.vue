@@ -1,19 +1,6 @@
 <script setup lang="ts">
-import { Button } from "~/components/ui/button";
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
-import { Textarea } from "~/components/ui/textarea";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
-import { DatePicker } from "@/components/ui/date-picker";
-import { Input } from "@/components/ui/input";
-import { Alert } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-vue-next";
 import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import {
@@ -22,19 +9,8 @@ import {
   type FormSchema,
 } from "~/_validation/createBetForm";
 import FeesFormItem from "@/components/bet/create/FeesFormItem.vue";
-import { BackdropLoader } from "@/components/ui/backdrop-loader";
 import { parseEther } from "viem";
 
-import Card from "~/components/ui/card/Card.vue";
-import {
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-import AlertTitle from "@/components/ui/alert/AlertTitle.vue";
-import AlertDescription from "@/components/ui/alert/AlertDescription.vue";
 import BetTagsInput from "~/components/bet/create/BetTagsInput.vue";
 import { useAccount, useSignMessage, useWatchContractEvent } from "@wagmi/vue";
 import { abi, address } from "~/_config/ai-prediction-v1";
@@ -51,7 +27,7 @@ const pp = (added: number) => {
 
   return hhmm;
 };
-const { handleSubmit, resetForm, controlledValues } = useForm<FormSchema>({
+const { handleSubmit, controlledValues } = useForm<FormSchema>({
   validationSchema: toTypedSchema(formSchema),
   initialValues: {
     prompt: "Will Nasa land humans on Mars by 2030?",
@@ -75,7 +51,7 @@ const enableUseWatchContractEvent = ref<boolean>(false);
 const { mutateAsync, isPending: isPendingMeta } = useMutation({
   mutationFn: (body: {
     signature: `0x${string}`;
-    files: any;
+    files: unknown;
     itemId: string;
     tags: number[];
   }) => $fetch<unknown>("/api/bet/create", { method: "POST", body }),

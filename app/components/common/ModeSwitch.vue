@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode } from "@vueuse/core";
-import { Switch } from "../ui/switch";
+import { Switch } from "../ui/ui-switch";
 
 const mode = useColorMode();
 

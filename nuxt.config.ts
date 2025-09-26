@@ -1,39 +1,38 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   modules: [
-    '@nuxt/icon',
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxt/image',
-    '@nuxtjs/tailwindcss',
-    'shadcn-nuxt',
-    '@vueuse/nuxt',
-    'nuxt-file-storage'
+    "@nuxt/icon",
+    "@nuxt/eslint",
+    "@nuxt/fonts",
+    "@nuxt/image",
+    "@nuxtjs/tailwindcss",
+    "shadcn-nuxt",
+    "@vueuse/nuxt",
+    "nuxt-file-storage",
   ],
   shadcn: {
     /**
      * Prefix for all the imported component
      */
-    prefix: '',
+    prefix: "",
     /**
      * Directory that the component lives in.
      * @default "./components/ui"
      */
-    componentDir: '@/components/ui'
+    componentDir: "@/components/ui",
   },
   routeRules: {
     // pages pre-rendered at build time
-    '/': { prerender: true },
-    '/info/**': { prerender: true },
-
+    "/": { prerender: true },
+    "/info/**": { prerender: true },
 
     //  Client-side rendering only (no SSR)
-    '/dashboard/**': { ssr: false },
-    '/profile/**': { ssr: false }
+    "/dashboard/**": { ssr: false },
+    "/profile/**": { ssr: false },
   },
   fileStorage: {
-    mount: process.env.FILE_STORAGE_MOUNT
-  }
-})
+    mount: process.env.FILE_STORAGE_MOUNT,
+  },
+});

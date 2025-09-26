@@ -1,8 +1,4 @@
-<script lang="ts" setup>
-import { Button } from "@/components/ui/button";
-import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
-import { GlowBorder } from "@/components/ui/glow-border";
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <section class="relative py-32 px-6 container-wrapper">

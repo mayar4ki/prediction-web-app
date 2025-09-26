@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { homeCards } from "~/_constants";
-import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 </script>
 
 <template>

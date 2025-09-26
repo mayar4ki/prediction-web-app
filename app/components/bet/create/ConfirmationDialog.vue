@@ -1,18 +1,6 @@
 <script setup lang="ts">
 import { DateFormatter, getLocalTimeZone } from "@internationalized/date";
 import type { useForm } from "vee-validate";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "~/components/ui/alert-dialog";
-import Separator from "~/components/ui/separator/Separator.vue";
 import type { FormSchema } from "~/_validation/createBetForm";
 
 interface ConfirmationDialogProps {

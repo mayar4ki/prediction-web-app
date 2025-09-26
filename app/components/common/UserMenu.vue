@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useAccount, useChainId, useConnect, useDisconnect } from "@wagmi/vue";
 
 const chainId = useChainId();

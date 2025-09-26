@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SidebarProps } from "@/components/ui/sidebar";
+import type { SidebarProps } from "~/components/ui/ui-sidebar";
 
 import {
   AudioWaveform,
@@ -16,14 +16,6 @@ import {
 import NavMain from "~/components/dashboard-layout/NavMain.vue";
 import NavProjects from "~/components/dashboard-layout/NavProjects.vue";
 import NavUser from "~/components/dashboard-layout/NavUser.vue";
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar";
 import AppLogo from "../common/AppLogo.vue";
 
 const props = withDefaults(defineProps<SidebarProps>(), {
