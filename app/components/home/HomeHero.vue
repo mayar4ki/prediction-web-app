@@ -8,16 +8,21 @@
           class="flex flex-col items-center text-center lg:items-start lg:text-left"
         >
           <h1 class="relative my-6 text-pretty text-4xl font-bold lg:text-6xl">
-            Predict. Bet. Play. With
+            {{ $t("Predict. Bet. Play. With") }}
             <br />
-            AI & Smart Contracts.
+            {{ $t("AI & Smart Contracts.") }}
           </h1>
 
           <p class="text-muted-foreground mb-8 max-w-xl lg:text-xl">
-            Bet on sports, politics, pop culture, and more. AI settles the
-            outcome.
+            {{
+              $t(
+                "Bet on sports, politics, pop culture, and more. AI settles the outcome."
+              )
+            }}
             <span class="font-semibold">No Human</span>
-            intervention required. Smart contracts guarantee the payout.
+            {{
+              $t("intervention required. Smart contracts guarantee the payout.")
+            }}
           </p>
 
           <div
@@ -29,7 +34,7 @@
                 () => navigateTo({ path: '/bet', query: { category: 'all' } })
               "
             >
-              Bet Now
+              {{ $t("Bet Now") }}
             </Button>
 
             <Button
@@ -37,7 +42,7 @@
               class="w-full sm:w-auto"
               @click="() => navigateTo('/info/documentation')"
             >
-              Learn more
+              {{ $t("Learn more") }}
             </Button>
           </div>
         </div>
@@ -51,7 +56,7 @@
           />
           <NuxtImg
             src="img/hero.png"
-            alt="Hero Image"
+            :alt="$t('Hero Image')"
             class="max-h-96 w-full rounded-(--radius) object-contain"
           />
         </div>

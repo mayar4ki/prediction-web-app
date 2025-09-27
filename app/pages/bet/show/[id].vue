@@ -20,7 +20,7 @@ const { mappedData, isLoading } = useBetShowApi({
           :href="`${blockExplorer}${aiPredictionV1.address}#readContract`"
           target="_blank"
         >
-          Check on Explorer #ID: {{ router.params.id }}
+          {{ $t("Check on Explorer") }} #ID: {{ router.params.id }}
         </a>
       </div>
 
@@ -51,8 +51,8 @@ const { mappedData, isLoading } = useBetShowApi({
           />
           <Alert variant="default" class="max-w-sm">
             <AlertCircle class="w-4 h-4" />
-            <AlertTitle>Whoops !</AlertTitle>
-            <AlertDescription> No results. </AlertDescription>
+            <AlertTitle>{{ $t("Whoops") }} !</AlertTitle>
+            <AlertDescription> {{ $t("No results") }}. </AlertDescription>
           </Alert>
         </div>
       </div>

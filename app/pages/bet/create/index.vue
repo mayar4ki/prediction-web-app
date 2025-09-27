@@ -30,7 +30,7 @@ const pp = (added: number) => {
 const { handleSubmit, controlledValues } = useForm<FormSchema>({
   validationSchema: toTypedSchema(formSchema),
   initialValues: {
-    prompt: "Will Nasa land humans on Mars by 2030?",
+    prompt: $t("Will Nasa land humans on Mars by 2030?"),
     lockDate: fromDate(new Date(), getLocalTimeZone()),
     lockTime: pp(1000 * 60 * 2),
     closeDate: fromDate(new Date(), getLocalTimeZone()),
@@ -69,7 +69,7 @@ useWatchContractEvent({
   enabled: enableUseWatchContractEvent,
   onLogs: async (logs) => {
     enableUseWatchContractEvent.value = false;
-    toast.success("Event has been received.");
+    toast.success(translate("Event has been received."));
     const roundId = logs[0]?.args?.roundId;
 
     if (roundId) {
@@ -114,19 +114,19 @@ const loadingText = computed(() => {
   }
 
   if (isConfirming.value) {
-    return "Confirming...";
+    return $t("Confirming") + "...";
   }
 
   if (isPendingSignature.value) {
-    return "Waiting Meta Signature...";
+    return $t("Waiting Meta Signature") + "...";
   }
 
   if (isPendingMeta.value) {
-    return "Uploading Meta...";
+    return $t("Uploading Meta") + "...";
   }
 
   if (enableUseWatchContractEvent.value) {
-    return "Waiting event...";
+    return $t("Waiting event") + "...";
   }
 
   return undefined;
@@ -149,25 +149,29 @@ const loadingText = computed(() => {
 
     <Card class="max-w-3xl mx-auto my-10">
       <CardHeader>
-        <CardTitle>Create Bet</CardTitle>
-        <CardDescription>Deploy your new bet in one-click.</CardDescription>
+        <CardTitle>{{ $t("Create Bet") }}</CardTitle>
+        <CardDescription>{{
+          $t("Deploy your new bet in one-click.")
+        }}</CardDescription>
       </CardHeader>
       <CardContent>
         <form class="space-y-8" @submit="onSubmit">
           <FormField v-slot="{ componentField }" name="prompt">
             <FormItem>
-              <FormLabel>Prompt</FormLabel>
+              <FormLabel>{{ $t("Prompt") }}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Will Nasa land humans on Mars by 2030?"
+                  :placeholder="$t('Will Nasa land humans on Mars by 2030?')"
                   v-bind="componentField"
                 />
               </FormControl>
               <FormDescription>
                 <ul class="list-disc space-y-1 pl-5 text-muted-foreground">
-                  <li>stick with 10-240 characters</li>
-                  <li>no offensive words, don't ask anything illegal</li>
-                  <li>be clear and short</li>
+                  <li>{{ $t("stick with 10-240 characters") }}</li>
+                  <li>
+                    {{ $t("no offensive words, don't ask anything illegal") }}
+                  </li>
+                  <li>{{ $t("be clear and short") }}</li>
                 </ul>
               </FormDescription>
               <FormMessage />
@@ -177,11 +181,11 @@ const loadingText = computed(() => {
             <div class="flex flex-col md:flex-row gap-2">
               <FormField v-slot="{ componentField }" name="lockDate">
                 <FormItem>
-                  <FormLabel>Lock In Date</FormLabel>
+                  <FormLabel>{{ $t("Lock In Date") }}</FormLabel>
                   <FormControl>
                     <DatePicker
                       v-bind="componentField"
-                      placeholder="Select date"
+                      :placeholder="$t('Select date')"
                     />
                   </FormControl>
 
@@ -190,11 +194,11 @@ const loadingText = computed(() => {
               </FormField>
               <FormField v-slot="{ componentField }" name="lockTime">
                 <FormItem>
-                  <FormLabel>Lock In Time</FormLabel>
+                  <FormLabel>{{ $t("Lock In Time") }}</FormLabel>
                   <FormControl>
                     <Input
                       type="time"
-                      placeholder="Select time"
+                      :placeholder="$t('Select time')"
                       class="max-w-[150px]"
                       v-bind="componentField"
                     />
@@ -206,11 +210,18 @@ const loadingText = computed(() => {
             <div class="text-muted-foreground text-sm mt-1">
               <ul class="list-disc space-y-1 pl-5 text-muted-foreground">
                 <li>
-                  This represents the date and time when no more bets can be
-                  placed.
+                  {{
+                    $t(
+                      "This represents the date and time when no more bets can be placed."
+                    )
+                  }}
                 </li>
                 <li>
-                  Claiming or refunding will be available after close time pass.
+                  {{
+                    $t(
+                      "Claiming or refunding will be available after close time pass."
+                    )
+                  }}
                 </li>
               </ul>
             </div>
@@ -220,11 +231,11 @@ const loadingText = computed(() => {
             <div class="flex flex-col md:flex-row gap-2">
               <FormField v-slot="{ componentField }" name="closeDate">
                 <FormItem>
-                  <FormLabel>Close Date</FormLabel>
+                  <FormLabel>{{ $t("Close Date") }}</FormLabel>
                   <FormControl>
                     <DatePicker
                       v-bind="componentField"
-                      placeholder="Select date"
+                      :placeholder="$t('Select date')"
                     />
                   </FormControl>
                   <FormMessage />
@@ -232,11 +243,11 @@ const loadingText = computed(() => {
               </FormField>
               <FormField v-slot="{ componentField }" name="closeTime">
                 <FormItem>
-                  <FormLabel>Close Time</FormLabel>
+                  <FormLabel>{{ $t("Close Time") }}</FormLabel>
                   <FormControl>
                     <Input
                       type="time"
-                      placeholder="Select time"
+                      :placeholder="$t('Select time')"
                       class="max-w-[150px]"
                       v-bind="componentField"
                     />
@@ -248,11 +259,18 @@ const loadingText = computed(() => {
             <div class="text-muted-foreground text-sm mt-1">
               <ul class="list-disc space-y-1 pl-5 text-muted-foreground">
                 <li>
-                  This represents the date and time when the oracle will decide
-                  the outcome.
+                  {{
+                    $t(
+                      "This represents the date and time when the oracle will decide the outcome."
+                    )
+                  }}
                 </li>
                 <li>
-                  Claiming or refunding will be available after oracle response.
+                  {{
+                    $t(
+                      "Claiming or refunding will be available after oracle response."
+                    )
+                  }}
                 </li>
               </ul>
             </div>
@@ -264,16 +282,16 @@ const loadingText = computed(() => {
 
           <FormField v-slot="{ componentField }" name="fees">
             <FeesFormItem
-              placeholder="Loading Fees..."
+              :placeholder="$t('Loading Fees') + '...'"
               v-bind="componentField"
             />
           </FormField>
 
           <div class="flex flex-col gap-2">
-            <Label for="picture"> Photo </Label>
+            <Label for="picture"> {{ $t("Photo") }} </Label>
             <NuxtImg
               :src="files?.[0]?.content?.toString() ?? '/img/blockchain.png'"
-              alt="no photo"
+              :alt="$t('no photo')"
               class="aspect-29/35 h-full w-60 border rounded-2xl object-cover self-center sm:self-auto"
             />
 
@@ -290,7 +308,7 @@ const loadingText = computed(() => {
                 type="button"
                 @click="clearFiles"
               >
-                Remove Photo
+                {{ $t("Remove Photo") }}
               </Button>
             </div>
           </div>
@@ -298,10 +316,13 @@ const loadingText = computed(() => {
 
         <Alert class="mt-4" variant="destructive">
           <AlertCircle class="w-4 h-4" />
-          <AlertTitle>Attention !</AlertTitle>
+          <AlertTitle>{{ $t("Attention") }} !</AlertTitle>
           <AlertDescription>
-            You can not change the prompt, lock time or close time after
-            deployment to blockchain.
+            {{
+              $t(
+                "You can not change the prompt, lock time or close time after deployment to blockchain."
+              )
+            }}
           </AlertDescription>
         </Alert>
       </CardContent>
@@ -311,7 +332,7 @@ const loadingText = computed(() => {
           :controlled-values="controlledValues"
           @submit="onSubmit"
         >
-          <Button class="w-full">Create New Bet</Button>
+          <Button class="w-full">{{ $t("Create New Bet") }}</Button>
         </BetCreateConfirmationDialog>
       </CardFooter>
     </Card>

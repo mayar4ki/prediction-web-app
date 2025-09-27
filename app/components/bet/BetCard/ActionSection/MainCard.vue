@@ -37,7 +37,7 @@ const totalVolume = computed(() =>
         })
       "
     >
-      {{ payout.yes }}x Payout
+      {{ payout.yes }}x {{ $t("Payout") }}
     </Badge>
 
     <Button
@@ -46,7 +46,7 @@ const totalVolume = computed(() =>
       :disabled="withinLockTime"
       @click="activeActionCard = 'form-yes'"
     >
-      Bet Yes
+      {{ $t("Bet Yes") }}
     </Button>
 
     <Button
@@ -55,7 +55,7 @@ const totalVolume = computed(() =>
       :disabled="withinLockTime"
       @click="activeActionCard = 'form-no'"
     >
-      Bet No
+      {{ $t("Bet No") }}
     </Button>
 
     <Badge
@@ -66,13 +66,13 @@ const totalVolume = computed(() =>
         })
       "
     >
-      {{ payout.no }}x Payout
+      {{ payout.no }}x {{ $t("Payout") }}
     </Badge>
 
     <p
       class="text-muted-foreground text-sm font-medium flex items-center gap-1"
     >
-      Betting Stop at:
+      {{ $t("Betting Stop at") }}:
       {{ formatDateTime(new Date(Number(item.lockTimestamp) * 1000)) }}
     </p>
     <p
@@ -80,8 +80,9 @@ const totalVolume = computed(() =>
       class="text-muted-foreground text-sm font-medium flex items-center gap-1"
     >
       <Icon name="radix-icons:clock" class="h-[1rem] w-[1rem]" />
-      Time left: {{ lockedAtCounter.days }}D, {{ lockedAtCounter.hours }}H,
-      {{ lockedAtCounter.minutes }}m, {{ lockedAtCounter.seconds }}s
+      {{ $t("Time left") }}: {{ lockedAtCounter.days }}D,
+      {{ lockedAtCounter.hours }}H, {{ lockedAtCounter.minutes }}m,
+      {{ lockedAtCounter.seconds }}s
     </p>
 
     <div class="flex flex-col gap-2">
@@ -89,7 +90,7 @@ const totalVolume = computed(() =>
         {{ totalVolume.eth.toFixed(2) }} {{ nativeSymbol }} =
         {{ formatCurrency(totalVolume.usd) }}
       </p>
-      <p class="font-semibold text-primary">Pool Total Volume</p>
+      <p class="font-semibold text-primary">{{ $t("Pool Total Volume") }}</p>
     </div>
   </div>
 </template>

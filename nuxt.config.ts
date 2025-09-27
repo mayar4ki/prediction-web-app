@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@vueuse/nuxt",
     "nuxt-file-storage",
+    "@nuxtjs/i18n",
   ],
   shadcn: {
     /**
@@ -34,5 +35,11 @@ export default defineNuxtConfig({
   },
   fileStorage: {
     mount: process.env.FILE_STORAGE_MOUNT,
+  },
+
+  i18n: {
+    defaultLocale: "en",
+    strategy: "prefix",
+    locales: [{ code: "en", name: "English", file: "./en.json" }],
   },
 });

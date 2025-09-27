@@ -19,13 +19,19 @@ const mode = useColorMode();
           size="1.2em"
           class="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
         />
-        <span class="sr-only">Toggle theme</span>
+        <span class="sr-only">{{ $t("Toggle theme") }}</span>
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <DropdownMenuItem @click="mode = 'light'"> Light </DropdownMenuItem>
-      <DropdownMenuItem @click="mode = 'dark'"> Dark </DropdownMenuItem>
-      <DropdownMenuItem @click="mode = 'auto'"> System </DropdownMenuItem>
+      <DropdownMenuItem @click="mode = 'light'">
+        {{ $t("Light") }}
+      </DropdownMenuItem>
+      <DropdownMenuItem @click="mode = 'dark'">
+        {{ $t("Dark") }}
+      </DropdownMenuItem>
+      <DropdownMenuItem @click="mode = 'auto'">
+        {{ $t("System") }}
+      </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

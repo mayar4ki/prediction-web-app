@@ -97,22 +97,22 @@ const oracleIsCalled = computed(
 
 const betOptionLabel = (op: `0x${string}` | undefined) => {
   if (op === BetOptions.YES) {
-    return "Yes";
+    return $t("Yes");
   }
 
   if (op === BetOptions.NO) {
-    return "No";
+    return $t("No");
   }
 
   if (op === BetOptions.UNKNOWN) {
-    return "AI Couldn't Decide";
+    return $t("AI Couldn't Decide");
   }
 
   if (!oracleFinished.value) {
-    return "Not resolved yet";
+    return $t("Not resolved yet");
   }
 
-  return "Error";
+  return $t("Error");
 };
 </script>
 
@@ -127,7 +127,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
   </div>
   <div class="flex flex-col gap-3 lg:flex-col">
     <Badge variant="success" class="text-sm font-semibold">
-      {{ payout.yes }}x Payout
+      {{ payout.yes }}x {{ $t("Payout") }}
     </Badge>
 
     <div
@@ -135,12 +135,13 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
       class="py-12 text-center text-sm font-medium"
     >
       <span v-if="!closedAtCounter.finished">
-        Resolved in : {{ closedAtCounter.days }}D, {{ closedAtCounter.hours }}H,
-        {{ closedAtCounter.minutes }}m, {{ closedAtCounter.seconds }}s
+        {{ $t("Resolved in") }} : {{ closedAtCounter.days }}D,
+        {{ closedAtCounter.hours }}H, {{ closedAtCounter.minutes }}m,
+        {{ closedAtCounter.seconds }}s
       </span>
       <br />
       <span v-if="Number(userBetInfo?.amount ?? 0) > 0">
-        You Bet on
+        {{ $t("You Bet on") }}
         <Badge
           :variant="
             userBetInfo?.betOption === BetOptions.NO ? 'destructive' : 'success'
@@ -157,7 +158,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
 
     <template v-if="closedAtCounter.finished">
       <div class="py-4 text-center text-sm font-medium">
-        Result: {{ betOptionLabel(item.result) }}
+        {{ $t("Result") }}: {{ betOptionLabel(item.result) }}
       </div>
 
       <Button
@@ -169,7 +170,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
           })
         "
       >
-        {{ userBetInfo?.claimed ? "Claimed" : "Claim rewards" }}
+        {{ userBetInfo?.claimed ? $t("Claimed") : $t("Claim rewards") }}
       </Button>
 
       <Button
@@ -181,7 +182,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
           })
         "
       >
-        {{ userBetInfo?.claimed ? "Refunded" : "Refund" }}
+        {{ userBetInfo?.claimed ? $t("Refunded") : $t("Refund") }}
       </Button>
 
       <Button
@@ -193,18 +194,18 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
           })
         "
       >
-        {{ oracleIsCalled ? "Waiting for result" : "Resolve" }}
+        {{ oracleIsCalled ? $t("Waiting for result") : $t("Resolve") }}
       </Button>
     </template>
 
     <Badge variant="destructive" class="text-sm font-semibold">
-      {{ payout.no }}x Payout
+      {{ payout.no }}x {{ $t("Payout") }}
     </Badge>
 
     <p
       class="text-muted-foreground text-sm font-medium flex items-center gap-1"
     >
-      Betting Stopped at:
+      {{ $t("Betting Stopped at") }}:
       {{ formatDateTime(new Date(Number(item.lockTimestamp) * 1000)) }}
     </p>
 
@@ -213,7 +214,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
         {{ totalVolume.eth.toFixed(2) }} {{ nativeSymbol }} =
         {{ formatCurrency(totalVolume.usd) }}
       </p>
-      <p class="font-semibold text-primary">Pool Total Volume</p>
+      <p class="font-semibold text-primary">{{ $t("Pool Total Volume") }}</p>
     </div>
   </div>
 </template>

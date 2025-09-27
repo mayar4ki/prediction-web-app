@@ -18,7 +18,7 @@ const val = computed(() => (props.modelValue as _Tag[]) ?? []);
 
 <template>
   <FormItem>
-    <FormLabel>Tags</FormLabel>
+    <FormLabel>{{ $t("Tags") }}</FormLabel>
     <FormControl>
       <Combobox v-bind="forwarded" by="id" multiple>
         <ComboboxAnchor as-child>
@@ -30,8 +30,8 @@ const val = computed(() => (props.modelValue as _Tag[]) ?? []);
               <div class="flex-1 text-ellipsis overflow-hidden text-start">
                 {{
                   val.length > 0
-                    ? val.map((el) => (el as _Tag).name).join(", ")
-                    : "Select Tags..."
+                    ? val.map((el) => $t((el as _Tag).name)).join(", ")
+                    : $t("Select Tags") + "..."
                 }}
               </div>
 
@@ -41,11 +41,11 @@ const val = computed(() => (props.modelValue as _Tag[]) ?? []);
         </ComboboxAnchor>
 
         <ComboboxList>
-          <ComboboxEmpty> No tags found. </ComboboxEmpty>
+          <ComboboxEmpty> {{ $t("No tags found") }}. </ComboboxEmpty>
 
           <ComboboxGroup>
             <ComboboxItem v-for="tag in tags" :key="tag.id" :value="tag">
-              {{ tag.name }}
+              {{ $t(tag.name) }}
 
               <ComboboxItemIndicator>
                 <Check :class="cn('ml-auto h-4 w-4')" />
@@ -56,7 +56,7 @@ const val = computed(() => (props.modelValue as _Tag[]) ?? []);
       </Combobox>
     </FormControl>
     <FormDescription>
-      <div class="text-muted-foreground">Select tag or more.</div>
+      <div class="text-muted-foreground">{{ $t("Select tag or more.") }}</div>
     </FormDescription>
     <FormMessage />
   </FormItem>

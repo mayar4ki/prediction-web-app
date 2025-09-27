@@ -52,11 +52,11 @@ const { table, columns } = useBetsTable({
         </a>
       </div>
 
-      <NuxtLink to="/bet/create">
+      <NuxtLinkLocale to="/bet/create">
         <Button>
-          Create New Bet <Icon name="radix-icons:plus" :size="18" />
+          {{ $t("Create New Bet") }} <Icon name="radix-icons:plus" :size="18" />
         </Button>
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
 
     <div class="rounded-md border">
@@ -93,7 +93,7 @@ const { table, columns } = useBetsTable({
           </template>
           <TableRow v-else>
             <TableCell :colspan="columns.length" class="h-24 text-center">
-              No results.
+              {{ $t("No results") }}.
             </TableCell>
           </TableRow>
         </TableBody>
@@ -128,7 +128,7 @@ const { table, columns } = useBetsTable({
 
         <PaginationNext />
         <div class="text-sm font-medium text-muted-foreground">
-          Total Count : {{ totalCount }}
+          {{ $t("Total Count") }} : {{ totalCount }}
         </div>
       </PaginationContent>
     </Pagination>

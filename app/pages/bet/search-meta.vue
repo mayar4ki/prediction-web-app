@@ -23,9 +23,9 @@ const { totalCount, isLoading, mappedData } = useBetIndexApi({
     <div class="container mx-auto">
       <div class="flex flex-col gap-6 text-center">
         <h2 class="text-4xl font-medium md:text-5xl">
-          Latest in
+          {{ $t("Latest in") }}
           <span class="capitalize">
-            {{ filter }}
+            {{ $t(filter) }}
           </span>
         </h2>
       </div>
@@ -76,7 +76,7 @@ const { totalCount, isLoading, mappedData } = useBetIndexApi({
 
         <PaginationNext />
         <div class="text-sm font-medium text-muted-foreground">
-          Total Count : {{ totalCount }}
+          {{ $t("Total Count") }} : {{ totalCount }}
         </div>
       </PaginationContent>
     </Pagination>

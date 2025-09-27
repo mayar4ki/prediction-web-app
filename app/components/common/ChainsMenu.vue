@@ -21,7 +21,7 @@ const isLoading = isConnecting || isReconnecting;
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">
       <template v-if="isDisconnected">
-        <DropdownMenuLabel>Connectors </DropdownMenuLabel>
+        <DropdownMenuLabel>{{ $t("Connectors") }} </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem

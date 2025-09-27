@@ -15,19 +15,17 @@ const {
   isReconnecting,
 } = useAccount();
 
-// const { data } = useEnsName({ address });
-
 const isLoading = isConnecting || isReconnecting;
 
 const getName = () => {
   if (isLoading.value) {
-    return "Connecting...";
+    return $t("Connecting") + "...";
   }
 
   if (isConnected.value) {
     return `${chain?.value?.name} ${address?.value}`;
   } else {
-    return "Connect Wallet";
+    return $t("Connect Wallet");
   }
 };
 </script>
@@ -45,7 +43,7 @@ const getName = () => {
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">
       <template v-if="isDisconnected">
-        <DropdownMenuLabel>Connectors </DropdownMenuLabel>
+        <DropdownMenuLabel>{{ $t("Connectors") }} </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
@@ -61,7 +59,7 @@ const getName = () => {
 
       <template v-if="isConnected">
         <DropdownMenuLabel
-          >Connection: {{ connector?.name }}
+          >{{ $t("Connection") }}: {{ connector?.name }}
         </DropdownMenuLabel>
         <!-- <DropdownMenuLabel v-if="data">ESN Name: {{ data }} </DropdownMenuLabel>
         <DropdownMenuSeparator v-if="data" /> -->
@@ -72,21 +70,21 @@ const getName = () => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        <NuxtLink as-child href="/profile">
-          <DropdownMenuItem> Profile </DropdownMenuItem>
-        </NuxtLink>
+        <NuxtLinkLocale as-child href="/profile">
+          <DropdownMenuItem> {{ $t("Profile") }} </DropdownMenuItem>
+        </NuxtLinkLocale>
 
-        <NuxtLink as-child href="/bet/create">
-          <DropdownMenuItem> Create New Bet </DropdownMenuItem>
-        </NuxtLink>
+        <NuxtLinkLocale as-child href="/bet/create">
+          <DropdownMenuItem> {{ $t("Create New Bet") }} </DropdownMenuItem>
+        </NuxtLinkLocale>
 
-        <NuxtLink as-child :href="`/bet/created-bets/${address}`">
-          <DropdownMenuItem> Owned Bets History </DropdownMenuItem>
-        </NuxtLink>
+        <NuxtLinkLocale as-child :href="`/bet/created-bets/${address}`">
+          <DropdownMenuItem> {{ $t("Owned Bets History") }} </DropdownMenuItem>
+        </NuxtLinkLocale>
 
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" @click="disconnect()">
-          Disconnect
+          {{ $t("Disconnect") }}
         </DropdownMenuItem>
       </template>
     </DropdownMenuContent>

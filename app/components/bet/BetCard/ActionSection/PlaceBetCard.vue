@@ -116,7 +116,7 @@ const onSubmit = handleSubmit((values) => {
       v-if="isPending || isConfirming"
       class="absolute top-0 right-0 left-0 bottom-0 z-50 bg-background/75 pointer-events-none"
     >
-      <Loader :text="isConfirming ? 'Confirming...' : undefined" />
+      <Loader :text="isConfirming ? $t('Confirming') + '...' : undefined" />
     </div>
     <CardHeader class="px-0 border-0">
       <CardTitle class="flex justify-between items-center">
@@ -139,13 +139,13 @@ const onSubmit = handleSubmit((values) => {
         v-if="disabled"
         class="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center font-semibold z-50 bg-background/60"
       >
-        You have Bet!
+        {{ $t("You have Bet") }}!
       </div>
       <form @submit="onSubmit">
         <FormField v-slot="{ componentField }" name="amount">
           <FormItem>
             <FormLabel class="flex justify-between">
-              <div>Amount</div>
+              <div>{{ $t("Amount") }}</div>
               <span
                 class="text-foreground font-bold flex justify-center items-center gap-1"
                 >: <Icon name="cryptocurrency:eth" /> {{ nativeSymbol }}</span
@@ -177,9 +177,9 @@ const onSubmit = handleSubmit((values) => {
       </div>
 
       <Alert class="mt-3" variant="default">
-        <AlertTitle>Attention !</AlertTitle>
+        <AlertTitle>{{ $t("Attention") }} !</AlertTitle>
         <AlertDescription>
-          This can't be undone.
+          {{ $t("This can't be undone.") }}
 
           <Separator />
           {{ controlledValues.amount || 0 }} {{ nativeSymbol }} =
@@ -202,7 +202,7 @@ const onSubmit = handleSubmit((values) => {
         variant="default"
         @click="onSubmit"
       >
-        Place Bet
+        {{ $t("Place Bet") }}
       </Button>
     </CardFooter>
   </Card>

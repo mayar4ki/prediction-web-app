@@ -45,7 +45,9 @@ const { mappedData, isLoading } = useBetIndex({
   <section class="py-32 px-6 container-wrapper">
     <div class="container mx-auto">
       <div class="flex flex-col gap-6 text-center">
-        <h2 class="text-4xl font-medium md:text-5xl">Latest Bets</h2>
+        <h2 class="text-4xl font-medium md:text-5xl">
+          {{ $t("Latest Bets (explorer)") }}
+        </h2>
       </div>
       <div class="mt-20">
         <template v-for="(item, index) in mappedData" :key="item.id">

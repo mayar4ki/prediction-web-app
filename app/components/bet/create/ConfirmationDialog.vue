@@ -26,15 +26,20 @@ const df = new DateFormatter("en-GB", {
     </AlertDialogTrigger>
     <AlertDialogContent>
       <AlertDialogHeader>
-        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        <AlertDialogTitle
+          >{{ $t("Are you absolutely sure") }}?</AlertDialogTitle
+        >
         <AlertDialogDescription>
-          This action cannot be undone. Read the summary below carefully before
-          proceeding.
+          {{
+            $t(
+              "This action cannot be undone. Read the summary below carefully before proceeding."
+            )
+          }}
 
           <div class="mt-4">
             <div class="px-2 space-y-1">
               <h4 class="text-sm font-medium leading-none text-foreground">
-                Prompt:
+                {{ $t("Prompt") }}:
               </h4>
               <p class="text-sm text-muted-foreground">
                 {{ controlledValues.prompt }}
@@ -43,7 +48,7 @@ const df = new DateFormatter("en-GB", {
             <Separator class="my-4" />
             <div class="px-2 space-y-1">
               <h4 class="text-sm font-medium leading-none text-foreground">
-                Locked At:
+                {{ $t("Locked At") }}:
               </h4>
               <p class="text-sm text-muted-foreground">
                 {{
@@ -58,7 +63,7 @@ const df = new DateFormatter("en-GB", {
             <Separator class="my-4" />
             <div class="px-2 space-y-1">
               <h4 class="text-sm font-medium leading-none text-foreground">
-                Closes At:
+                {{ $t("Closes At") }}:
               </h4>
               <p class="text-sm text-muted-foreground">
                 {{
@@ -73,7 +78,7 @@ const df = new DateFormatter("en-GB", {
               <Separator class="my-4" />
               <div class="px-2 space-y-1">
                 <h4 class="text-sm font-medium leading-none text-foreground">
-                  Fees Gwei:
+                  {{ $t("Fees Gwei") }}:
                 </h4>
                 <p class="text-sm text-muted-foreground">
                   {{ controlledValues.fees }}
@@ -84,8 +89,12 @@ const df = new DateFormatter("en-GB", {
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel class="self-left">Cancel</AlertDialogCancel>
-        <AlertDialogAction @click="onSubmit">Deploy</AlertDialogAction>
+        <AlertDialogCancel class="self-left">{{
+          $t("Cancel")
+        }}</AlertDialogCancel>
+        <AlertDialogAction @click="onSubmit">{{
+          $t("Deploy")
+        }}</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>

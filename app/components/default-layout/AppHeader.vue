@@ -12,31 +12,31 @@ import ModeSwitch from "../common/ModeSwitch.vue";
 import ChainsMenu from "../common/ChainsMenu.vue";
 
 const paths: Array<{ name: string; to: RouteLocationRaw }> = [
-  { name: "Latest", to: { path: "/bet/search-meta" } },
+  { name: "latest", to: { path: "/bet/search-meta" } },
 
   {
-    name: "Politic",
+    name: "politic",
     to: { path: "/bet/search-meta", query: { tag: "politic" } },
   },
   {
-    name: "Sport",
+    name: "sport",
     to: { path: "/bet/search-meta", query: { tag: "sport" } },
   },
   {
-    name: "Finance",
+    name: "finance",
     to: { path: "/bet/search-meta", query: { tag: "finance" } },
   },
   {
-    name: "Crypto",
+    name: "crypto",
     to: { path: "/bet/search-meta", query: { tag: "crypto" } },
   },
   {
-    name: "Business",
+    name: "business",
     to: { path: "/bet/search-meta", query: { tag: "business" } },
   },
-  { name: "Pop", to: { path: "/bet/search-meta", query: { tag: "pop" } } },
+  { name: "pop", to: { path: "/bet/search-meta", query: { tag: "pop" } } },
   {
-    name: "Science",
+    name: "science",
     to: { path: "/bet/search-meta", query: { tag: "science" } },
   },
 ];
@@ -66,13 +66,13 @@ const needMore = computed(() => paths.length > 4);
               v-for="item in paths.slice(0, 3)"
               :key="item.name"
             >
-              <NuxtLink
+              <NuxtLinkLocale
                 :as="NavigationMenuLink"
                 :class="navigationMenuTriggerStyle()"
                 :to="item.to"
               >
-                {{ item.name }}
-              </NuxtLink>
+                {{ $t(item.name) }}
+              </NuxtLinkLocale>
             </NavigationMenuItem>
 
             <NavigationMenuItem
@@ -80,13 +80,13 @@ const needMore = computed(() => paths.length > 4);
               :key="item.name"
               class="hidden lg:block"
             >
-              <NuxtLink
+              <NuxtLinkLocale
                 :as="NavigationMenuLink"
                 :class="navigationMenuTriggerStyle()"
                 :to="item.to"
               >
-                {{ item.name }}
-              </NuxtLink>
+                {{ $t(item.name) }}
+              </NuxtLinkLocale>
             </NavigationMenuItem>
 
             <NavigationMenuItem v-if="needMore" class="lg:hidden">
@@ -107,7 +107,7 @@ const needMore = computed(() => paths.length > 4);
                     :key="item.name"
                     @click="navigateTo(item.to)"
                   >
-                    {{ item.name }}
+                    {{ $t(item.name) }}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -141,7 +141,7 @@ const needMore = computed(() => paths.length > 4);
                 }
               "
             >
-              {{ item.name }}
+              {{ $t(item.name) }}
             </DropdownMenuLabel>
 
             <DropdownMenuSeparator />
@@ -154,7 +154,7 @@ const needMore = computed(() => paths.length > 4);
                 }
               "
             >
-              Toggle Mode: <ModeSwitch ref="modeSwitchRef" />
+              {{ $t("Toggle theme") }}: <ModeSwitch ref="modeSwitchRef" />
             </DropdownMenuLabel>
           </DropdownMenuContent>
         </DropdownMenu>

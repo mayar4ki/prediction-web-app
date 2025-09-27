@@ -71,7 +71,7 @@ onMounted(() => {
 
 <template>
   <FormItem>
-    <FormLabel>Fees ({{ nativeSymbol }})</FormLabel>
+    <FormLabel>{{ $t("Fees") }} ({{ nativeSymbol }})</FormLabel>
     <FormControl>
       <Input v-bind="props" disabled />
     </FormControl>
@@ -80,7 +80,7 @@ onMounted(() => {
         <li>{{ currentPrice.priceInGwei }} Gwei</li>
         <li>{{ formatCurrency(currentPrice.priceInUSD) }} USD</li>
         <li>
-          Last Update:
+          {{ $t("Last Update") }}:
           {{
             currentPrice.lastUpdatedAt &&
             formatDateTime(currentPrice.lastUpdatedAt)

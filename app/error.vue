@@ -18,9 +18,9 @@ const props = defineProps({
       <p class="text-md text-foreground/55 font-medium">
         {{ props.error?.message }}
       </p>
-      <NuxtLink to="/">
+      <NuxtLinkLocale to="/">
         <Button> Go back to Home </Button>
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
   </NuxtLayout>
 </template>

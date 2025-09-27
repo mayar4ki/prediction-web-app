@@ -50,17 +50,19 @@ const {
       v-if="isPending || isPending2 || isConfirming || isConfirming2"
       class="absolute top-0 right-0 left-0 bottom-0 z-50 bg-background/10 pointer-events-none"
     >
-      <Loader :text="isConfirming || isConfirming2 ? 'Confirming...' : ''" />
+      <Loader
+        :text="isConfirming || isConfirming2 ? $t('Confirming') + '...' : ''"
+      />
     </div>
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
         <Button variant="ghost" class="w-8 h-8 p-0">
-          <span class="sr-only">Open menu</span>
+          <span class="sr-only">{{ $t("Open menu") }}</span>
           <MoreHorizontal class="w-4 h-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuLabel>{{ $t("Actions") }}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           :disabled="
@@ -73,7 +75,7 @@ const {
             })
           "
         >
-          Resolve
+          {{ $t("Resolve") }}
         </DropdownMenuItem>
         <DropdownMenuItem
           :disabled="item.masterBalance === BigInt(0)"
@@ -83,18 +85,18 @@ const {
             })
           "
         >
-          Claim Creator Fees
+          {{ $t("Claim Creator Fees") }}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem @click="navigateTo(`/bet/show/${item.id}`)"
-          >View Bet</DropdownMenuItem
-        >
+        <DropdownMenuItem @click="navigateTo(`/bet/show/${item.id}`)">{{
+          $t("View Bet")
+        }}</DropdownMenuItem>
 
         <a
           :href="`${blockExplorer}${aiPredictionV1.address}#readContract`"
           target="_blank"
         >
-          <DropdownMenuItem>View on Explorer</DropdownMenuItem>
+          <DropdownMenuItem>{{ $t("View on Explorer") }}</DropdownMenuItem>
         </a>
       </DropdownMenuContent>
     </DropdownMenu>

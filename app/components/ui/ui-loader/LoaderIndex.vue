@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { text = "Loading..." } = defineProps<{
+const { text } = defineProps<{
   text?: string;
 }>();
 </script>
@@ -14,7 +14,7 @@ const { text = "Loading..." } = defineProps<{
         class="animate-spin w-5 h-5 border-2 border-foreground rounded-full border-dashed m-2"
       ></div>
 
-      <span>{{ text }}</span>
+      <span>{{ text ?? $t("Loading") + "..." }}</span>
     </div>
     <slot />
   </div>
