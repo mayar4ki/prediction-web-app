@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/vue-query";
 import type { DeepMaybeRef } from "@vueuse/core";
 import { useAccount, useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
+import { refreshInterval } from "~/_constants";
 import type { _Tag, RoundMeta } from "~/_types/common";
 
 export interface UseBetIndexApiOptions {
@@ -42,7 +43,7 @@ export const useBetIndexApi = (options?: UseBetIndexApiOptions) => {
       ),
     ],
     query: {
-      refetchInterval: 15000,
+      refetchInterval: refreshInterval,
       enabled: computed(
         () =>
           (apiResponse.data.value?.rounds ?? []).length > 0 &&

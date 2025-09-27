@@ -5,7 +5,7 @@ const chainId = useChainId();
 
 const { connectors, connect } = useConnect();
 
-const { isDisconnected, isConnecting, isReconnecting } = useAccount();
+const { isDisconnected, isConnecting, isReconnecting, chain } = useAccount();
 
 const { chains, switchChain } = useSwitchChain();
 
@@ -15,8 +15,9 @@ const isLoading = isConnecting || isReconnecting;
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child :disabled="isLoading">
-      <Button variant="default" class="px-3 rounded-full">
-        <Icon name="cryptocurrency:eth" class="scale-140" />
+      <Button variant="default" class="px-2 rounded-full">
+        <span class="hidden sm:block"> {{ chain?.name }}</span>
+        <Icon name="cryptocurrency:eth" size="20" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">

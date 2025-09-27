@@ -66,7 +66,7 @@ const {
 });
 
 const oracleFinished = computed(() => {
-  if (pad(item.value.err, { size: 32 }) !== EmptyBytes.bytes32) {
+  if (pad(item.value.err, { size: 64 }) !== EmptyBytes.bytes32) {
     return true;
   }
 
@@ -79,7 +79,7 @@ const oracleFinished = computed(() => {
 
 const resultError = computed(
   () =>
-    pad(item.value.err, { size: 32 }) !== EmptyBytes.bytes32 ||
+    pad(item.value.err, { size: 64 }) !== EmptyBytes.bytes32 ||
     item.value.result === BetOptions.UNKNOWN
 );
 

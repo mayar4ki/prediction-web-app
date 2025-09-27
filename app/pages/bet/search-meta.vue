@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AlertCircle } from "lucide-vue-next";
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
 
 const router = useRoute();
@@ -25,7 +26,7 @@ const { totalCount, isLoading, mappedData } = useBetIndexApi({
         <h2 class="text-4xl font-medium md:text-5xl">
           {{ $t("Latest in") }}
           <span class="capitalize">
-            {{ $t(filter) }}
+            {{ $t(filter ?? "all") }}
           </span>
         </h2>
       </div>
@@ -43,6 +44,22 @@ const { totalCount, isLoading, mappedData } = useBetIndexApi({
           <div class="h-[30vh]">
             <Loader />
           </div>
+        </div>
+        <div
+          v-else-if="mappedData.length === 0"
+          class="flex flex-col justify-center items-center gap-6 mb-28"
+        >
+          <NuxtImg
+            src="./img/error.png"
+            width="155"
+            height="200"
+            class="opacity-40"
+          />
+          <Alert variant="default" class="max-w-sm">
+            <AlertCircle class="w-4 h-4" />
+            <AlertTitle>Whoops !</AlertTitle>
+            <AlertDescription> No results. </AlertDescription>
+          </Alert>
         </div>
       </div>
     </div>

@@ -8,7 +8,6 @@ const { connectors, connect } = useConnect();
 const {
   address,
   connector,
-  chain,
   isConnected,
   isDisconnected,
   isConnecting,
@@ -23,7 +22,7 @@ const getName = () => {
   }
 
   if (isConnected.value) {
-    return `${chain?.value?.name} ${address?.value}`;
+    return "0x..." + address?.value?.slice(-4);
   } else {
     return $t("Connect Wallet");
   }
@@ -33,11 +32,12 @@ const getName = () => {
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child :disabled="isLoading">
-      <Button variant="default" class="px-3">
+      <Button variant="default" class="px-3 rounded-full">
         <span
-          class="hidden md:block max-w-28 md:max-w-30 text-ellipsis overflow-hidden whitespace-nowrap"
+          class="hidden sm:block max-w-18 md:max-w-22 text-ellipsis overflow-hidden whitespace-nowrap"
           >{{ getName() }}</span
         >
+
         <Icon name="mdi:wallet-bifold-outline" class="scale-140" />
       </Button>
     </DropdownMenuTrigger>

@@ -1,6 +1,7 @@
 import { useReadContract, type UseReadContractParameters } from "@wagmi/vue";
 import type { UnwrapRef } from "vue";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
+import { refreshInterval } from "~/_constants";
 
 export type _UseBetIndexOptions = UseReadContractParameters<
   typeof aiPredictionV1.abi,
@@ -21,7 +22,7 @@ export const useBetIndex = (options?: UseBetIndexOptions) => {
     functionName: "getAllRounds",
     ...options,
     query: {
-      refetchInterval: 15000,
+      refetchInterval: refreshInterval,
       ...options?.query,
     },
   });

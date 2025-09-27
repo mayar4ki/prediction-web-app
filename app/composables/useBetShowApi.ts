@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/vue-query";
 import { useAccount, useReadContract } from "@wagmi/vue";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
+import { refreshInterval } from "~/_constants";
 import type { _Tag, RoundMeta } from "~/_types/common";
 
 export interface UseBetShowApiOptions {
@@ -23,7 +24,7 @@ export const useBetShowApi = (options: UseBetShowApiOptions) => {
     args: [address.value!, BigInt(itemId), BigInt(1)],
 
     query: {
-      refetchInterval: 15000,
+      refetchInterval: refreshInterval,
       enabled: !!itemId,
     },
   });

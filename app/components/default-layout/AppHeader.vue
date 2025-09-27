@@ -10,6 +10,7 @@ import ModeToggle from "../common/ModeToggle.vue";
 import UserMenu from "../common/UserMenu.vue";
 import ModeSwitch from "../common/ModeSwitch.vue";
 import ChainsMenu from "../common/ChainsMenu.vue";
+import LanguageMenu from "../common/LanguageMenu.vue";
 
 const paths: Array<{ name: string; to: RouteLocationRaw }> = [
   { name: "latest", to: { path: "/bet/search-meta" } },
@@ -116,6 +117,12 @@ const needMore = computed(() => paths.length > 4);
         </NavigationMenu>
       </div>
       <div class="flex items-center gap-3 md:gap-2 ml-auto">
+        <LanguageMenu />
+
+        <div class="hidden md:block">
+          <ModeToggle />
+        </div>
+
         <ClientOnly>
           <ChainsMenu />
           <UserMenu />
@@ -158,10 +165,6 @@ const needMore = computed(() => paths.length > 4);
             </DropdownMenuLabel>
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <div class="hidden md:block">
-          <ModeToggle />
-        </div>
       </div>
     </div>
   </header>

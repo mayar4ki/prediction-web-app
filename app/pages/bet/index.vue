@@ -2,6 +2,7 @@
 import { useAccount, useReadContract } from "@wagmi/vue";
 import { AlertCircle } from "lucide-vue-next";
 import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
+import { refreshInterval } from "~/_constants";
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
 
 const { data: roundIdCounter } = useReadContract({
@@ -9,7 +10,7 @@ const { data: roundIdCounter } = useReadContract({
   address: aiPredictionV1.address,
   functionName: "roundIdCounter",
   query: {
-    refetchInterval: 15000,
+    refetchInterval: refreshInterval,
   },
 });
 
