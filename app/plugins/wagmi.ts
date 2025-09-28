@@ -1,25 +1,30 @@
+import { defineNuxtPlugin } from "#app";
+import { createConfig, http, WagmiPlugin } from "@wagmi/vue";
+import { sepolia } from "@wagmi/vue/chains";
+import { injected, metaMask, safe, walletConnect } from "@wagmi/vue/connectors";
 
-import { defineNuxtPlugin } from '#app'
-import { createConfig, http, WagmiPlugin } from '@wagmi/vue'
-import { sepolia } from '@wagmi/vue/chains'
-import { injected, metaMask, safe, walletConnect } from '@wagmi/vue/connectors'
+export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig();
 
-export const wagmiConfig = createConfig({
+  const wagmiConfig = createConfig({
     chains: [sepolia],
     transports: {
-        [sepolia.id]: http('https://eth-sepolia.g.alchemy.com/v2/eYq2Ncl_xa2SB_1KWreti'),
+      [sepolia.id]: http(
+        (import.meta.server ? config : config.public)
+          .NUXT_PUBLIC_ETH_SEPOLIA_CHAIN_RPC_URL
+      ),
     },
     connectors: [
-        injected(),
-        walletConnect({ projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID }),
-        metaMask(),
-        safe(),
+      injected(),
+      walletConnect({
+        projectId: (import.meta.server ? config : config.public)
+          .NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
+      }),
+      metaMask(),
+      safe(),
     ],
-    ssr: true
-})
+    ssr: true,
+  });
 
-export default defineNuxtPlugin(nuxtApp => {
-
-    nuxtApp.vueApp.use(WagmiPlugin, { config: wagmiConfig });
-
-})
+  nuxtApp.vueApp.use(WagmiPlugin, { config: wagmiConfig });
+});

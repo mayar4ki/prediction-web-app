@@ -1,4 +1,3 @@
 import type { Address } from "viem";
 
-export const address: Address = import.meta.env
-  .CLIENT_KEY_AI_PREDICTION_V1_CONTRACT_ADDRESS as Address;
+export const address = "0x6A05676BB45fA8D3D640f65FC9bD2f486Cc19bdf" as Address;

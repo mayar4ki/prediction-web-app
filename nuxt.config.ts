@@ -1,5 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    NUXT_PUBLIC_ETH_SEPOLIA_CHAIN_RPC_URL:
+      process.env.NUXT_PUBLIC_ETH_SEPOLIA_CHAIN_RPC_URL,
+    NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
+      process.env.NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+
+    // Public variables (server and client-side)
+    public: {
+      NUXT_PUBLIC_ETH_SEPOLIA_CHAIN_RPC_URL:
+        process.env.NUXT_PUBLIC_ETH_SEPOLIA_CHAIN_RPC_URL,
+      NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
+        process.env.NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+    },
+  },
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   modules: [
