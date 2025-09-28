@@ -27,7 +27,6 @@ export default defineNuxtConfig({
   routeRules: {
     // pages pre-rendered at build time
     "/": { prerender: true },
-    "/info/**": { prerender: true },
 
     //  Client-side rendering only (no SSR)
     "/dashboard/**": { ssr: false },
