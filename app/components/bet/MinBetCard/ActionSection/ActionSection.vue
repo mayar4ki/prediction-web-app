@@ -20,7 +20,7 @@ const totalVolume = computed(() =>
   calculatePrizePool(item.value, priceFeed.data.value?.[1] ?? BigInt("0"))
 );
 
-const withinLockTime = computed(
+const lockTimeHasPassed = computed(
   () => Number(item.value.lockTimestamp) * 1000 < new Date().getTime()
 );
 
@@ -40,6 +40,10 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
 
 const biggestPayout = computed(() =>
   payout.value.yes >= payout.value.no ? BetOptions.YES : BetOptions.NO
+);
+
+const userHasBetRecord = computed(
+  () => (item.value.userBetInfo?.amount ?? BigInt(0)) !== BigInt(0)
 );
 </script>
 <template>
@@ -94,10 +98,7 @@ const biggestPayout = computed(() =>
     </div>
 
     <template v-if="activeActionCard === 'main'">
-      <div
-        v-if="!withinLockTime && Number(item.userBetInfo?.amount ?? 0) === 0"
-        class="flex gap-2"
-      >
+      <div v-if="!lockTimeHasPassed && !userHasBetRecord" class="flex gap-2">
         <Button
           :variant="'success'"
           size="default"
@@ -120,7 +121,7 @@ const biggestPayout = computed(() =>
 
     <PlaceBetForm
       v-show="activeActionCard === 'form-no' || activeActionCard === 'form-yes'"
-      :disabled="(item.userBetInfo?.amount!) > BigInt(0)"
+      :disabled="userHasBetRecord"
     />
 
     <p class="font-semibold text-sm mt-2">

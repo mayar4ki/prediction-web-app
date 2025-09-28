@@ -1,49 +1,21 @@
 <script lang="ts" setup>
 import { useBetCard } from "../store";
 import { cn } from "~/lib/utils";
-import { calculatePayout, calculatePrizePool } from "../helpers";
-import { nativeSymbol } from "~/_config/chain";
-import { useReadContract } from "@wagmi/vue";
-import * as ethUsdPriceFeed from "~/_config/eth-usd-price-feed";
+import { calculatePayout } from "../helpers";
 
 const { item, activeActionCard } = useBetCard()!;
 const payout = computed(() => calculatePayout(item.value));
-const withinLockTime = computed(
-  () => Number(item.value.lockTimestamp) * 1000 < new Date().getTime()
-);
-
-const priceFeed = useReadContract({
-  abi: ethUsdPriceFeed.abi,
-  address: ethUsdPriceFeed.address,
-  functionName: "latestRoundData",
-});
-
-const lockedAtCounter = useDateCountDown({
-  targetDate: new Date(Number(item.value.lockTimestamp) * 1000),
-});
-
-const totalVolume = computed(() =>
-  calculatePrizePool(item.value, priceFeed.data.value?.[1] ?? BigInt("0"))
-);
 </script>
 
 <template>
   <div class="flex flex-col gap-3 lg:flex-col">
-    <Badge
-      :variant="'success'"
-      :class="
-        cn('text-sm font-semibold', {
-          'opacity-50': withinLockTime,
-        })
-      "
-    >
+    <Badge :variant="'success'" :class="cn('text-sm font-semibold', {})">
       {{ payout.yes }}x {{ $t("Payout") }}
     </Badge>
 
     <Button
       :variant="'success'"
       size="lg"
-      :disabled="withinLockTime"
       @click="activeActionCard = 'form-yes'"
     >
       {{ $t("Bet Yes") }}
@@ -52,45 +24,13 @@ const totalVolume = computed(() =>
     <Button
       :variant="'destructive'"
       size="lg"
-      :disabled="withinLockTime"
       @click="activeActionCard = 'form-no'"
     >
       {{ $t("Bet No") }}
     </Button>
 
-    <Badge
-      :variant="'destructive'"
-      :class="
-        cn('text-sm font-semibold', {
-          'opacity-50': withinLockTime,
-        })
-      "
-    >
+    <Badge :variant="'destructive'" :class="cn('text-sm font-semibold', {})">
       {{ payout.no }}x {{ $t("Payout") }}
     </Badge>
-
-    <p
-      class="text-muted-foreground text-sm font-medium flex items-center gap-1"
-    >
-      {{ $t("Betting Stop at") }}:
-      {{ formatDateTime(new Date(Number(item.lockTimestamp) * 1000)) }}
-    </p>
-    <p
-      v-if="!lockedAtCounter.finished"
-      class="text-muted-foreground text-sm font-medium flex items-center gap-1"
-    >
-      <Icon name="radix-icons:clock" class="h-[1rem] w-[1rem]" />
-      {{ $t("Time left") }}: {{ lockedAtCounter.days }}D,
-      {{ lockedAtCounter.hours }}H, {{ lockedAtCounter.minutes }}m,
-      {{ lockedAtCounter.seconds }}s
-    </p>
-
-    <div class="flex flex-col gap-2">
-      <p class="text-3xl font-medium text-primary">
-        {{ totalVolume.eth.toFixed(2) }} {{ nativeSymbol }} =
-        {{ formatCurrency(totalVolume.usd) }}
-      </p>
-      <p class="font-semibold text-primary">{{ $t("Pool Total Volume") }}</p>
-    </div>
   </div>
 </template>

@@ -1,37 +1,20 @@
 <script lang="ts" setup>
-import { BetOptions, EmptyBytes, type UserBet } from "~/_types/common";
+import { BetOptions, EmptyBytes } from "~/_types/common";
 import { useBetCard } from "../store";
-import { calculatePayout, calculatePrizePool } from "../helpers";
-import { nativeSymbol } from "~/_config/chain";
-import { useReadContract } from "@wagmi/vue";
-import * as ethUsdPriceFeed from "~/_config/eth-usd-price-feed";
+import { calculatePayout } from "../helpers";
+
 import { formatUnits, pad } from "viem";
 
 import { useQueryClient } from "@tanstack/vue-query";
 
-const { userBetInfo } = defineProps<{
-  // eslint-disable-next-line vue/require-default-prop
-  userBetInfo?: UserBet;
-}>();
-
 const { item } = useBetCard()!;
 const payout = computed(() => calculatePayout(item.value));
-
-const priceFeed = useReadContract({
-  abi: ethUsdPriceFeed.abi,
-  address: ethUsdPriceFeed.address,
-  functionName: "latestRoundData",
-});
 
 const { convert } = useEthToUsd();
 
 const closedAtCounter = useDateCountDown({
   targetDate: new Date(Number(item.value.closeTimestamp) * 1000),
 });
-
-const totalVolume = computed(() =>
-  calculatePrizePool(item.value, priceFeed.data.value?.[1] ?? BigInt("0"))
-);
 
 const queryClient = useQueryClient();
 
@@ -88,7 +71,9 @@ const userHasBetRecord = computed(
 );
 
 const userHasWinBetRecord = computed(
-  () => item.value.result === userBetInfo?.betOption && userHasBetRecord.value
+  () =>
+    item.value.result === item.value.userBetInfo?.betOption &&
+    userHasBetRecord.value
 );
 
 const oracleIsCalled = computed(
@@ -131,7 +116,9 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
     </Badge>
 
     <div
-      v-if="!closedAtCounter.finished || Number(userBetInfo?.amount ?? 0) > 0"
+      v-if="
+        !closedAtCounter.finished || Number(item.userBetInfo?.amount ?? 0) > 0
+      "
       class="text-center text-sm font-medium"
     >
       <span v-if="!closedAtCounter.finished">
@@ -140,17 +127,21 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
         {{ closedAtCounter.seconds }}s
       </span>
       <br />
-      <span v-if="Number(userBetInfo?.amount ?? 0) > 0">
+      <span v-if="Number(item.userBetInfo?.amount ?? 0) > 0">
         {{ $t("You Bet on") }}
         <Badge
           :variant="
-            userBetInfo?.betOption === BetOptions.NO ? 'destructive' : 'success'
+            item.userBetInfo?.betOption === BetOptions.NO
+              ? 'destructive'
+              : 'success'
           "
           >{{ betOptionLabel(item.userBetInfo?.betOption) }}</Badge
         >
         {{
           formatCurrency(
-            convert(Number(formatUnits(userBetInfo?.amount ?? BigInt(0), 18)))
+            convert(
+              Number(formatUnits(item.userBetInfo?.amount ?? BigInt(0), 18))
+            )
           )
         }}
       </span>
@@ -163,26 +154,26 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
 
       <Button
         v-if="userHasWinBetRecord"
-        :disabled="userBetInfo?.claimed"
+        :disabled="item.userBetInfo?.claimed"
         @click="
           claimBet({
             args: [[item.id]],
           })
         "
       >
-        {{ userBetInfo?.claimed ? $t("Claimed") : $t("Claim rewards") }}
+        {{ item.userBetInfo?.claimed ? $t("Claimed") : $t("Claim rewards") }}
       </Button>
 
       <Button
         v-if="resultError"
-        :disabled="userBetInfo?.claimed"
+        :disabled="item.userBetInfo?.claimed"
         @click="
           claimBet({
             args: [[item.id]],
           })
         "
       >
-        {{ userBetInfo?.claimed ? $t("Refunded") : $t("Refund") }}
+        {{ item.userBetInfo?.claimed ? $t("Refunded") : $t("Refund") }}
       </Button>
 
       <Button
@@ -201,20 +192,5 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
     <Badge variant="destructive" class="text-sm font-semibold">
       {{ payout.no }}x {{ $t("Payout") }}
     </Badge>
-
-    <p
-      class="text-muted-foreground text-sm font-medium flex items-center gap-1"
-    >
-      {{ $t("Betting Stopped at") }}:
-      {{ formatDateTime(new Date(Number(item.lockTimestamp) * 1000)) }}
-    </p>
-
-    <div class="flex flex-col gap-2">
-      <p class="text-3xl font-medium text-primary">
-        {{ totalVolume.eth.toFixed(2) }} {{ nativeSymbol }} =
-        {{ formatCurrency(totalVolume.usd) }}
-      </p>
-      <p class="font-semibold text-primary">{{ $t("Pool Total Volume") }}</p>
-    </div>
   </div>
 </template>
