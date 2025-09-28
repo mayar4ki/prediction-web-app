@@ -13,7 +13,7 @@ import * as aiPredictionV1 from "~/_config/ai-prediction-v1";
 import sharp from "sharp";
 import prisma from "~~/server/lib/prisma";
 
-const getPrefix = (closeAt: number) => "/userFiles/" + closeAt.toString();
+const getPrefix = (closeAt: number) => "/" + closeAt.toString();
 
 const storePhoto = async (body: FormSchema, closeAt: number) => {
   if (!body?.files?.[0]) {

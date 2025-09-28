@@ -11,7 +11,7 @@ const { item } = useBetCard()!;
     class="flex flex-col gap-4 border-border sm:flex-row lg:col-span-2 lg:border-r lg:pr-0 lg:h-[330px]"
   >
     <NuxtImg
-      :src="`/userFiles/${item.closeTimestamp.toString()}/${item.id}.png`"
+      :src="`/${item.closeTimestamp.toString()}/${item.id}.png`"
       placeholder="/img/blockchain.png"
       alt="placeholder"
       class="aspect-29/35 h-full w-full max-w-60 border rounded-2xl object-cover self-center sm:self-auto"
