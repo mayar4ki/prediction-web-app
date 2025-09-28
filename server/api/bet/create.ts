@@ -51,8 +51,6 @@ const storePhoto = async (body: FormSchema, closeAt: number) => {
 export default defineEventHandler(async (event) => {
   const payload = await readBody<FormSchema>(event);
 
-  console.log(__dirname);
-  console.log(__filename);
   let _bodyTmp: FormSchema | undefined = undefined;
 
   try {
