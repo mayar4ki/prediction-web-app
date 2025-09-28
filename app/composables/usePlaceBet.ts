@@ -3,6 +3,7 @@ import type { Hash, WriteContractParameters } from "viem";
 import { toast } from "vue-sonner";
 import { blockExplorer } from "~/_config/chain";
 import { abi, address } from "~/_config/ai-prediction-v1";
+import { pollingInterval } from "~/_constants";
 
 export interface UsePlaceBetOptions {
   onSuccess?: (data?: Hash) => void;
@@ -69,7 +70,7 @@ export const usePlaceBet = (options: UsePlaceBetOptions) => {
 
   const { isLoading, data: t } = useWaitForTransactionReceipt({
     hash: computed(() => data.value),
-    pollingInterval: 10000,
+    pollingInterval: pollingInterval,
 
     query: {
       enabled: !!computed(() => data.value),

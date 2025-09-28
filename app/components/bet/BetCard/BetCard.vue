@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ErrorBoundary from "~/components/common/ErrorBoundary.vue";
 import ActionSection from "./ActionSection/ActionSection.vue";
 import InfoSection from "./InfoSection/InfoSection.vue";
 import {
@@ -15,10 +16,12 @@ betCardProvider({ item: _item, activeActionCard });
 </script>
 
 <template>
-  <div
-    class="relative grid gap-4 lg:grid-cols-3 xl:gap-8 opacity-100 hover:opacity-100 transition-opacity duration-300"
-  >
-    <InfoSection />
-    <ActionSection />
-  </div>
+  <ErrorBoundary>
+    <div
+      class="relative grid gap-4 lg:grid-cols-3 xl:gap-8 opacity-100 hover:opacity-100 transition-opacity duration-300"
+    >
+      <InfoSection />
+      <ActionSection />
+    </div>
+  </ErrorBoundary>
 </template>

@@ -136,5 +136,6 @@
   "View on Explorer": "エクスプローラーで表示",
   "Loading": "読込中",
   "Transaction has been sent": "取引が送信されました",
-  "Event has been received.": "イベントを受信しました。"
+  "Event has been received.": "イベントを受信しました。",
+  "all": "all"
 }

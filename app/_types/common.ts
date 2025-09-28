@@ -33,6 +33,7 @@ export enum BetOptions {
 
 export enum EmptyBytes {
   "bytes32" = "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "bytes" = "0x",
 }
 
 export interface _Tag {

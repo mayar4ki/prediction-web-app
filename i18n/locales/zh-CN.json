@@ -136,5 +136,6 @@
   "View on Explorer": "在浏览器中查看",
   "Loading": "加载中",
   "Transaction has been sent": "交易已发送",
-  "Event has been received.": "事件已收到。"
+  "Event has been received.": "事件已收到。",
+  "all": "all"
 }

@@ -66,7 +66,7 @@ const {
 });
 
 const oracleFinished = computed(() => {
-  if (pad(item.value.err, { size: 64 }) !== EmptyBytes.bytes32) {
+  if (item.value?.err !== EmptyBytes.bytes) {
     return true;
   }
 
@@ -79,7 +79,7 @@ const oracleFinished = computed(() => {
 
 const resultError = computed(
   () =>
-    pad(item.value.err, { size: 64 }) !== EmptyBytes.bytes32 ||
+    item.value?.err !== EmptyBytes.bytes ||
     item.value.result === BetOptions.UNKNOWN
 );
 
@@ -132,7 +132,7 @@ const betOptionLabel = (op: `0x${string}` | undefined) => {
 
     <div
       v-if="!closedAtCounter.finished || Number(userBetInfo?.amount ?? 0) > 0"
-      class="py-12 text-center text-sm font-medium"
+      class="text-center text-sm font-medium"
     >
       <span v-if="!closedAtCounter.finished">
         {{ $t("Resolved in") }} : {{ closedAtCounter.days }}D,
