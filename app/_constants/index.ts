@@ -1,4 +1,4 @@
-export const siteName = "//PST-POL";
+export const siteName = "//BST-POL9";
 
 export const colorNameAt = 5;
 
