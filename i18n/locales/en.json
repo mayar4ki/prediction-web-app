@@ -137,5 +137,8 @@
   "Loading": "Loading",
   "Transaction has been sent": "Transaction has been sent",
   "Event has been received.": "Event has been received.",
-  "all": "all"
+  "all": "all",
+  "Win {percent} with betting on": "Win {percent} with betting on",
+  "Betting on Yes": "Betting on Yes",
+  "Betting on No": "Betting on No"
 }

@@ -137,5 +137,8 @@
   "Loading": "読込中",
   "Transaction has been sent": "取引が送信されました",
   "Event has been received.": "イベントを受信しました。",
-  "all": "all"
+  "all": "すべて",
+  "Win {percent} with betting on": "{percent}の勝率で賭ける",
+  "Betting on Yes": "「はい」に賭ける",
+  "Betting on No": "「いいえ」に賭ける"
 }

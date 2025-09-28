@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { useBetCard } from "../store";
-import PlaceBetForm from "./PlaceBetForm.vue";
+import { useBetCard } from "../../store";
+import PlaceBetForm from "../../ActionSection/PlaceBetCard.vue";
 import ClaimCard from "./ClaimCard.vue";
 import { useReadContract } from "@wagmi/vue";
 import * as ethUsdPriceFeed from "~/_config/eth-usd-price-feed";
-import { calculatePayout, calculatePrizePool } from "../helpers";
+import { calculatePayout, calculatePrizePool } from "../../helpers";
 import { BetOptions } from "~/_types/common";
 import { formatUnits } from "viem";
+import GaugeChart from "~/components/common/GaugeChart.vue";
+
+import { Dialog, DialogContent } from "~/components/ui/ui-dialog";
 
 const { item, activeActionCard } = useBetCard()!;
 
@@ -42,13 +45,20 @@ const biggestPayout = computed(() =>
   payout.value.yes >= payout.value.no ? BetOptions.YES : BetOptions.NO
 );
 
+const biggestPayoutValue = computed(
+  () =>
+    Number(
+      payout.value.yes >= payout.value.no ? payout.value.yes : payout.value.no
+    ) * 10
+);
+
 const userHasBetRecord = computed(
   () => (item.value.userBetInfo?.amount ?? BigInt(0)) !== BigInt(0)
 );
 </script>
 <template>
   <div class="relative flex flex-col justify-center">
-    <div class="text-sm mt-2">
+    <div class="text-sm mt-2 flex justify-between">
       <span v-if="Number(item.userBetInfo?.amount ?? 0) > 0">
         {{ $t("You Bet on") }}
         <Badge
@@ -79,6 +89,9 @@ const userHasBetRecord = computed(
           >{{ betOptionLabel(biggestPayout) }}</Badge
         >
       </span>
+
+      <!-- this is bullshit don't use it -->
+      <GaugeChart :percent="biggestPayoutValue" />
     </div>
 
     <div class="flex my-2">
@@ -97,32 +110,38 @@ const userHasBetRecord = computed(
       </Badge>
     </div>
 
-    <template v-if="activeActionCard === 'main'">
-      <div v-if="!lockTimeHasPassed && !userHasBetRecord" class="flex gap-2">
-        <Button
-          :variant="'success'"
-          size="default"
-          class="flex-1"
-          @click="activeActionCard = 'form-yes'"
-        >
-          {{ $t("Yes") }}
-        </Button>
-        <Button
-          :variant="'destructive'"
-          size="default"
-          class="flex-1"
-          @click="activeActionCard = 'form-no'"
-        >
-          {{ $t("No") }}
-        </Button>
-      </div>
-      <ClaimCard v-else />
-    </template>
+    <div v-if="!lockTimeHasPassed && !userHasBetRecord" class="flex gap-2">
+      <Button
+        :variant="'success'"
+        size="default"
+        class="flex-1"
+        @click="activeActionCard = 'form-yes'"
+      >
+        {{ $t("Yes") }}
+      </Button>
+      <Button
+        :variant="'destructive'"
+        size="default"
+        class="flex-1"
+        @click="activeActionCard = 'form-no'"
+      >
+        {{ $t("No") }}
+      </Button>
+    </div>
+    <ClaimCard v-else-if="activeActionCard === 'main'" />
 
-    <PlaceBetForm
-      v-show="activeActionCard === 'form-no' || activeActionCard === 'form-yes'"
-      :disabled="userHasBetRecord"
-    />
+    <Dialog
+      :open="activeActionCard === 'form-no' || activeActionCard === 'form-yes'"
+    >
+      <DialogContent class="py-3 px-2">
+        <PlaceBetForm
+          v-show="
+            activeActionCard === 'form-no' || activeActionCard === 'form-yes'
+          "
+          :disabled="userHasBetRecord"
+        />
+      </DialogContent>
+    </Dialog>
 
     <p class="font-semibold text-sm mt-2">
       {{ formatCurrency(totalVolume.usd) }} <span class="text-xs">Vol.</span>

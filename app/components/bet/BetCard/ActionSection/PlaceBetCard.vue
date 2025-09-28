@@ -37,11 +37,17 @@ const { data: _minBetAmount } = useReadContract({
   },
 });
 
-const result = useBetIndex({
+const betIndex = useBetIndex({
   query: {
     enabled: false,
   },
 });
+const betIndexPicker = useBetIndexPicker({
+  query: {
+    enabled: false,
+  },
+});
+
 const queryClient = useQueryClient();
 
 const { isPending, writeContractBetNo, writeContractBetYes, isConfirming } =
@@ -50,7 +56,10 @@ const { isPending, writeContractBetNo, writeContractBetYes, isConfirming } =
       activeActionCard.value = "main";
       resetForm();
       queryClient.invalidateQueries({
-        queryKey: result.queryKey,
+        queryKey: betIndex.queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: betIndexPicker.queryKey,
       });
     },
   });
@@ -58,9 +67,9 @@ const { isPending, writeContractBetNo, writeContractBetYes, isConfirming } =
 const formBadge = computed(() => {
   switch (activeActionCard.value) {
     case "form-yes":
-      return { text: "Betting on Yes", variant: "success" } as const;
+      return { text: $t("Betting on Yes"), variant: "success" } as const;
     case "form-no":
-      return { text: "Betting on No", variant: "destructive" } as const;
+      return { text: $t("Betting on No"), variant: "destructive" } as const;
   }
 
   return { text: "", variant: null } as const;

@@ -137,5 +137,8 @@
   "Loading": "加载中",
   "Transaction has been sent": "交易已发送",
   "Event has been received.": "事件已收到。",
-  "all": "all"
+  "all": "全部",
+  "Win {percent} with betting on": "通过投注赢得 {percent}",
+  "Betting on Yes": "投注是",
+  "Betting on No": "投注否"
 }

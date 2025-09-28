@@ -137,5 +137,8 @@
   "Loading": "Đang tải",
   "Transaction has been sent": "Giao dịch đã được gửi",
   "Event has been received.": "Sự kiện đã được nhận.",
-  "all": "all"
+  "all": "tất cả",
+  "Win {percent} with betting on": "Thắng {percent} khi đặt cược vào",
+  "Betting on Yes": "Đặt cược Có",
+  "Betting on No": "Đặt cược Không"
 }

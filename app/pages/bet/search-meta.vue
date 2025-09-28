@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { AlertCircle } from "lucide-vue-next";
 import BetCard from "~/components/bet/BetCard/BetCard.vue";
-import MinBetCard from "~/components/bet/MinBetCard/MinBetCard.vue";
+import MinBetCard from "~/components/bet/BetCard/MiniBetCard/MinBetCard.vue";
 
 const router = useRoute();
 
-const itemPerPage = ref(6);
+const itemPerPage = ref(10);
 const currentPage = ref(1);
 const cursor = computed(() => (currentPage.value - 1) * itemPerPage.value);
 
@@ -34,7 +34,6 @@ const { totalCount, isLoading, mappedData } = useBetIndexApi({
 
       <div class="mt-20">
         <div
-          v-if="false"
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 items-stretch"
         >
           <MinBetCard
@@ -43,11 +42,10 @@ const { totalCount, isLoading, mappedData } = useBetIndexApi({
             :item="item"
           />
         </div>
-
-        <template v-for="(item, index) in mappedData" :key="item.id">
+        <!-- <template v-for="(item, index) in mappedData" :key="item.id">
           <BetCard :item="item" />
           <Separator v-if="index < mappedData.length - 1" class="my-12" />
-        </template>
+        </template> -->
 
         <div
           v-if="isLoading"

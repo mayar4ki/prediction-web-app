@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { BetOptions, EmptyBytes } from "~/_types/common";
-import { useBetCard } from "../store";
+import { useBetCard } from "../../store";
 import { pad } from "viem";
 
 import { useQueryClient } from "@tanstack/vue-query";
@@ -19,6 +19,12 @@ const betIndex = useBetIndex({
   },
 });
 
+const betIndexPicker = useBetIndexPicker({
+  query: {
+    enabled: false,
+  },
+});
+
 const {
   trigger: resolveBet,
   isPending,
@@ -27,6 +33,9 @@ const {
   onSuccess() {
     queryClient.invalidateQueries({
       queryKey: betIndex.queryKey,
+    });
+    queryClient.invalidateQueries({
+      queryKey: betIndexPicker.queryKey,
     });
   },
 });
@@ -39,6 +48,9 @@ const {
   onSuccess() {
     queryClient.invalidateQueries({
       queryKey: betIndex.queryKey,
+    });
+    queryClient.invalidateQueries({
+      queryKey: betIndexPicker.queryKey,
     });
   },
 });

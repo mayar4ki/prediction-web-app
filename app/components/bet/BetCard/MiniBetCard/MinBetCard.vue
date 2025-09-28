@@ -5,7 +5,7 @@ import {
   betCardProvider,
   type ActiveActionCard,
   type BetCardItem,
-} from "./store";
+} from "../store";
 const { item } = defineProps<{ item: BetCardItem }>();
 
 const activeActionCard = ref<ActiveActionCard>("main");

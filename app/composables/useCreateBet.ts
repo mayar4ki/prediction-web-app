@@ -13,6 +13,7 @@ export const useCreateBet = (options?: UseCreateBetOptions) => {
   const { writeContract, isPending, data } = useWriteContract({
     mutation: {
       onSuccess(data) {
+        options?.onSuccess?.();
         toast.success(translate("Transaction has been sent"), {
           description: h(
             "a",
@@ -46,7 +47,7 @@ export const useCreateBet = (options?: UseCreateBetOptions) => {
       functionName: "createRound",
     });
 
-  const { isLoading, data: t } = useWaitForTransactionReceipt({
+  const { isLoading } = useWaitForTransactionReceipt({
     hash: computed(() => data.value),
     pollingInterval: pollingInterval,
 
@@ -55,11 +56,11 @@ export const useCreateBet = (options?: UseCreateBetOptions) => {
     },
   });
 
-  watchEffect(() => {
-    if (t.value?.status === "success") {
-      options?.onSuccess?.();
-    }
-  });
+  // watchEffect(() => {
+  //   if (t.value?.status === "success") {
+  //     options?.onSuccess?.();
+  //   }
+  // });
 
   return {
     trigger,
