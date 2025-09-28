@@ -47,9 +47,9 @@ export default defineNuxtConfig({
     "/profile/**": { ssr: false },
   },
   fileStorage: {
-    mount: process.env.FILE_STORAGE_MOUNT,
+    mount: "./public",
+    version: "1.0.0",
   },
-
   i18n: {
     defaultLocale: "en",
     strategy: "prefix",
