@@ -47,7 +47,7 @@ export default defineNuxtConfig({
     "/profile/**": { ssr: false },
   },
   fileStorage: {
-    mount: "./public",
+    mount: "./",
     version: "1.0.0",
   },
   i18n: {
